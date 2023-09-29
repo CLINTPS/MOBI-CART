@@ -1,0 +1,37 @@
+<%-include('include/_header')-%>
+   <div class="text-center center-div d-flex align-items-center justify-content-center", id="LoginPage">
+      <div class="wrapper text-center center-div align-items-center justify-content-center">
+         <div class="title-Two">
+            Admin only
+         </div>
+         <% if (typeof err !== 'undefined') { %>
+            <h6 class="alert alert-danger"><%- err %></h6>
+                <% } %>
+
+            <%if (locals.logout){%>
+              <div class="alert alert-success text-center">
+                <%=logout%>
+              </div>
+              <%}%>
+         <form action="/adminlogin" method="POST">
+            <div class="field">
+
+
+               <input type="text" name="email" required>
+               <label>Email Address</label>
+            </div>
+            <div class="field">
+               <input type="password" name="password" required>
+               <label>Password</label>
+            </div>
+            <br>
+            <div class="field">
+               <input type="submit" value="Login">
+            </div>
+            <div class="signup-link">
+               <a href="login-page">Login Page</a>
+             </div>
+         </form>
+      </div>
+   </div>
+   <%-include('include/_footer')-%>
