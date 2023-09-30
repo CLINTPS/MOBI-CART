@@ -1,8 +1,9 @@
-<%-include('include/_header')-%>
-   <div class="text-center center-div d-flex align-items-center justify-content-center", id="LoginPage">
+<%-include('../adminView/include/_header')-%>
+   <div class="text-center center-div d-flex align-items-center justify-content-center bg-danger" style="height: 100vh;">
       <div class="wrapper text-center center-div align-items-center justify-content-center">
          <div class="title-Two">
-            Admin only
+            Admin Login
+            <h6>Enter your details below</h6>
          </div>
          <% if (typeof err !== 'undefined') { %>
             <h6 class="alert alert-danger"><%- err %></h6>
@@ -28,10 +29,7 @@
             <div class="field">
                <input type="submit" value="Login">
             </div>
-            <div class="signup-link">
-               <a href="login-page">Login Page</a>
-             </div>
          </form>
       </div>
    </div>
-   <%-include('include/_footer')-%>
+   <%-include('../adminView/include/_footer')-%>

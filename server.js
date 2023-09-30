@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const session = require('express-session')
 const mongoose = require('mongoose')
+const { v4: uuidv4 } = require("uuid")
 const app=express()
 
 
@@ -12,6 +13,8 @@ const PORT = process.env.PORT||5000
 app.use(express.static('public'))
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
+const adminRouter=require("./router/adminRoutes")
+const userRouter=require("./router/userRoutes")
 
 //Set Template Engin
 app.set('view engine',"ejs")
@@ -23,10 +26,8 @@ app.use(session({
     saveUninitialized: false
 }))
 
-//admin route
-app.use("/",require("./router/adminRoutes"))
-//user route
-app.use("/",require("./router/userRoutes"))
+app.use("/", userRouter);
+app.use("/admin", adminRouter);
 
 //port setting
 app.listen(PORT,()=>{
