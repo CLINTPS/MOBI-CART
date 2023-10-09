@@ -8,3 +8,25 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
 }).catch(() => {
     console.log("Not Connect")
 })
+
+const userSchema=mongoose.Schema({
+    name:{
+        type:String,
+        unique:true
+    },
+    email:{
+        type:String,
+        required:true,
+        unique:true
+    },
+    password:{
+        type:String,
+        required:true,
+    }
+})
+
+let userCollection= mongoose.model('user', userSchema)
+
+//inserting users data in database
+
+module.exports=userCollection

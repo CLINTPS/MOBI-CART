@@ -9,6 +9,7 @@ const adminRouter=require("./router/adminRoutes")
 const userRouter=require("./router/userRoutes")
 const passport=require('passport')
 require('dotenv').config()
+const flash=require("connect-flash")
 
 
 
@@ -27,7 +28,7 @@ app.use(session({
     saveUninitialized: false
 }));
 
-
+app.use(flash())
 app.use("/", userRouter);
 app.use("/otp",OTProutes)
 app.use("/admin", adminRouter);

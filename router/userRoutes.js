@@ -12,7 +12,12 @@ const OTP=require('../model/otp');
 //user login
 
 userRout.get('/',(req,res)=>{
-    res.render('userView/userLogin',{title:'Login page',err:false});
+    if(req.session.logged){
+        res.redirect('user/home');
+    }else{
+
+        res.render('userView/userLogin',{title:'Login page',err:false});
+    }
 })
 userRout.post("/user/login",userControl.userLogin);
 

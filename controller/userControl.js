@@ -54,33 +54,7 @@ async function usersignup(req,res){
     }
 }
 
-// async function postsignup(req,res){
-//     try {
-//         const check = await user.findOne({ email: req.body.email })
-//         console.log(check);
-//         console.log(req.body);
-//         const isMatch = await bcrypt.compare(
-//             req.body.password,
-//             check.password
-//         );
-        
-//         if (isMatch) {
-//             req.session.name = check.name;
-//             req.session.logged = true;
-//             console.log("Login success");
-//             res.redirect("/userView/userhome");
-//         }
-//         else {
-//             req.session.errmsg = "invalid password"
-//             res.redirect('/')
-//             console.log("invalid password");
-//         }
-//     } catch {
-//         req.session.errmsg = "user not found"
-//         res.redirect('/user/otp')
-//         console.log("user not found");
-//     }
-// }
+
 
 async function otpSender(req,res){
     if(req.session.signotp || req.session.forgot){
@@ -141,29 +115,38 @@ const userLogin = async (req, res) => {
     try {
         const check = await user.findOne({ email: req.body.email })
         console.log(check);
-        console.log(req.body);
+        if(check){
+        // console.log(req.body);
         let isMatch = await bcrypt.compare(
             req.body.password,
             check.password
         );
         if (isMatch) {
-            req.session.name = check.name;
+            req.session.email = check.email;
             req.session.logged = true;
             console.log("Login success");
             res.redirect("/user/home");
         }
         else {
+            req.flash("errmsg","*invalid password")
+
             req.session.errmsg = "invalid password"
             res.redirect('/')
             console.log("invalid password");
+        }}else{
+            req.flash("errmsg","*User not found")
+            res.redirect('/')
+            req.session.errmsg = "User not found"
+            console.log("User not found");
+
         }
     } catch {
-        req.session.errmsg = "user not found"
+        req.flash("errmsg","*invalid user name or password")
+        req.session.errmsg = "invalid user name or password"
         res.redirect('/')
         console.log("user not found");
     }
 }
-
 //OTP VERIFICATION
 async  function OtpConfirmation(req,res){
     if(req.session.forgot){
