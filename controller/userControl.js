@@ -6,23 +6,6 @@ const { use } = require("../router/adminRoutes");
 require("../util/otpindex")
 const OTP = require("../model/otp");
 
-
-
-// function getloginpage(req,res){
-    // if(req.session.logged){
-    //     res.redirect('userView/userhome')
-    // }else{
-    // res.render("./userView/userLogin",{title:"user-login",err:false})
-// }
-// }
-// function getsignup(req,res){
-    // res.render("userView/otplogin",{title:"otplogin",err:false})
-// }
-
-// function getsignuppage(req,res){
-//     res.render("userView/userSignup",{title:"sign up"})
-// }
-
 async function usersignup(req,res){
     console.log("user sign up");
     console.log(req.body);
@@ -111,6 +94,7 @@ const forgotPass = async (req, res) => {
 
 }
 
+//user login
 const userLogin = async (req, res) => {
     try {
         const check = await user.findOne({ email: req.body.email })
@@ -122,10 +106,15 @@ const userLogin = async (req, res) => {
             check.password
         );
         if (isMatch) {
-            req.session.email = check.email;
-            req.session.logged = true;
-            console.log("Login success");
-            res.redirect("/user/home");
+            if(check.status===true){
+                req.session.email = check.email;
+                req.session.logged = true;
+                console.log("Login success");
+                res.redirect("/user/home");
+            }else{
+                console.log("user blocked");
+                res.render("userView/userlogin",{title:"login page",err:"You are blocked"})
+            }
         }
         else {
             req.flash("errmsg","*invalid password")
@@ -135,9 +124,9 @@ const userLogin = async (req, res) => {
             console.log("invalid password");
         }}else{
             req.flash("errmsg","*User not found")
-            res.redirect('/')
+            res.render("userView/userlogin",{title:"login page",err:"invalid user name or password"})
             req.session.errmsg = "User not found"
-            console.log("User not found");
+            console.log("User not found..");
 
         }
     } catch {
@@ -171,7 +160,8 @@ async  function OtpConfirmation(req,res){
                 console.log("no match");
                 req.session.userdata="";
                 req.session.errmsg="Invalid OTP"
-                res.redirect("/user/otp")
+                // res.redirect("/user/otp")
+                res.render('userView/otplogin',{title:"otp page",err:"otp is invalid"})
             }
         }
     }catch(err){

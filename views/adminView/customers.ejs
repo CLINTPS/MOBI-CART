@@ -1,0 +1,109 @@
+<%-include('../adminView/include/ad_header')-%>
+<div class="home" style="display: flex;" style="min-height:100vh">
+<%-include('../adminView/include/_sidebar')-%>
+</div>      
+
+<!--orginal -->
+<body>
+    <div class="container-fluid ">
+        <h2>USER DETAILS</h2>
+        <br>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>NO</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>UserProfile</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Use a for loop to iterate through your user data -->
+                <% if (Array.isArray(useData)) { %>
+                    <% useData.forEach((x, i) => { %>
+                    <tr>
+                        <th scope="row"><%=++i%></th>
+                        <td><%=x.userName%></td>
+                        <td><%=x.email%></td>
+                        <td>Orders</td>
+                        <td>
+                            <% if (x.status) { %>
+                                <a href="/admin/userblock/<%- x._id %>" title="Block User">
+                                    <button style="background-color: rgb(11, 109, 21); color: white; border-radius: 10px;">Active</button>
+                                </a>
+                            <% } else { %>
+                                <a href="/admin/userblock/<%- x._id %>" title="Block User">
+                                    <button style="background-color: red; color: white;  border-radius: 10px;">Block</button>
+                                </a>
+                            <% } %>
+                        </td>
+                        <td><a href="/admin/block/<%= x._id %>" class="text-white"
+                            onclick="return confirm('Do you want block  <%= x.username %> ?')">
+                            <i class="fa-solid fa-xmark" style="color: #ff0000;"></i>
+                        </a></td>
+                    </tr>
+                    </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>No user data available.</p>
+                <% } %>
+            
+            </tbody>
+        </table>
+    </div>
+</body>
+            
+
+    
+<!-- old -->
+
+    <!-- <div class="container search">
+  
+        <div class="table_content">
+            <div class="table_datas head">NAME</div>
+            <div class="table_datas head">EMAIL</div>
+            <div class="table_datas head">PROFILE</div>
+            <div class="table_datas head">STATUS</div>
+            <div class="table_datas head"></div>
+        </div>
+        <%useData.forEach((data)=>{%>
+            <div class="table_content data_section">
+                <div class="table_datas "><%-data.userName %></div>
+                <div class="table_datas "><%-data.email %></div>
+                <div class="table_datas ">
+                    <%if(data.profileImage){%>
+                        <img src="<%-data.profileImage%>" alt="" style="width: 23px;height:23;border-radius: 50%;">
+                        <% }else{%>
+
+                            <img src="/images/userprofile.svg" style="width: 23px;height:23" alt="">
+                            <% } %>
+                </div>
+                
+                <div class="table_datas ">
+                    <%if(data.status){%>
+                        <div class="active">
+                            Active
+                        </div>
+                   <% }else{%>
+                    <div class="blocked">
+                        Blocked
+                    </div>
+                   <%}%>
+                </div>
+                <div class="table_datas ">
+                    <%if(data.status){%>
+                        <a href="/admin/userblock/<%- data._id %>" title="Block User">
+                                <img src="/images/block.svg" style="width: 30px;height:30px" alt="">
+                        </a>
+                    <%}else{%>
+                        <a href="/admin/userunblock/<%- data._id %>" title="Ublock User">
+                            <img src="/images/unblock.svg" style="width: 30px;height:30px" alt="">
+                        </a>
+                   <% }%>
+                </div>
+            </div>
+            <% }) %>           
+    </div>  -->
+</div> 

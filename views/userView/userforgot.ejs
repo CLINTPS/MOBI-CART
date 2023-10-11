@@ -1,0 +1,28 @@
+<%-include('../userView/include/_header')-%>
+   <div class="text-center center-div d-flex align-items-center justify-content-center h-100", id="LoginPage" style="height: 100vh; width: 100%; background-color: aqua;">
+      <div class="wrapper text-center center-div align-items-center justify-content-center">
+         <div class="title">
+            Forgot Password
+         </div>
+         <p>Don't worry we are here for you!!</p>
+         <% if(err){ %>
+            <h6 class="alert alert-danger" style="margin: 5px;"><%-err%></h6>
+       <% } %>
+        <% if(locals.logout){%>
+            <div class="alter alert-success text-center">
+                <%= logout %>
+            </div>
+           <%}%>
+         <form action="/user/forgot-pass" method="POST">
+            <div class="field">
+               <input type="text" name="email" required>
+               <label>Enter the registered email</label>
+            </div>
+            <br>
+            <div class="field">
+               <input type="submit" value="Send OTP">
+            </div>
+         </form>
+      </div>
+   </div>
+<%-include('../userView/include/_footer')-%>

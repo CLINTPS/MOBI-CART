@@ -1,3 +1,5 @@
+const userCollection=require('../model/user')
+
 function getAdminpage(req, res) {
     res.render('./adminView/adminLog',{title:"admin-login"})
 }
@@ -19,15 +21,57 @@ function postAdminpage(req, res){
         // res.redirect('/dashboard')
         res.render("adminView/dashboard",{title:"Admin Dashboard"})
     } else {
-        res.render('./adminView/adiminLog', { title: "admin paage", err: "Invalid Username or Password" })
+        res.render('adminView/adminLog', { title: "admin paage", err: "Invalid Username or Password" })
     }
 }
+
+//dashboard to coustomer details
+async function  userdetails (req, res){
+    if (req.session.adminLogin) {
+        var i = 0;
+        const useData = await userCollection.find();
+        res.render('adminView/customers',{title:"coustome details",useData,i})
+    } else {
+        res.redirect("/admin/userDetails");
+    }
+};
+
+//user block unblock
+const UserStatus = async (req, res) => {
+    const id = req.params.id;
+    console.log("Recieve request "+id);
+
+    // Find the user by ID
+    const user = await userCollection.findOne({ _id: id });
+
+    if (!user) {
+        return res.status(404).send("User not found");
+    }
+    const newStatus = !user.status;
+    await userCollection.updateOne(
+        { _id: id },
+        { $set: { status: newStatus } }
+    );
+
+    console.log(`User ${user.userName} is ${newStatus ? "unblocked" : "blocked"}`);
+    res.redirect("/admin/userDetails");
+};
+
+//admin logout
 function adminLogout(req,res){
-   res.render('adminView/adminLog',{title: "admin paage"})
+   res.render('adminView/adminLog',{title: "admin page"})
+}
+
+//dashboard to product details
+function getProduct(req,res){
+    res.render('adminView/products',{title:"Product control"})
 }
 
 module.exports={
     getAdminpage,
     postAdminpage,
-    adminLogout
+    adminLogout,
+    userdetails,
+    UserStatus,
+    getProduct
 }

@@ -1,5 +1,5 @@
 <%-include('../userView/include/_header')-%>
-   <div class="text-center center-div d-flex align-items-center justify-content-center h-100", id="LoginPage">
+   <div class="text-center center-div d-flex align-items-center justify-content-center h-100", id="LoginPage" style="height: 100vh; width: 100%; background-color: hwb(180 0% 0%);">
       <div class="wrapper text-center center-div align-items-center justify-content-center">
          <div class="title">
             Login
@@ -21,12 +21,13 @@
                <input type="password" name="password" required>
                <label>Password</label>
             </div>
-            <div class="content">
             <br>
-            </div>
             <div class="field">
                <input type="submit" value="Login">
             </div>
+            <div class="forgot-password-link">
+               <a href="/user/forgot-pass">Forgot Password?</a>
+           </div>
             <div class="signup-link">
                Not a member? <a href="/user/signup">Signup now</a>
             </div>

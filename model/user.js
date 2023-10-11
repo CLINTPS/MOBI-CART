@@ -8,7 +8,7 @@ const UsersSchema = new Schema({
   password: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String },
-  status: { type: String },
+  status: { type: Boolean,required: true },
   address: [{
      addressLine: { type: String },
      country: { type: String },
@@ -25,4 +25,3 @@ const UsersSchema = new Schema({
 const Users = mongoose.model('Users', UsersSchema);
 
 module.exports=Users;
-

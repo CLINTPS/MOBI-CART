@@ -9,9 +9,16 @@ const USER=require('../model/user');
 const {sendOTP}=require("../controller/otpController");
 const OTP=require('../model/otp');
 
+
+// first view
+userRout.get('/',(req,res)=>{
+        res.render('userView/index',{title:'Mobi cart',err:false});
+})
+
+
 //user login
 
-userRout.get('/',(req,res)=>{
+userRout.get('/user/Login-Signup',(req,res)=>{
     if(req.session.logged){
         res.redirect('user/home');
     }else{
