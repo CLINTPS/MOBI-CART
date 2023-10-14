@@ -15,7 +15,7 @@ async function usersignup(req,res){
         if (check.length == 0) {
             const pass = await bcrypt.hash(req.body.password, 10);
             const data = {
-                userName: req.body.name,
+                userName: req.body.userName,
                 email: req.body.email,
                 password: pass,
             }
@@ -120,7 +120,7 @@ const userLogin = async (req, res) => {
             req.flash("errmsg","*invalid password")
 
             req.session.errmsg = "invalid password"
-            res.redirect('/')
+            res.render("userView/userlogin",{title:"login page",err:"invalid user name or password"})
             console.log("invalid password");
         }}else{
             req.flash("errmsg","*User not found")
@@ -136,6 +136,7 @@ const userLogin = async (req, res) => {
         console.log("user not found");
     }
 }
+
 //OTP VERIFICATION
 async  function OtpConfirmation(req,res){
     if(req.session.forgot){
@@ -182,7 +183,8 @@ async  function OtpConfirmation(req,res){
                 const hashed=Otp.otp
                 const match=await bcrypt.compare(req.body.code,hashed);
                 if(match){
-                    const result=await user.insertMany([data])
+                    console.log(data);
+                    const result=await user.create({...data,name:data.email})
                     req.session.logged=true;
                     req.session.signotp=false
                     res.redirect("/user/home")
@@ -215,10 +217,6 @@ const logout = (req,res) => {
 }
 
 module.exports={
-    // getloginpage,
-    // getsignup,
-    // getsignuppage,
-    // postsignup,
     usersignup,
     otpSender,
     OtpConfirmation,

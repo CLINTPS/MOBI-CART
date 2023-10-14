@@ -21,7 +21,7 @@ app.set('view engine',"ejs")
 app.set('views',path.join(__dirname,'views'))
 
 app.use(session({
-    secret: uuidv4(),
+    secret: "Key",
     resave: false,
     saveUninitialized: false
 }));

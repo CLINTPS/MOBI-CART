@@ -8,7 +8,8 @@ const UsersSchema = new Schema({
   password: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String },
-  status: { type: Boolean,required: true },
+  status: { type: Boolean,
+            default:true},
   address: [{
      addressLine: { type: String },
      country: { type: String },
@@ -20,7 +21,7 @@ const UsersSchema = new Schema({
   }],
   dob: { type: Date },
   gender: { type: String },
-});
+},{timestamps:true});
 
 const Users = mongoose.model('Users', UsersSchema);
 

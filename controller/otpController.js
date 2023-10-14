@@ -12,6 +12,7 @@ const sendOTP = async (email) => {
 
     // Clear old OTP
     await OTP.deleteOne({ email });
+    console.log("deleted: ",email);
 
     // Generate new OTP
     const generatedOTP = await generateOTP();

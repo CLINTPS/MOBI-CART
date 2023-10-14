@@ -1,0 +1,50 @@
+<%-include('../adminView/include/ad_header')-%>
+    <%-include('../adminView/include/_sidebar')-%>
+
+        <div
+            style="position: absolute;top: 10%;right:3.7%; background-color: rgb(30, 32, 119); padding: 5px 10px; border-radius: 5px;">
+            <a href="/admin/add-brand" style="color: #fff; text-decoration: none;">Add Brand</a>
+            <i class="fa-solid fa-person-walking-dashed-line-arrow-right " style="color: #f6f0f0;"></i>
+        </div>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <% if (Array.isArray(brandData)) { %>
+                <% brandData.forEach((x, i)=> { %>
+                    <tr>
+                        <th scope="row">
+                            <%=++i%>
+                        </th>
+                        <td>
+                            <%=x.name%>
+                        </td>
+                        <td>
+                            <%let date=new Date(x.timeStamp)%>
+                                <%=date.getDate()%>/<%=date.getMonth()%>/<%=date.getFullYear()%>
+                        </td>
+                        <td>
+                            <a href="/admin/edit-brand/<%-x._id%>" class="text-white">
+                                <i class="fa-solid fa-pen-to-square fa-xl" style="color: #393939;"></i>
+                            </a>
+                        </td>
+
+                        <td><a href="/admin/delete-brand/<%= x._id %>" class="text-white"
+                                onclick="return confirm('Do you want delete  <%= x.BrandName %> ?')">
+                                <i class="fa-solid fa-trash" style="color: #393939;"></i>
+                            </a></td>
+                    </tr>
+                    </div>
+                    <% }); %>
+                        <% } else { %>
+                            <p>No user data available.</p>
+                            <% } %>
+                                </tbody>
+                                  
+        </table>

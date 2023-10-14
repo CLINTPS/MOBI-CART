@@ -55,7 +55,7 @@ userRout.get("/user/home",(req,res)=>{
     }
     else{
         console.log(req.session.logged);
-        res.redirect("/")
+        res.render('userView/userLogin',{title:'Login page',err:"invalid user name or password"});
     }
 })
 

@@ -1,0 +1,21 @@
+/* Custom styles for the sidebar */
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    z-index: 1;
+    background-color: #000; /* Change this to set the background color to black */
+    padding: 20px;
+    color: #ffffff;
+}
+
+#sidebar a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+#sidebar a:hover {
+    color: #007bff;
+}

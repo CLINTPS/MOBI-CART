@@ -1,14 +1,21 @@
 <!DOCTYPE html>
+
 <head>
-<html lang="en">
+    <html lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+    <title>
+        <%= title %>
+    </title>
     <!-- <title>Document-1</title> -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/styles/user-style.css">
 </head>
+
 <body>
     <header class="main_nav">
         <div class="top_bar">
@@ -36,14 +43,18 @@
 
                         <img class="whish" src="/images/heart.svg" alt="">
                     </a>
-                
-                            <a href="">
-                                <img class="cart" src="/images/cart.svg" alt="">
-                            </a>
-                                    <a href="">
-                                        <img class="profile" src="/images/user.png" alt="">
-                                    </a>
-                                    <a href="/user/Login-Signup">Login/Signup</a>
+
+                    <a href="">
+                        <img class="cart" src="/images/cart.svg" alt="">
+                    </a>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Account
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="/user/Login-Signup">Login/Signup</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -53,11 +64,12 @@
         <div class="dashbrd text-center" id="HomePage" style="width: 100%; background-color: rgb(159, 146, 66);">
             <a href="" class="btn btn-warning" style="position: absolute;top: 50%;left:12%">Buy Now</a>
             <a href="" class="btn btn-light" style="position: absolute;top: 50%;left:20%">Add To Cart</a>
-        
-                    <img  src="/images/first.webp" class="d-block w-100" alt="">
-               
+
+            <img src="/images/first.webp" class="d-block w-100" alt="">
+
             <h1 class="text-black pt-4 ">Discover NEW Arrivals</h1>
             <P>Recently added Mobiles!</P>
         </div>
     </div>
+  
 <%-include('../userView/include/user_footer')-%>

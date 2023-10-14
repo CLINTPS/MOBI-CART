@@ -1,8 +1,9 @@
+const JWT = require('jsonwebtoken')
 const userCollection=require('../model/user')
+const categoriesCollection=require('../model/categories')
 
-function getAdminpage(req, res) {
-    res.render('./adminView/adminLog',{title:"admin-login"})
-}
+
+
 
 //Admin password and user id
 const credential = {
@@ -10,13 +11,23 @@ const credential = {
     password: "000"
 }
 
+//admin page
+function getAdminpage(req, res) {
+    res.render('./adminView/adminLog',{title:"admin-login"})
+}
+
 //Admin login to admin view page
 
 function postAdminpage(req, res){
     if (req.body.email == credential.email && req.body.password == credential.password) {
         req.session.admin = req.body.email;
-        req.session.logged = true
+        // req.session.logged = true
         req.session.adminLogin = true
+// jwt set        
+        // const token= JWT.sign({admin_id:"8787"},process.env.SECRUET_KEY)
+        // res.cookie("admin_token",token,{
+        //     httpOnly:true,
+        // })
         console.log("logined");
         // res.redirect('/dashboard')
         res.render("adminView/dashboard",{title:"Admin Dashboard"})
@@ -25,16 +36,57 @@ function postAdminpage(req, res){
     }
 }
 
-//dashboard to coustomer details
+//To coustomer details
 async function  userdetails (req, res){
     if (req.session.adminLogin) {
         var i = 0;
-        const useData = await userCollection.find();
+        const useData = await userCollection.find({});
+        useData.forEach(data => {
+            data.createdAt = new Date(data.createdAt);
+        });
+        console.log(useData);
         res.render('adminView/customers',{title:"coustome details",useData,i})
     } else {
         res.redirect("/admin/userDetails");
     }
 };
+
+
+//To Catagories section details
+async function  getCategory (req, res){
+    if (req.session.adminLogin) {
+        var i = 0;
+        const categoryData = await categoriesCollection.find({});
+        console.log(categoryData);
+        res.render('adminView/categories',{title:"categories details",categoryData,i})
+    } else {
+        res.redirect("/admin");
+    }
+};
+
+//add catogories
+function getCatagoriesData(req,res){
+    res.render('adminView/add-categories',{title:"add new categories"})
+}
+//add post catogories
+async function postCatagoriesData(req,res){
+    try {
+      const { categoryName } = req.body;
+      console.log(categoryName);
+  
+      const newCategory = new categoriesCollection({
+        name: categoryName,
+        timeStamp: new Date(),
+      });
+  
+      const insertResult = await categoriesCollection.insertMany([newCategory]);
+      res.redirect('/admin/add-category');
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  }
+
 
 //user block unblock
 const UserStatus = async (req, res) => {
@@ -62,10 +114,8 @@ function adminLogout(req,res){
    res.render('adminView/adminLog',{title: "admin page"})
 }
 
-//dashboard to product details
-function getProduct(req,res){
-    res.render('adminView/products',{title:"Product control"})
-}
+
+
 
 module.exports={
     getAdminpage,
@@ -73,5 +123,7 @@ module.exports={
     adminLogout,
     userdetails,
     UserStatus,
-    getProduct
+    getCategory,
+    getCatagoriesData,
+    postCatagoriesData,
 }

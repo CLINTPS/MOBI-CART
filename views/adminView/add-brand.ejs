@@ -1,0 +1,18 @@
+<%-include('../adminView/include/ad_header')-%>
+<%-include('../adminView/include/_sidebar')-%>
+
+    <div class="text-center center-div d-flex align-items-center justify-content-center py-5">
+        <div class="container w-25 rounded border py-4 bg-muted">
+            <div class="title pb-1">
+                <h2 class="font-weight-bold text-daek">Add Brand</h2>
+            </div>
+            <form action="/admin/add-brand" method="POST" >  
+                <div class="form-group">
+                    <small class="form-text text-white text-left">Brand Name</small>
+                    <input class="form-control" name="brandName" required placeholder="Brand Name">
+                </div>
+                
+                <button type="submit" class="btn-btn-success rounded pi">Add</button>
+            </form>
+        </div>
+    </div>

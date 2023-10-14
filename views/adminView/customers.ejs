@@ -14,7 +14,7 @@
                     <th>NO</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>UserProfile</th>
+                    <th>Join Date</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -27,7 +27,10 @@
                         <th scope="row"><%=++i%></th>
                         <td><%=x.userName%></td>
                         <td><%=x.email%></td>
-                        <td>Orders</td>
+                        <td>
+                            <%let date=new Date(x.createdAt)%>
+                            <%=date.getDate()%>/<%=date.getMonth()%>/<%=date.getFullYear()%>
+                        </td>
                         <td>
                             <% if (x.status) { %>
                                 <a href="/admin/userblock/<%- x._id %>" title="Block User">
@@ -54,56 +57,3 @@
         </table>
     </div>
 </body>
-            
-
-    
-<!-- old -->
-
-    <!-- <div class="container search">
-  
-        <div class="table_content">
-            <div class="table_datas head">NAME</div>
-            <div class="table_datas head">EMAIL</div>
-            <div class="table_datas head">PROFILE</div>
-            <div class="table_datas head">STATUS</div>
-            <div class="table_datas head"></div>
-        </div>
-        <%useData.forEach((data)=>{%>
-            <div class="table_content data_section">
-                <div class="table_datas "><%-data.userName %></div>
-                <div class="table_datas "><%-data.email %></div>
-                <div class="table_datas ">
-                    <%if(data.profileImage){%>
-                        <img src="<%-data.profileImage%>" alt="" style="width: 23px;height:23;border-radius: 50%;">
-                        <% }else{%>
-
-                            <img src="/images/userprofile.svg" style="width: 23px;height:23" alt="">
-                            <% } %>
-                </div>
-                
-                <div class="table_datas ">
-                    <%if(data.status){%>
-                        <div class="active">
-                            Active
-                        </div>
-                   <% }else{%>
-                    <div class="blocked">
-                        Blocked
-                    </div>
-                   <%}%>
-                </div>
-                <div class="table_datas ">
-                    <%if(data.status){%>
-                        <a href="/admin/userblock/<%- data._id %>" title="Block User">
-                                <img src="/images/block.svg" style="width: 30px;height:30px" alt="">
-                        </a>
-                    <%}else{%>
-                        <a href="/admin/userunblock/<%- data._id %>" title="Ublock User">
-                            <img src="/images/unblock.svg" style="width: 30px;height:30px" alt="">
-                        </a>
-                   <% }%>
-                </div>
-            </div>
-            <% }) %>           
-    </div>  -->
-</div> 
