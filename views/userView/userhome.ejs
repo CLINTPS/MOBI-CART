@@ -1,13 +1,33 @@
 <%-include('../userView/include/user_header')-%>
-<div>
-<div class="dashbrd text-center" id="HomePage" style="width: 100%; background-color: rgb(255, 255, 255);">
-    <a href="" class="btn btn-warning" style="position: absolute;top: 50%;left:12%">Buy Now</a>
-    <a href="" class="btn btn-light" style="position: absolute;top: 50%;left:20%">Add To Cart</a>
-
-            <img  src="/images/first.webp" class="d-block w-100" alt="">
-       
-    <h1 class="text-black pt-4 ">Discover NEW Arrivals</h1>
-    <P>Recently added Mobiles!</P>
-</div>
+<div class="bg-light">
+    <div class="container-fluid">
+        <div class="text-center">
+            <div class="dashbrd"  style="width: 100%; background-color: rgb(221, 203, 67);">
+                <a href="" class="btn btn-warning" style="position: absolute; margin-top: 35%; left:12%">Buy Now</a>
+                <a href="" class="btn btn-light" style="position: absolute; margin-top: 35%; left:20%">Add To Cart</a>
+                <img src="/images/first.webp" class="d-block w-100" alt="">
+                <h1 class="text-black pt-4 ">Discover NEW Arrivals</h1>
+                <P>Recently added Mobiles!</P>          
+                <div class="row">
+                    <% if (Array.isArray(productData)) { %>
+                    <% productData.forEach((x)=>{ %>
+                    <div class="col-md-3 p-4">
+                        <div class="card" style="width: 18rem;margin-left: 25px;">
+                            <img class="card-img-top" style="height: 290px; width: 250px; padding: 20px; margin-left: 20px;" src="/product-img/<%= x.images[0] %>" alt="Card image cap">
+                            <div class="card-body">
+                                <h6 class="card-title"><%=x.ProductName%></h6>
+                                <p class="card-title"><%=x.BrandName%></p>
+                                <p class="card-text" style="font-weight: 700;">₹<%=x.Price%>/-</p>
+                                <a href="" class="btn btn-warning">Add To Cart</a>
+                                <a href="/productDetails/<%=x._id%>" class="btn btn-primary">view Details</a>
+                            </div>
+                        </div>     
+                    </div>    
+                    <%}) %>
+                    <% } %>
+                 </div>
+            </div>            
+        </div>
+    </div>
 </div>
 <%-include('../userView/include/user_footer')-%>

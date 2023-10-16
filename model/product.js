@@ -53,7 +53,7 @@ const productSchema = new Schema({
       Specification4: {
         type: String,
       },
-})
+},{timestamps:true})
 
 const productUpdate =mongoose.model('Products',productSchema);
 

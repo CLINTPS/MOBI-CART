@@ -2,9 +2,17 @@ const user = require('../model/user')
 const bcrypt = require('bcrypt')
 const sendOTP = require("./otpController");
 const { use } = require("../router/adminRoutes");
-
+const productsCollections = require('../model/product')
+const { ObjectId} = require('mongodb')
 require("../util/otpindex")
 const OTP = require("../model/otp");
+
+// to index
+async function gustView(req,res){
+    const productData = await productsCollections.find({});
+    res.render('userView/index',{title:'Mobi cart',productData,err:false});
+}
+    
 
 async function usersignup(req,res){
     console.log("user sign up");
@@ -97,7 +105,7 @@ const forgotPass = async (req, res) => {
 //user login
 const userLogin = async (req, res) => {
     try {
-        const check = await user.findOne({ email: req.body.email })
+        const check = await user.findOne({ email: req.body.email },{})
         console.log(check);
         if(check){
         // console.log(req.body);
@@ -108,6 +116,7 @@ const userLogin = async (req, res) => {
         if (isMatch) {
             if(check.status===true){
                 req.session.email = check.email;
+                req.session.user = check.userName;
                 req.session.logged = true;
                 console.log("Login success");
                 res.redirect("/user/home");
@@ -204,6 +213,25 @@ async  function OtpConfirmation(req,res){
     }
 }
 
+//get product details page
+async function getProducDetails(req,res){
+    if(req.session.logged){
+        try{
+            const ProductID = req.params.id;
+            const productData = await productsCollections.findById(ProductID);
+            console.log('product view reached');
+            let user = req.session.user
+            res.render('userView/product-Details',{title:"product details",user,productData})
+        }catch(error){
+            res.status(500).send('Internal server error')
+        }
+    }else{
+        res.redirect('/user/logout')
+    }
+}
+
+
+
 //Logout
 const logout = (req,res) => {
     req.session.destroy((err)=>{
@@ -217,10 +245,12 @@ const logout = (req,res) => {
 }
 
 module.exports={
+    gustView,
     usersignup,
     otpSender,
     OtpConfirmation,
     userLogin,
     forgotPass,
+    getProducDetails,
     logout
 }

@@ -1,5 +1,5 @@
 <%-include('../adminView/include/ad_header')-%>
-<%-include('../adminView/include/_sidebar')-%>
+    <%-include('../adminView/include/_sidebar')-%>
 
         <div
             style="position: absolute;top: 10%;right:3.7%; background-color: rgb(30, 32, 119); padding: 5px 10px; border-radius: 5px;">
@@ -11,8 +11,9 @@
                 <tr>
                     <th scope="col">No</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Stock</th>
                     <th scope="col">Catogary</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Stock</th>
                     <th scope="col">Price</th>
                     <th scope="col">Status</th>
                     <th scope="col">Image</th>
@@ -20,20 +21,42 @@
                     <th scope="col">Edit/Delete</th>
                 </tr>
             </thead>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
+            <% for(let i=0;i<productData.length;i++){%>
+                <tr>
+                    <th scope="row"><%=i+1%></th>
+                    <td>
+                        <%= productData[i].ProductName %>
+                    </td>
+                    <td>
+                        <%= productData[i].Category %>
+                    </td>
+                    <td>
+                        <%= productData[i].BrandName %>
+                    </td>
+                    <td>
+                        <%= productData[i].AvailableQuantity %>
+                    </td>
+                    <td>
+                        <%= productData[i].Price %>
+                    </td>
+                    <td>Otto</td>
+                    <td><img src="/product-img/<%= productData[i].images[0] %>" alt="product image"
+                            style="height: 50px; width: 50px;"></td>
+                    <td>
+                        <%let date=new Date(productData[i].createdAt)%>
+                        <%=date.getDate()%>/<%=date.getMonth()%>/<%=date.getFullYear()%>
+                    </td>
+                    <td>
+                        <a href="/admin/edit/<%-productData[i]._id%>" class="text-white p-3">
+                            <i class="fa-solid fa-pen-to-square fa-xl" style="color: #000000;"></i>
+                        </a>
+                        <a href="/admin/delete/<%-productData[i]._id%>" class="text-white"
+                            onclick="return confirm('Do you want to Remove <%-productData[i].ProductName%> ?')">
+                            <i class="fa-solid fa-trash fa-xl" style="color: #000000;"></i>
+                        </a>
+                    </td>
+                </tr>
+                <%}%>
             </div>
-
-            </tbody>
-              
+                      
         </table>

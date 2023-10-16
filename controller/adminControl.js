@@ -13,7 +13,7 @@ const credential = {
 
 //admin page
 function getAdminpage(req, res) {
-    res.render('./adminView/adminLog',{title:"admin-login"})
+    res.render('adminView/adminLog',{title:"admin-login"})
 }
 
 //Admin login to admin view page
@@ -44,7 +44,7 @@ async function  userdetails (req, res){
         useData.forEach(data => {
             data.createdAt = new Date(data.createdAt);
         });
-        console.log(useData);
+        // console.log(useData);
         res.render('adminView/customers',{title:"coustome details",useData,i})
     } else {
         res.redirect("/admin/userDetails");
@@ -57,7 +57,7 @@ async function  getCategory (req, res){
     if (req.session.adminLogin) {
         var i = 0;
         const categoryData = await categoriesCollection.find({});
-        console.log(categoryData);
+        // console.log(categoryData);
         res.render('adminView/categories',{title:"categories details",categoryData,i})
     } else {
         res.redirect("/admin");

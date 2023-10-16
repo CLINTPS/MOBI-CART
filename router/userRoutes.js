@@ -8,16 +8,14 @@ require('../config/passport');
 const USER=require('../model/user');
 const {sendOTP}=require("../controller/otpController");
 const OTP=require('../model/otp');
+const productsCollections=require('../model/product');
+const router = require("./adminRoutes");
 
-
-// first view
-userRout.get('/',(req,res)=>{
-        res.render('userView/index',{title:'Mobi cart',err:false});
-})
+// Gust view
+userRout.get('/',userControl.gustView);
 
 
 //user login
-
 userRout.get('/user/Login-Signup',(req,res)=>{
     if(req.session.logged){
         res.redirect('user/home');
@@ -48,10 +46,13 @@ userRout.get('/user/otp',(req,res)=>{
 userRout.post("/user/otp",userControl.OtpConfirmation);
 
 //user logged home page
-userRout.get("/user/home",(req,res)=>{
+userRout.get("/user/home",async (req,res)=>{
     if(req.session.logged||req.user){
+        let user = req.session.user
+        // console.log(user);
         console.log(req.session.logged);
-        res.render("userView/userhome",{title:"Home Page",err:false})
+        const productData = await productsCollections.find({});
+        res.render("userView/userhome",{title:"Home Page",productData,user,err:false})
     }
     else{
         console.log(req.session.logged);
@@ -59,6 +60,8 @@ userRout.get("/user/home",(req,res)=>{
     }
 })
 
+//product details
+userRout.get('/productDetails/:id',userControl.getProducDetails);
 
 //user logout
 userRout.get("/user/logout",userControl.logout)
