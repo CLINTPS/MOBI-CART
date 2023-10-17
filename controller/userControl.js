@@ -9,8 +9,12 @@ const OTP = require("../model/otp");
 
 // to index
 async function gustView(req,res){
-    const productData = await productsCollections.find({});
-    res.render('userView/index',{title:'Mobi cart',productData,err:false});
+    if(req.session.logged){
+        res.redirect('/user/home')
+    }else{
+        const productData = await productsCollections.find({});
+        res.render('userView/index',{title:'Mobi cart',productData,err:false});
+    }
 }
     
 
@@ -27,9 +31,11 @@ async function usersignup(req,res){
                 email: req.body.email,
                 password: pass,
             }
+            req.session.user = check.userName;
             req.session.data = data;
             req.session.email = data.email
             req.session.signotp=true;
+            req.session.logged = true;
             console.log('reached')
             res.redirect("/user/otp-sent");
         } else {
@@ -127,13 +133,12 @@ const userLogin = async (req, res) => {
         }
         else {
             req.flash("errmsg","*invalid password")
-
             req.session.errmsg = "invalid password"
-            res.render("userView/userlogin",{title:"login page",err:"invalid user name or password"})
+            res.render("userView/userlogin",{title:"login page",err:"invalid user name or password.."})
             console.log("invalid password");
         }}else{
             req.flash("errmsg","*User not found")
-            res.render("userView/userlogin",{title:"login page",err:"invalid user name or password"})
+            res.render("userView/userlogin",{title:"login page",err:"invalid user name or password."})
             req.session.errmsg = "User not found"
             console.log("User not found..");
 
@@ -217,7 +222,9 @@ async  function OtpConfirmation(req,res){
 async function getProducDetails(req,res){
     if(req.session.logged){
         try{
+            console.log("ghuggg");
             const ProductID = req.params.id;
+            console.log(ProductID);
             const productData = await productsCollections.findById(ProductID);
             console.log('product view reached');
             let user = req.session.user
@@ -226,6 +233,7 @@ async function getProducDetails(req,res){
             res.status(500).send('Internal server error')
         }
     }else{
+        console.log("qwerty");
         res.redirect('/user/logout')
     }
 }

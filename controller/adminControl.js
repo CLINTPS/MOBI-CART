@@ -87,6 +87,27 @@ async function postCatagoriesData(req,res){
     }
   }
 
+//edit category
+async function getCatagoriesedit(req,res){
+    const id = req.params.id;
+    const categoryName = await categoriesCollection.findOne({_id: id})
+    res.render('adminView/edit-categories',{title:"Edit category",categoryName})
+  }
+  // edit category = category view page
+  async function postCatagoriesedit(req,res){
+    let newData = req.body;
+    let id = req.params.id;
+    console.log(newData,id);
+    const date=Date.now();
+    await categoriesCollection.updateOne(
+      {_id:id},{
+        $set:{name:newData.categoryName,timeStamp:date}
+      }
+    )
+      res.redirect('/admin/category')
+  
+    }
+
 
 //user block unblock
 const UserStatus = async (req, res) => {
@@ -126,4 +147,7 @@ module.exports={
     getCategory,
     getCatagoriesData,
     postCatagoriesData,
+    getCatagoriesedit,
+    postCatagoriesedit
+
 }

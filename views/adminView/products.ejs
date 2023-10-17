@@ -15,7 +15,7 @@
                     <th scope="col">Brand</th>
                     <th scope="col">Stock</th>
                     <th scope="col">Price</th>
-                    <th scope="col">Status</th>
+                    <!-- <th scope="col">Status</th> -->
                     <th scope="col">Image</th>
                     <th scope="col">Udated Date</th>
                     <th scope="col">Edit/Delete</th>
@@ -39,7 +39,7 @@
                     <td>
                         <%= productData[i].Price %>
                     </td>
-                    <td>Otto</td>
+                    <!-- <td>Otto</td> -->
                     <td><img src="/product-img/<%= productData[i].images[0] %>" alt="product image"
                             style="height: 50px; width: 50px;"></td>
                     <td>
@@ -47,7 +47,7 @@
                         <%=date.getDate()%>/<%=date.getMonth()%>/<%=date.getFullYear()%>
                     </td>
                     <td>
-                        <a href="/admin/edit/<%-productData[i]._id%>" class="text-white p-3">
+                        <a href="/admin/edit-product/<%-productData[i]._id%>" class="text-white p-3">
                             <i class="fa-solid fa-pen-to-square fa-xl" style="color: #000000;"></i>
                         </a>
                         <a href="/admin/delete/<%-productData[i]._id%>" class="text-white"

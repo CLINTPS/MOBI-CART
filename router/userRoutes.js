@@ -15,10 +15,10 @@ const router = require("./adminRoutes");
 userRout.get('/',userControl.gustView);
 
 
-//user login
+//gust page to login page
 userRout.get('/user/Login-Signup',(req,res)=>{
     if(req.session.logged){
-        res.redirect('user/home');
+        res.redirect('/user/home');
     }else{
 
         res.render('userView/userLogin',{title:'Login page',err:false});
@@ -28,6 +28,9 @@ userRout.post("/user/login",userControl.userLogin);
 
 // login to sign up
 userRout.get("/user/Signup",(req,res)=>{
+    if(req.session.logged){
+        res.redirect('/user/home')
+    }
     res.render("userView/userSignup",{title:"Signup page",err:false})
 })
 userRout.post("/user/Signup",userControl.usersignup)
@@ -55,10 +58,16 @@ userRout.get("/user/home",async (req,res)=>{
         res.render("userView/userhome",{title:"Home Page",productData,user,err:false})
     }
     else{
-        console.log(req.session.logged);
-        res.render('userView/userLogin',{title:'Login page',err:"invalid user name or password"});
+        res.redirect('/')
     }
 })
+
+//login to forgot page
+userRout.get('/user/forgot-pass',(req,res)=>{
+    res.render('userView/userforgot',{title:"Forgot password",err:false})
+})
+
+userRout.get('/user/forgot-pass',userControl.forgotPass)
 
 //product details
 userRout.get('/productDetails/:id',userControl.getProducDetails);

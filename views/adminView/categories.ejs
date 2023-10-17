@@ -29,12 +29,12 @@
                                 <%=date.getDate()%>/<%=date.getMonth()%>/<%=date.getFullYear()%>
                         </td>
                         <td>
-                            <a href="/admin/edit-catogory/<%-x._id%>" class="text-white">
+                            <a href="/admin/edit-category/<%-x._id%>" class="text-white">
                                 <i class="fa-solid fa-pen-to-square fa-xl" style="color: #393939;"></i>
                             </a>
                         </td>
 
-                        <td><a href="/admin/delete-catogory/<%= x._id %>" class="text-white"
+                        <td><a href="/admin/delete-category/<%= x._id %>" class="text-white"
                                 onclick="return confirm('Do you want delete  <%= x.CategoryName %> ?')">
                                 <i class="fa-solid fa-trash" style="color: #393939;"></i>
                             </a></td>

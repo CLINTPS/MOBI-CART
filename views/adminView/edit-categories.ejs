@@ -1,0 +1,17 @@
+<%-include('../adminView/include/ad_header')-%>
+<%-include('../adminView/include/_sidebar')-%>
+
+<div class="text-center center-div d-flex align-items-center justify-content-center py-5">
+    <div class="container w-25 rounded border py-4 bg-muted">
+        <div class="title pb-1">
+            <h2 class="font-weight-bold text-daek">Edit Category</h2>
+        </div>
+        <form action="/admin/upadte-catogory/<%=categoryName._id%>" method="POST" >  
+            <div class="form-group">
+                <input class="form-control" name="categoryName" value="<%- categoryName.name %>">
+            </div>
+            
+            <button type="submit" class="btn-btn-success rounded pi">Save</button>
+        </form>
+    </div>
+</div>

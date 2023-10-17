@@ -6,7 +6,7 @@ async function  getBrand (req, res){
     if (req.session.adminLogin) {
         var i = 0;
         const brandData = await brandCollection.find({});
-        console.log(brandData);
+        // console.log(brandData);
         res.render('adminView/brand',{title:"brand details",brandData,i})
     } else {
         res.redirect("/admin");
@@ -36,8 +36,32 @@ async function postbrandsData(req,res){
     }
   }
 
+//edit brand
+async function getBrandedit(req,res){
+  const id = req.params.id;
+  const brandName = await brandCollection.findOne({_id: id})
+  res.render('adminView/edit-brand',{title:"Edit brand",brandName})
+}
+// edit brand = brand view page
+async function postBrandedit(req,res){
+  let newData = req.body;
+  let id = req.params.id;
+  console.log(newData,id);
+  const date=Date.now();
+  await brandCollection.updateOne(
+    {_id:id},{
+      $set:{name:newData.brandName,timeStamp:date}
+    }
+  )
+    res.redirect('/admin/brand')
+
+  }
+
+
   module.exports = {
     getBrand,
     getbrandsData,
-    postbrandsData
+    postbrandsData,
+    getBrandedit,
+    postBrandedit
   }

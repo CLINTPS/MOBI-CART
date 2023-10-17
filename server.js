@@ -10,18 +10,22 @@ const userRouter=require("./router/userRoutes")
 const passport=require('passport')
 require('dotenv').config()
 const flash=require("connect-flash")
-
-
-app.use(express.static('public'))
-app.use(express.urlencoded({extended:true}))
-app.use(express.json())
+const nocache = require("nocache");
 
 //Set Template Engin
 app.set('view engine',"ejs")
 app.set('views',path.join(__dirname,'views'))
 
+
+app.use(nocache())
+app.use(express.static('public'))
+app.use(express.urlencoded({extended:true}))
+app.use(express.json())
+
+
+
 app.use(session({
-    secret: "Key",
+    secret: uuidv4(),
     resave: false,
     saveUninitialized: false
 }));
