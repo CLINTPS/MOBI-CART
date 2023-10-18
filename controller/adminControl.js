@@ -1,6 +1,4 @@
-const JWT = require('jsonwebtoken')
 const userCollection=require('../model/user')
-const categoriesCollection=require('../model/categories')
 
 
 
@@ -8,12 +6,16 @@ const categoriesCollection=require('../model/categories')
 //Admin password and user id
 const credential = {
     email: "clint@gmail.com",
-    password: "000"
+    password: "010"
 }
 
 //admin page
 function getAdminpage(req, res) {
-    res.render('adminView/adminLog',{title:"admin-login"})
+    if(req.session.adminLogin){
+        res.redirect('/admin/adminlogin')
+    }else{
+        res.render('adminView/adminLog',{title:"admin-login"})
+    }
 }
 
 //Admin login to admin view page
@@ -23,16 +25,11 @@ function postAdminpage(req, res){
         req.session.admin = req.body.email;
         // req.session.logged = true
         req.session.adminLogin = true
-// jwt set        
-        // const token= JWT.sign({admin_id:"8787"},process.env.SECRUET_KEY)
-        // res.cookie("admin_token",token,{
-        //     httpOnly:true,
-        // })
         console.log("logined");
         // res.redirect('/dashboard')
         res.render("adminView/dashboard",{title:"Admin Dashboard"})
     } else {
-        res.render('adminView/adminLog', { title: "admin paage", err: "Invalid Username or Password" })
+        res.render('adminView/adminLog', { title: "admin page", err: "Invalid Username or Password" })
     }
 }
 
@@ -47,66 +44,9 @@ async function  userdetails (req, res){
         // console.log(useData);
         res.render('adminView/customers',{title:"coustome details",useData,i})
     } else {
-        res.redirect("/admin/userDetails");
-    }
-};
-
-
-//To Catagories section details
-async function  getCategory (req, res){
-    if (req.session.adminLogin) {
-        var i = 0;
-        const categoryData = await categoriesCollection.find({});
-        // console.log(categoryData);
-        res.render('adminView/categories',{title:"categories details",categoryData,i})
-    } else {
         res.redirect("/admin");
     }
 };
-
-//add catogories
-function getCatagoriesData(req,res){
-    res.render('adminView/add-categories',{title:"add new categories"})
-}
-//add post catogories
-async function postCatagoriesData(req,res){
-    try {
-      const { categoryName } = req.body;
-      console.log(categoryName);
-  
-      const newCategory = new categoriesCollection({
-        name: categoryName,
-        timeStamp: new Date(),
-      });
-  
-      const insertResult = await categoriesCollection.insertMany([newCategory]);
-      res.redirect('/admin/add-category');
-    } catch (error) {
-      console.error(error);
-      res.status(500).send('Internal Server Error');
-    }
-  }
-
-//edit category
-async function getCatagoriesedit(req,res){
-    const id = req.params.id;
-    const categoryName = await categoriesCollection.findOne({_id: id})
-    res.render('adminView/edit-categories',{title:"Edit category",categoryName})
-  }
-  // edit category = category view page
-  async function postCatagoriesedit(req,res){
-    let newData = req.body;
-    let id = req.params.id;
-    console.log(newData,id);
-    const date=Date.now();
-    await categoriesCollection.updateOne(
-      {_id:id},{
-        $set:{name:newData.categoryName,timeStamp:date}
-      }
-    )
-      res.redirect('/admin/category')
-  
-    }
 
 
 //user block unblock
@@ -132,7 +72,14 @@ const UserStatus = async (req, res) => {
 
 //admin logout
 function adminLogout(req,res){
-   res.render('adminView/adminLog',{title: "admin page"})
+    req.session.destroy((err)=>{
+        if(err){
+            console.log(err);
+            res.send('Error')
+        }else{
+            res.redirect('/admin')
+        }
+    })
 }
 
 
@@ -144,10 +91,4 @@ module.exports={
     adminLogout,
     userdetails,
     UserStatus,
-    getCategory,
-    getCatagoriesData,
-    postCatagoriesData,
-    getCatagoriesedit,
-    postCatagoriesedit
-
 }

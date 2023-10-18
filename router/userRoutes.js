@@ -39,13 +39,12 @@ userRout.post("/user/Signup",userControl.usersignup)
 userRout.get("/user/login-page",(req,res)=>{
     res.render('userView/userLogin',{title:'Login page',err:false});})
 
-//Otp
-userRout.get("/user/otp-sent",userControl.otpSender);
-
+    
 //sign up to otp page
 userRout.get('/user/otp',(req,res)=>{
     res.render('userView/otplogin',{title:'otp page',err:false})
 })
+userRout.get("/user/otp-sent",userControl.otpSender);
 userRout.post("/user/otp",userControl.OtpConfirmation);
 
 //user logged home page
@@ -62,17 +61,20 @@ userRout.get("/user/home",async (req,res)=>{
     }
 })
 
-//login to forgot page
-userRout.get('/user/forgot-pass',(req,res)=>{
-    res.render('userView/userforgot',{title:"Forgot password",err:false})
-})
+//login to forgot page and forgot password
+userRout.get('/user/forgot-pass',userControl.forgot_password_page)
+userRout.post('/user/forgot-PassWord',userControl.forgotPass)
+//Reset password
+userRout.get('/user/conformPass',userControl.get_password_reset)
+userRout.post('/user/conformPass',userControl.password_reset)
 
-userRout.get('/user/forgot-pass',userControl.forgotPass)
 
 //product details
 userRout.get('/productDetails/:id',userControl.getProducDetails);
 
 //user logout
 userRout.get("/user/logout",userControl.logout)
+
+
 
 module.exports=userRout

@@ -123,10 +123,19 @@ async function postProductedit(req,res) {
   }
 };
 
+//Delete product
+async function getProductDelete(req,res){
+    const id = req.params.id
+    console.log(id);
+    await productsCollections.deleteOne({_id:id})
+    res.redirect('/admin/productPage')
+}
+
   module.exports ={
     getProductPage,
     getProductdata,
     postProductdata,
     getProductedit,
-    postProductedit
+    postProductedit,
+    getProductDelete
   }

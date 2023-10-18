@@ -1,5 +1,5 @@
 <%-include('../userView/include/_header')-%>
-   <div class="text-center center-div d-flex align-items-center justify-content-center h-100", id="LoginPage" style="height: 100vh; width: 100%; background-color: aqua;">
+   <div class="text-center center-div d-flex align-items-center justify-content-center h-100", id="LoginPage" style="height: 100vh; width: 100%; background:linear-gradient(135deg, #cd4726, #3027db)">
       <div class="wrapper text-center center-div align-items-center justify-content-center">
          <div class="title">
             Forgot Password
@@ -13,7 +13,7 @@
                 <%= logout %>
             </div>
            <%}%>
-         <form action="/user/forgot-pass" method="POST">
+         <form action="/user/forgot-PassWord" method="POST">
             <div class="field">
                <input type="text" name="email" required>
                <label>Enter the registered email</label>
@@ -22,6 +22,9 @@
             <div class="field">
                <input type="submit" value="Send OTP">
             </div>
+            <div class="signup-link">
+                  Already have an account? <a href="/user/login-page">Login</a>
+              </div>
          </form>
       </div>
    </div>
