@@ -42,7 +42,8 @@ const {
     postProductdata,
     getProductedit,
     postProductedit,
-    getProductDelete
+    getProductDelete,
+    getBlockProduct
 }=require('../controller/productControl')
 
 const uploadFields = [
@@ -58,7 +59,7 @@ router.post('/add-productPage',uplode.fields(uploadFields),postProductdata)
 router.get('/edit-product/:id',getProductedit)
 router.post('/update-productPage/:id',uplode.fields(uploadFields),postProductedit)
 router.get('/delete-product/:id',getProductDelete)
-
+router.get('/productblock/:id',getBlockProduct)
 
 //Brand
 const {

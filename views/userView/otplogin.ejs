@@ -14,11 +14,14 @@
 <body>
     
 
-<div class="otp-form" style="background:linear-gradient(#8783e1,#d26fbb);">
+<div class="otp-form" style="background:linear-gradient( #fbf161,#ececec);">
 
   <!-- Email OTP Form -->
   <form class="email-otp" action="/user/otp" method="post">
       <h2>Email OTP</h2>
+      <% if(err){ %>
+        <h6 class=" alert-danger" style="margin: 5px; color: red;"><%-err%></h6>
+      <% } %>
       <div class="email-otp-container">
         
           <!-- Six input fields for OTP digits -->
@@ -35,6 +38,10 @@
       <input type="text" id="emailverificationCode" name="code" placeholder="Enter verification code" value="dsjhgfahcbhjasdb" style="display: none;">
       <!-- Button to verify OTP -->
       <button type="submit" id="verifyEmailOTP" class="btn btn-info">VERIFY</button>
+      <!-- Resend OTP link (moved to the right) -->
+      <div style="text-align: right;">
+        <a href="/resend-otp">Resend OTP</a>
+      </div>
     </form>
   
 </div>

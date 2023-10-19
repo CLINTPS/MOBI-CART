@@ -11,6 +11,7 @@
                 <div class="row">
                     <% if (Array.isArray(productData)) { %>
                     <% productData.forEach((x)=>{ %>
+                        <% if(x.AvailableQuantity > 0 && x.Status===true){%>
                     <div class="col-md-3 p-4">
                         <div class="card" style="width: 18rem;margin-left: 25px;">
                             <img class="card-img-top" style="height: 290px; width: 250px; padding: 20px; margin-left: 20px;" src="/product-img/<%= x.images[0] %>" alt="Card image cap">
@@ -22,7 +23,8 @@
                                 <a href="/productDetails/<%=x._id%>" class="btn btn-primary">view Details</a>
                             </div>
                         </div>     
-                    </div>    
+                    </div>
+                    <% } %>     
                     <%}) %>
                     <% } %>
                  </div>

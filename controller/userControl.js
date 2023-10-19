@@ -34,7 +34,7 @@ async function usersignup(req,res){
             req.session.user = check.userName;
             req.session.data = data;
             req.session.email = data.email
-            req.session.signotp=true;
+            req.session.signotp = true;
             req.session.logged = true;
             console.log('reached')
             res.redirect("/user/otp-sent");
@@ -79,7 +79,7 @@ async function otpSender(req,res){
 //password forgote page
 const forgot_password_page=(req,res)=>{
     if(req.session.logged){
-        res.redirect('/user/home')
+        res.redirect('/user/login-page')
     }else{
         res.render('userView/userforgot',{title:"Forgot password",err:false})
     }
@@ -142,20 +142,14 @@ const userLogin = async (req, res) => {
             }
         }
         else {
-            // req.flash("errmsg","*invalid password")
-            // req.session.errmsg = "invalid password"
             res.render("userView/userlogin",{title:"login page",err:"invalid user name or password.."})
             console.log("invalid password");
         }}else{
-            // req.flash("errmsg","*User not found")
-            // req.session.errmsg = "User not found"
             res.render("userView/userlogin",{title:"login page",err:"invalid user name or password."})
             console.log("User not found..");
 
         }
     } catch {
-        // req.flash("errmsg","*invalid user name or password")
-        // req.session.errmsg = "invalid user name or password"
         res.redirect('/')
         console.log("user not found");
     }
@@ -185,9 +179,7 @@ async  function OtpConfirmation(req,res){
             else{
                 console.log("no match");
                 req.session.userdata="";
-                req.session.errmsg="Invalid OTP"
-                res.redirect("/user/otp")
-                // res.render('userView/otplogin',{title:"otp page",err:"otp is invalid"})
+                res.render('userView/otplogin',{title:"Otp page",err:"Invalid OTP"})
             }
         }
     }catch(err){
@@ -216,15 +208,17 @@ async  function OtpConfirmation(req,res){
                 const match=await bcrypt.compare(req.body.code,hashed);
                 if(match){
                     console.log(data);
+
                     const result=await user.create({...data,name:data.email})
                     req.session.logged=true;
                     req.session.signotp=false
+                    req.session.user = data.userName;
                     res.redirect("/user/home")
     
                 }
                 else{
-                    req.session.errmsg="Invalid OTP"
-                    res.redirect("/user/otp")
+                    // req.session.errmsg="Invalid OTP"
+                    res.render('userView/otplogin',{title:"Otp page",err:"Invalid OTP"})
                 }
             }
             
@@ -242,7 +236,7 @@ const get_password_reset = (req, res) => {
         res.render("userView/resetPass",{title:"Reset password"});
 
     } else {
-        res.redirect("/")
+        res.redirect("/user/login-page")
     }
 }
 
@@ -255,7 +249,7 @@ const password_reset = async (req, res) => {
         const update = await user.updateOne({ email: email }, { $set: { password: pass } })
         req.session.logged = true;
         req.session.pass_reset = false
-        res.redirect("/user/home")
+        res.redirect("/user/login-page")
     } catch (err) {
         req.flash("errmsg", "something went wrong")
         console.log(err);

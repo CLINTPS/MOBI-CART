@@ -42,7 +42,7 @@ userRout.get("/user/login-page",(req,res)=>{
     
 //sign up to otp page
 userRout.get('/user/otp',(req,res)=>{
-    res.render('userView/otplogin',{title:'otp page',err:false})
+        res.render('userView/otplogin',{title:'otp page',err:false})
 })
 userRout.get("/user/otp-sent",userControl.otpSender);
 userRout.post("/user/otp",userControl.OtpConfirmation);

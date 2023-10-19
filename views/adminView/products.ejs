@@ -15,10 +15,11 @@
                     <th scope="col">Brand</th>
                     <th scope="col">Stock</th>
                     <th scope="col">Price</th>
-                    <!-- <th scope="col">Status</th> -->
                     <th scope="col">Image</th>
                     <th scope="col">Udated Date</th>
-                    <th scope="col">Edit/Delete</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Edit</th>
                 </tr>
             </thead>
             <% for(let i=0;i<productData.length;i++){%>
@@ -39,17 +40,29 @@
                     <td>
                         <%= productData[i].Price %>
                     </td>
-                    <!-- <td>Otto</td> -->
                     <td><img src="/product-img/<%= productData[i].images[0] %>" alt="product image"
-                            style="height: 50px; width: 50px;"></td>
-                    <td>
-                        <%let date=new Date(productData[i].createdAt)%>
-                        <%=date.getDate()%>/<%=date.getMonth()%>/<%=date.getFullYear()%>
-                    </td>
+                        style="height: 50px; width: 50px;"></td>
+                        <td>
+                            <%let date=new Date(productData[i].createdAt)%>
+                            <%=date.getDate()%>/<%=date.getMonth()%>/<%=date.getFullYear()%>
+                        </td>
+                        <td>
+                            <%if(productData[i].Status===true){%>
+                                    <a href="/admin/productblock/<%- productData[i]._id %>" title="Active User">
+                                        <button style="background-color: rgb(11, 109, 21); color: white; border-radius: 10px;">Active</button>
+                                    </a>
+                                <%}else{%>
+                                    <a href="/admin/productblock/<%- productData[i]._id %>" title="Block User">
+                                        <button style="background-color: red; color: white;  border-radius: 10px;">Block</button>
+                                    </a>
+                                <%}%>
+                        </td>
                     <td>
                         <a href="/admin/edit-product/<%-productData[i]._id%>" class="text-white p-3">
                             <i class="fa-solid fa-pen-to-square fa-xl" style="color: #000000;"></i>
                         </a>
+                    </td>
+                    <td>
                         <a href="/admin/delete-product/<%-productData[i]._id%>" class="text-white"
                             onclick="return confirm('Do you want to Remove <%-productData[i].ProductName%> ?')">
                             <i class="fa-solid fa-trash fa-xl" style="color: #000000;"></i>

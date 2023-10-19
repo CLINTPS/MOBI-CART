@@ -131,11 +131,27 @@ async function getProductDelete(req,res){
     res.redirect('/admin/productPage')
 }
 
+//Block Product
+async function getBlockProduct(req,res){
+    const id = req.params.id
+    // console.log(id);
+    const data= await productsCollections.findOne({_id:id})
+    if(data.Status===true){
+        await productsCollections.updateOne({_id:id},{$set:{Status:false}})
+    }else{
+        await productsCollections.updateOne({_id:id},{$set:{Status:true}})
+
+    }
+    res.redirect('/admin/productPage')
+}
+
+
   module.exports ={
     getProductPage,
     getProductdata,
     postProductdata,
     getProductedit,
     postProductedit,
-    getProductDelete
+    getProductDelete,
+    getBlockProduct
   }

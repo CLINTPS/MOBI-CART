@@ -38,6 +38,10 @@ const productSchema = new Schema({
       DiscountAmount: {
         type: Number,
       },
+      Status:{
+        type: Boolean,
+        default: true
+      },
       UpdatedOn: {
         type: Date,
       },
