@@ -45,7 +45,6 @@ async function usersignup(req,res){
         }
     } catch (e) {
         console.log(e);
-        req.session.errmsg = "something went wrong"
         res.redirect('/user/signup')
         console.log("user already exist");
     }
@@ -118,42 +117,48 @@ const forgotPass = async (req, res) => {
 
 }
 
-//user login
-const userLogin = async (req, res) => {
-    try {
-        const check = await user.findOne({ email: req.body.email },{})
-        console.log(check);
-        if(check){
-        // console.log(req.body);
-        let isMatch = await bcrypt.compare(
-            req.body.password,
-            check.password
-        );
-        if (isMatch) {
-            if(check.status===true){
-                req.session.email = check.email;
-                req.session.user = check.userName;
-                req.session.logged = true;
-                console.log("Login success");
-                res.redirect("/user/home");
-            }else{
-                console.log("user blocked");
-                res.render("userView/userlogin",{title:"login page",err:"You are blocked"})
-            }
-        }
-        else {
-            res.render("userView/userlogin",{title:"login page",err:"invalid user name or password.."})
-            console.log("invalid password");
-        }}else{
-            res.render("userView/userlogin",{title:"login page",err:"invalid user name or password."})
-            console.log("User not found..");
+//----------------------------------user login---------------------------------
 
+const userLogin = async (req, res) => {
+    if(req.session.logged){
+        res.redirect("/user/home");
+        }else{
+        try {
+            const check = await user.findOne({ email: req.body.email },{})
+            console.log(check);
+            if(check){
+            // console.log(req.body);
+            let isMatch = await bcrypt.compare(
+                req.body.password,
+                check.password
+            );
+            if (isMatch) {
+                if(check.status===true){
+                    req.session.email = check.email;
+                    req.session.user = check.userName;
+                    req.session.logged = true;
+                    console.log("Login success");
+                    res.redirect("/user/home");
+                }else{
+                    console.log("user blocked");
+                    res.render("userView/userlogin",{title:"login page",err:"You are blocked"})
+                }
+            }
+            else {
+                res.render("userView/userlogin",{title:"login page",err:"invalid user name or password.."})
+                console.log("invalid password");
+            }}else{
+                res.render("userView/userlogin",{title:"login page",err:"invalid user name or password."})
+                console.log("User not found..");
+    
+            }
+        } catch {
+            res.redirect('/')
+            console.log("user not found");
         }
-    } catch {
-        res.redirect('/')
-        console.log("user not found");
     }
 }
+// -----------------------OTP verification of SignUp and forgotPass------------------------------
 
 //OTP VERIFICATION
 async  function OtpConfirmation(req,res){

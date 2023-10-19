@@ -12,7 +12,7 @@ const credential = {
 //admin page
 function getAdminpage(req, res) {
     if(req.session.adminLogin){
-        res.redirect('/admin/adminlogin')
+        res.redirect('/admin/dashboard')
     }else{
         res.render('adminView/adminLog',{title:"admin-login"})
     }
@@ -30,6 +30,14 @@ function postAdminpage(req, res){
         res.render("adminView/dashboard",{title:"Admin Dashboard"})
     } else {
         res.render('adminView/adminLog', { title: "admin page", err: "Invalid Username or Password" })
+    }
+}
+// TO dashboard
+function getDashboard (req,res){
+    if(req.session.adminLogin){
+        res.render('adminView/dashboard',{title:"admin-Dashboard"})
+    }else{
+        res.redirect('/admin')
     }
 }
 
@@ -91,4 +99,5 @@ module.exports={
     adminLogout,
     userdetails,
     UserStatus,
+    getDashboard
 }

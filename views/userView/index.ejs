@@ -69,12 +69,12 @@
                     <img src="/images/first.webp" class="d-block w-100" alt="">
                     <h1 class="text-black pt-4 ">Discover NEW Arrivals</h1>
                     <P>Recently added Mobiles!</P>          
-                    <div class="row">
+                    <div class="row" style="margin:0%;">
                         <% if (Array.isArray(productData)) { %>
                         <% productData.forEach((x)=>{ %>
                             <% if(x.AvailableQuantity > 0 && x.Status===true){%>
                         <div class="col-md-3 p-4">
-                            <div class="card" style="width: 18rem;margin-left: 25px;">
+                            <div class="card" style="width: 18rem;margin-left: 20px;">
                                 <img class="card-img-top" style="height: 290px; width: 250px; padding: 20px; margin-left: 20px;" src="/product-img/<%= x.images[0] %>" alt="Card image cap">
                                 <div class="card-body">
                                     <h6 class="card-title"><%=x.ProductName%></h6>

@@ -8,6 +8,7 @@ const {
     adminLogout,
     userdetails,
     UserStatus,
+    getDashboard
 }=require("../controller/adminControl");
 
 //admin
@@ -17,6 +18,7 @@ router.get("/adLogout", adminLogout);
 //useres
 router.get('/userDetails',userdetails)
 router.get('/block/:id',UserStatus)
+router.get('/dashboard',getDashboard)
 
 //category
 const{
