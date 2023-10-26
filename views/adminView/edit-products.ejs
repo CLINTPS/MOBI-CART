@@ -36,10 +36,17 @@
                 </div>
                 <br>
                 <div class="border p-3 mb-3">
-                    <input type="file" name="main" accept="image/*" style="width: 188px; height:188px;">
-                    <input type="file" name="image1" accept="image/*" style="width: 188px; height:188px;">
-                    <input type="file" name="image2" accept="image/*" style="width: 188px; height:188px;">
-                    <input type="file" name="image3" accept="image/*" style="width: 188px; height:188px;">
+                    <h2>Images</h2>
+                    <!-- Display existing images here -->
+                    <!-- Add file input elements for new images if needed -->
+                    <input type="file" name="main" accept="image/*" style="width: 188px; height: 188px;">
+                    <img src="/product-img/<%= ProductData.images[0] %>" alt="Old Main Image" width="88" height="88">
+                    <input type="file" name="image1" accept="image/*" style="width: 188px; height: 188px;">
+                    <img src="/product-img/<%= ProductData.images[1] %>" alt="Old Image 1" width="88" height="88">
+                    <input type="file" name="image2" accept="image/*" style="width: 188px; height: 188px;">
+                    <img src="/product-img/<%= ProductData.images[2] %>" alt="Old Image 2" width="88" height="88">
+                    <input type="file" name="image3" accept="image/*" style="width: 188px; height: 188px;">
+                    <img src="/product-img/<%= ProductData.images[3] %>" alt="Old Image 3" width="88" height="88">
                 </div>
 
 
@@ -77,7 +84,7 @@
                     <br>
                     <label>Category:</label>
                     <select class="form-select bg-light" id="category" name="Category" required>
-                        <option value="" selected disabled>Select Category</option>
+                        <option value="" selected disabled><%- ProductData.Category%></option>
                          <%if(categoryData){%>
                             <%categoryData.forEach((data)=>{%>
                               <option value="<%=data.name%>">
@@ -91,7 +98,7 @@
                     <br>
                     <label>Brand Name:</label>
                     <select name="BrandName" class="form-select bg-light" id="brand" required>
-                        <option value="" selected disabled>Select Brand</option>
+                        <option value="" selected disabled><%- ProductData.BrandName%></option>
                         <%if(brandData){%>
                             <%brandData.forEach((data)=>{%>
                               <option value="<%=data.name%>">

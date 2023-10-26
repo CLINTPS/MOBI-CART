@@ -1,0 +1,214 @@
+<%-include('../userView/include/user_header')-%>
+
+    <section style="background-color: #eee;">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                                alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                            <h5 class="my-3">
+                                <%= UserData.userName%>
+                            </h5>
+                            <p class="text-muted mb-1"><%= UserData.email%></p>
+                            <p class="text-muted mb-4"><%= UserData.address[0].mobile%></p>
+                        </div>
+                    </div>
+                    <div class="card mb-4 mb-lg-0">
+                        <div class="card-body p-0">
+                            <ul class="list-group list-group-flush rounded-3">
+                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                    <a href="" style="color: black;">My profile</a>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                    <a href="/user/AddressBook" style="color: black;">Address Book</a>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                    <a href="" style="color: black;">My order</a>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                    <a href="" style="color: black;">My order history</a>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                    <a href="" style="color: black;">Change Password</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Full Name</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">
+                                        <%= UserData.userName%>
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Email</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">
+                                        <%= UserData.email%>
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Mobile</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0"><%= UserData.address[0].mobile%></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Address</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0"><%= UserData.address[0].addressLine%></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+<!-- modal  -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModal" data-whatever="@fat">Add</button>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/user/addAddress" method="post">
+                                        <div class="form-group">
+                                            <label for="recipient-name" class="col-form-label">Address:</label>
+                                            <input type="text" name="addressLine" class="form-control" id="recipient-name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="recipient-name" class="col-form-label">City:</label>
+                                            <input type="text" name="city" class="form-control" id="recipient-name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="recipient-name" class="col-form-label">Pincode:</label>
+                                            <input pattern="[0-9]{6}" title="Please enter a 6-digit pincode"
+                                                type="number" name="pincode" class="form-control" id="recipient-name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="recipient-name" class="col-form-label">State:</label>
+                                            <input type="text" name="state" class="form-control" id="recipient-name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="recipient-name" class="col-form-label">Mobile Number:</label>
+                                            <input type="number" name="mobile" class="form-control" id="recipient-name">
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Add</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <!-- <div class="row">
+            <div class="col-md-6">
+              <div class="card mb-4 mb-md-0">
+                <div class="card-body">
+                  <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status
+                  </p>
+                  <p class="mb-1" style="font-size: .77rem;">Web Design</p>
+                  <div class="progress rounded" style="height: 5px;">
+                    <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
+                  <div class="progress rounded" style="height: 5px;">
+                    <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
+                  <div class="progress rounded" style="height: 5px;">
+                    <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
+                  <div class="progress rounded" style="height: 5px;">
+                    <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
+                  <div class="progress rounded mb-2" style="height: 5px;">
+                    <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card mb-4 mb-md-0">
+                <div class="card-body">
+                  <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status
+                  </p>
+                  <p class="mb-1" style="font-size: .77rem;">Web Design</p>
+                  <div class="progress rounded" style="height: 5px;">
+                    <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
+                  <div class="progress rounded" style="height: 5px;">
+                    <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
+                  <div class="progress rounded" style="height: 5px;">
+                    <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
+                  <div class="progress rounded" style="height: 5px;">
+                    <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
+                  <div class="progress rounded mb-2" style="height: 5px;">
+                    <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66"
+                      aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%-include('../userView/include/user_footer')-%>

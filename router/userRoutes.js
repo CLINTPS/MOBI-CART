@@ -2,6 +2,7 @@ const express = require("express");
 const session = require("express-session");
 const userRout = express.Router();
 const userControl = require("../controller/userControl");
+const userProduct = require("../controller/userProduct")
 const passport = require("passport")
 const bcrypt = require("bcrypt")
 require('../config/passport');
@@ -10,62 +11,38 @@ const { sendOTP } = require("../controller/otpController");
 const OTP = require('../model/otp');
 const productsCollections = require('../model/product');
 const router = require("./adminRoutes");
+const userAuth = require('../middleware/userAuth')
+const userBlock = require('../middleware/userBlock')
+const cartControl = require('../controller/cartControl')
+
 
 // Gust view
-userRout.get('/', userControl.gustView);
+userRout.get('/',userAuth.userExist,userControl.gustView);
 
+//error page
+userRout.get('/error',(req,res)=>{
+    res.render('errorView/404')
+})
 
 //gust page to login page
-userRout.get('/user/Login-Signup', (req, res) => {
-    if (req.session.logged) {
-        res.redirect('/user/home');
-    } else {
-
-        res.render('userView/userLogin', { title: 'Login page', err: false });
-    }
-})
-userRout.post("/user/login", userControl.userLogin);
+userRout.get('/user/Login-Signup',userAuth.userExist,userControl.getLoginPage)
+userRout.post("/user/login",userAuth.userExist,userControl.userLogin);
 
 // login to sign up
-userRout.get("/user/Signup", (req, res) => {
-    if (req.session.logged) {
-        res.redirect('/user/home')
-    } else {
-        res.render("userView/userSignup", { title: "Signup page", err: false })
-    }
-})
-userRout.post("/user/Signup", userControl.usersignup)
+userRout.get("/user/Signup",userAuth.userExist,userControl.getSignupPage)
+userRout.post("/user/Signup",userControl.usersignup)
 
 //Signup to login
-userRout.get("/user/login-page", (req, res) => {
-    if (req.session.logged) {
-        res.redirect('/user/home')
-    } else {
-        res.render('userView/userLogin', { title: 'Login page', err: false });
-    }
-})
+userRout.get("/user/login-page",userAuth.userExist,userControl.getSignupPageToLogin)
 
 //sign up to otp page
-userRout.get('/user/otp', (req, res) => {
-        res.render('userView/otplogin', { title: 'otp page', err: false })
-})
+userRout.get('/user/otp',userAuth.userExist,userControl.getOtpPage)
 
 userRout.get("/user/otp-sent", userControl.otpSender);
 userRout.post("/user/otp", userControl.OtpConfirmation);
 
 //user logged home page
-userRout.get("/user/home", async (req, res) => {
-    if (req.session.logged || req.user) {
-        let user = req.session.user
-        // console.log(user);
-        console.log(req.session.logged);
-        const productData = await productsCollections.find({});
-        res.render("userView/userhome", { title: "Home Page", productData, user, err: false })
-    }
-    else {
-        res.redirect('/')
-    }
-})
+userRout.get("/user/home",userBlock,userControl.getHomePage)
 
 //login to forgot page and forgot password
 userRout.get('/user/forgot-pass', userControl.forgot_password_page)
@@ -77,12 +54,23 @@ userRout.post('/user/conformPass', userControl.password_reset)
 //Resent otp
 userRout.get('/user/resend-otp', userControl.otpSender)
 
-//product details
-userRout.get('/productDetails/:id', userControl.getProducDetails);
 
 //user logout
 userRout.get("/user/logout", userControl.logout)
 
+//product details
+userRout.get('/productDetails/:id',userAuth.verifyUser,userProduct.getProducDetails);
+//product full details
+userRout.get('/allProducts',userAuth.verifyUser,userProduct.getAllProducts)
 
+//User profile
+userRout.get('/user/profile',userAuth.verifyUser,userControl.getUserprofile)
+//User addresses
+userRout.get('/user/AddressBook',userControl.getAddressBook)
+userRout.post('/user/addAddress',userControl.postAddress)
+
+//User cart
+userRout.get('/user/cart',userAuth.verifyUser,cartControl.getuserCart)
+userRout.get('/addTocart/:id',userAuth.verifyUser,cartControl.getAddcart)
 
 module.exports = userRout

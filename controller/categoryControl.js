@@ -14,26 +14,34 @@ async function  getCategory (req, res){
 
 //add catogories
 function getCatagoriesData(req,res){
-    res.render('adminView/add-categories',{title:"add new categories"})
+    res.render('adminView/add-categories',{title:"add new categories",err:false})
 }
 //add post catogories
-async function postCatagoriesData(req,res){
-    try {
+async function postCatagoriesData(req, res) {
+  try {
       const { categoryName } = req.body;
-      console.log(categoryName);
-  
-      const newCategory = new categoriesCollection({
-        name: categoryName,
-        timeStamp: new Date(),
-      });
-  
-      const insertResult = await categoriesCollection.insertMany([newCategory]);
-      res.redirect('/admin/add-category');
-    } catch (error) {
+
+      // Check if a category with the same name already exists
+      const existingCategory = await categoriesCollection.findOne({ name: categoryName });
+
+      if (existingCategory) {
+          // A category with the same name already exists
+          res.render('adminView/add-categories', { title: "add new categories", err: "Category name already exists" });
+      } else {
+          const newCategory = new categoriesCollection({
+              name: categoryName,
+              timeStamp: new Date(),
+          });
+
+          const insertResult = await newCategory.save();
+          res.redirect('/admin/add-category');
+      }
+  } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
-    }
   }
+}
+
 
 //edit category
 async function getCatagoriesedit(req,res){

@@ -1,22 +1,30 @@
 <%-include('../userView/include/user_header')-%>
 
 <div class="row" style="width: 100%;">
+    
     <div class="col-12 col-lg-5"
-        style="border-right: 1px solid rgb(141, 141, 141);border-bottom: 1px solid rgb(141, 141, 141); padding-top: 50px;">
+    style="border-right: 1px solid rgb(141, 141, 141); border-bottom: 1px solid rgb(141, 141, 141); padding-top: 50px;">
         <div class="col-lg-12 d-flex justify-content-center align-items-center">
             <div id="img-container" style="z-index: 1;">
-                <img src="/product-img/<%=productData.images[0]%>"alt="Product imgae 1"></div>
+                <img id="main-image" src="/product-img/<%=productData.images[0]%>" alt="Product Image 1">
             </div>
-                <div class="col-lg-12 d-flex m-1 justify-content-center align-items-center" style="height: 140px;">
-                    <div style="width: 80px;height: 120px;margin: 5px;"><img style="width: 60px; height: 120px;"
-                    src="/product-img/<%=productData.images[1]%>" alt="Product Image 1" alt=""></div>
-                    <div style="width: 80px;height: 120px;margin: 5px;"><img style="width: 60px; height: 120px;"
-                    src="/product-img/<%=productData.images[2]%>" alt="Product Image 1" alt=""></div>
-                    <div style="width: 80px;height: 120px;margin: 5px;"><img style="width: 60px; height: 120px;"
-                    src="/product-img/<%=productData.images[3]%>" alt="Product Image 1" alt=""></div>
+        </div>
+        <div class="col-lg-12 d-flex m-1 justify-content-center align-items-center" style="height: 140px;">
+            <div class="thumbnail" data-image-index="0" style="width: 80px; height: 120px; margin: 5px;">
+                <img style="width: 60px; height: 120px;" src="/product-img/<%=productData.images[0]%>" alt="Product Image 2">
             </div>
-        
+            <div class="thumbnail" data-image-index="0" style="width: 80px; height: 120px; margin: 5px;">
+                <img style="width: 60px; height: 120px;" src="/product-img/<%=productData.images[1]%>" alt="Product Image 2">
+            </div>
+            <div class="thumbnail" data-image-index="1" style="width: 80px; height: 120px; margin: 5px;">
+                <img style="width: 60px; height: 120px;" src="/product-img/<%=productData.images[2]%>" alt="Product Image 3">
+            </div>
+            <div class="thumbnail" data-image-index="2" style="width: 80px; height: 120px; margin: 5px;">
+                <img style="width: 60px; height: 120px;" src="/product-img/<%=productData.images[3]%>" alt="Product Image 4">
+            </div>
+        </div>
     </div>
+
     <div class="col-12 col-lg-7" style="height: 700px;padding-left: 20px;">
         <p></p>
         <p class="paraCap">
@@ -25,11 +33,11 @@
             </h4>     
         </p>
         <p class="para"><i class="fa-solid fa-circle fa-2xs"></i> ₹<%=productData.Price%>/-</p>
-        <p class="para"><i class="fa-solid fa-circle fa-2xs"></i> Stock : <%=productData.AvailableQuantity%></p>
-        <div
-            style="width: 100px; height: 20px;font-weight: 500; font-size: small; background-color: green; padding-left: 20px;color: #fff; border-radius: 5px;">
-            Stock : <%=productData.AvailableQuantity%>
-        </div>
+        <% if (productData.AvailableQuantity > 0) { %>
+            <h6 class="text-success">In stock</h6>
+          <% } else { %>
+            <h6 class="text-danger">out of stock</h6>
+          <% } %>
         <br>
         <p class="paraCapz">SPECIFICATION</p>
         <p class="para"><i class="fa-solid fa-circle fa-2xs"></i>
@@ -60,15 +68,33 @@
     </div>
 </div>
 
+<script>
+    // Your JavaScript code for image switching remains the same
+    // Ensure the productData object is properly defined and contains image URLs
+    var productData = {
+        images: [ "<%=productData.images[1]%>", "<%=productData.images[2]%>", "<%=productData.images[3]%>"],
+        // Other product data
+    };
 
-      <script>
-        var options = {
-            width: 300,
-            zoomWidth: 200,
-            offset: {vertical: 0, horizontal: 10}
-        };
-        new ImageZoom(document.getElementById("img-container"), options);
-         
-        </script>
-      
+    var options = {
+        width: 300,
+        zoomWidth: 200,
+        offset: { vertical: 0, horizontal: 10 }
+    };
+    new ImageZoom(document.getElementById("img-container"), options);
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const thumbnails = document.querySelectorAll(".thumbnail");
+        const mainImage = document.getElementById("main-image");
+
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener("click", function () {
+                const imageIndex = this.getAttribute("data-image-index");
+                mainImage.src = `/product-img/${productData.images[imageIndex]}`;
+                mainImage.alt = `Product Image ${parseInt(imageIndex) + 1}`;
+            });
+        });
+    });
+</script>
+
 <%-include('../userView/include/user_footer')-%>

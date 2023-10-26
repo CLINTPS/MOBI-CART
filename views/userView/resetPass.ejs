@@ -5,10 +5,9 @@
             New Password
         </div>
         <form action="/user/conformPass" method="POST">
-
+    
             <div class="field">
                 <input type="password" name="password"  id="password" onchange="validatePassword();" required>
-                <!-- <i class="fa-solid fa-eye toggle-password"  id="togglePassword" onclick="togglePassword('password')"></i> -->
                 <label>Password</label>
             </div>
           
@@ -16,7 +15,6 @@
           
             <div class="field">
                 <input type="password" name="confirmPassword" id="confirmpass1"  onkeyup="checkPasswordMatch();" required/>
-                <!-- <i class="fa-solid fa-eye toggle-password"  id="togglePassword" onclick="togglePassword('confirmpass1')"></i> -->
                 <label>Confirm Password</label>
             </div>
             <p class="msg" id="message"  ></p>

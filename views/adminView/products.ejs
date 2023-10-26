@@ -48,11 +48,13 @@
                         </td>
                         <td>
                             <%if(productData[i].Status===true){%>
-                                    <a href="/admin/productblock/<%- productData[i]._id %>" title="Active User">
+                                    <a href="/admin/productblock/<%- productData[i]._id %>" title="Active User"
+                                        onclick="return confirm('Do you want Block this product')">
                                         <button style="background-color: rgb(11, 109, 21); color: white; border-radius: 10px;">Active</button>
                                     </a>
                                 <%}else{%>
-                                    <a href="/admin/productblock/<%- productData[i]._id %>" title="Block User">
+                                    <a href="/admin/productblock/<%- productData[i]._id %>" title="Block User"
+                                        onclick="return confirm('Do you want Active this product')">
                                         <button style="background-color: red; color: white;  border-radius: 10px;">Block</button>
                                     </a>
                                 <%}%>

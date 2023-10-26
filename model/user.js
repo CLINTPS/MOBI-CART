@@ -12,9 +12,10 @@ const UsersSchema = new Schema({
             default:true},
   address: [{
      addressLine: { type: String },
-     country: { type: String },
-     pincode: { type: String },
+     city: { type: String },
+     pincode: { type: Number },
      state: { type: String },
+     mobile:{type: Number}
   }],
   orders: [{
      orderId: { type: Schema.Types.ObjectId },

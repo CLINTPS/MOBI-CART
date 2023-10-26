@@ -62,19 +62,3 @@ function checkPasswordMatch() {
       signupButton.disabled = true; // Disable the button
   }
 }
-
-//show password
-// function togglePassword(inputId) {
-// const passwordInput = document.getElementById(inputId);
-// const togglePasswordButton = document.querySelector(`input#${inputId} + .toggle-password`);
-
-// if (passwordInput.type === "password") {
-//   passwordInput.type = "text";
-//   togglePasswordButton.classList.remove("fa-eye");
-//   togglePasswordButton.classList.add("fa-eye-slash");
-// } else {
-//   passwordInput.type = "password";
-//   togglePasswordButton.classList.remove("fa-eye-slash");
-//   togglePasswordButton.classList.add("fa-eye");
-// }
-// }

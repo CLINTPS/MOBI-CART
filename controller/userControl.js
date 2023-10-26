@@ -1,4 +1,4 @@
-const user = require('../model/user')
+const userCollection = require('../model/user')
 const bcrypt = require('bcrypt')
 const sendOTP = require("./otpController");
 const { use } = require("../router/adminRoutes");
@@ -9,20 +9,50 @@ const OTP = require("../model/otp");
 
 // to index
 async function gustView(req,res){
-    if(req.session.logged){
-        res.redirect('/user/home')
-    }else{
         const productData = await productsCollections.find({});
         res.render('userView/index',{title:'Mobi cart',productData,err:false});
+}
+
+//gust page to login page
+const getLoginPage = (req,res)=>{
+        res.render('userView/userLogin', { title: 'Login page', err: false });
+}
+
+// login to sign up
+const getSignupPage= (req, res) => {
+        res.render("userView/userSignup", { title: "Signup page", err: false })
+}
+
+//Signup to login
+const getSignupPageToLogin = (req, res) => {
+        res.redirect('/user/Login-Signup')   
+}
+
+//sign up to otp page
+const getOtpPage = (req, res) => {
+        res.render('userView/otplogin', { title: 'otp page', err: false })
+}
+
+//user logged home page
+async function getHomePage(req, res){
+    if (req.session.logged || req.user) {
+        let user = req.session.user
+        // console.log(user);
+        // console.log(req.session.logged);
+        const productData = await productsCollections.find({});
+        res.render("userView/userhome", { title: "Home Page", productData, user, err: false })
+    }
+    else {
+        res.redirect('/')
     }
 }
-    
 
+//User signup
 async function usersignup(req,res){
     console.log("user sign up");
     console.log(req.body);
     try {
-        const check = await user.find({ email: req.body.email })
+        const check = await userCollection.find({ email: req.body.email })
         console.log(typeof (check));
         if (check.length == 0) {
             const pass = await bcrypt.hash(req.body.password, 10);
@@ -35,7 +65,7 @@ async function usersignup(req,res){
             req.session.data = data;
             req.session.email = data.email
             req.session.signotp = true;
-            req.session.logged = true;
+            // req.session.logged = true;
             console.log('reached')
             res.redirect("/user/otp-sent");
         } else {
@@ -88,7 +118,7 @@ const forgot_password_page=(req,res)=>{
 const forgotPass = async (req, res) => {
     try{
         console.log(req.body);
-        const check=await user.findOne({email:req.body.email})
+        const check=await userCollection.findOne({email:req.body.email})
         if(check){
             console.log("good to go:",check);
             const userdata={
@@ -120,12 +150,10 @@ const forgotPass = async (req, res) => {
 //----------------------------------user login---------------------------------
 
 const userLogin = async (req, res) => {
-    if(req.session.logged){
-        res.redirect("/user/home");
-        }else{
+
         try {
-            const check = await user.findOne({ email: req.body.email },{})
-            console.log(check);
+            const check = await userCollection.findOne({ email: req.body.email },{})
+            // console.log(check);
             if(check){
             // console.log(req.body);
             let isMatch = await bcrypt.compare(
@@ -156,7 +184,7 @@ const userLogin = async (req, res) => {
             res.redirect('/')
             console.log("user not found");
         }
-    }
+    
 }
 // -----------------------OTP verification of SignUp and forgotPass------------------------------
 
@@ -167,8 +195,8 @@ async  function OtpConfirmation(req,res){
     try{
         const email=req.session.email
         console.log("forgot confirmation :",email);
-        const Otp= await OTP.findOne({email:email})
-
+        const Otp= await OTP.findOne({email:email},{})
+        
         if(Date.now()>Otp.expireAt){
             await OTP.deleteOne({email: req.session.email});
 
@@ -179,6 +207,7 @@ async  function OtpConfirmation(req,res){
                 req.session.logged=true;
                 req.session.forgot=false;
                 req.session.pass_reset = true
+                req.session.user=Otp.email
                 res.render("userView/resetPass",{title:"Reset password"});
             }
             else{
@@ -214,7 +243,7 @@ async  function OtpConfirmation(req,res){
                 if(match){
                     console.log(data);
 
-                    const result=await user.create({...data,name:data.email})
+                    const result=await userCollection.create({...data,name:data.email})
                     req.session.logged=true;
                     req.session.signotp=false
                     req.session.user = data.userName;
@@ -250,8 +279,8 @@ const password_reset = async (req, res) => {
         console.log(req.body);
         const pass = await bcrypt.hash(req.body.password, 10);
         const email = req.session.email
-        console.log(email);
-        const update = await user.updateOne({ email: email }, { $set: { password: pass } })
+        // console.log(email);
+        const update = await userCollection.updateOne({ email: email }, { $set: { password: pass } })
         req.session.logged = true;
         req.session.pass_reset = false
         res.redirect("/user/login-page")
@@ -261,25 +290,37 @@ const password_reset = async (req, res) => {
     }
 }
 
+//User profile
+async function getUserprofile(req,res){
+    try{
+        let user = req.session.user
+        const UserData = await userCollection.findOne({userName:user})
+        res.render('userView/userProfile',{title:"Profile view",user,UserData})
+    }catch(error){
+        console.log("can't profile details");
+    }
+}
 
-
-//get product details page
-async function getProducDetails(req,res){
-    if(req.session.logged){
-        try{
-            console.log("ghuggg");
-            const ProductID = req.params.id;
-            console.log(ProductID);
-            const productData = await productsCollections.findById(ProductID);
-            console.log('product view reached');
-            let user = req.session.user
-            res.render('userView/product-Details',{title:"product details",user,productData})
-        }catch(error){
-            res.status(500).send('Internal server error')
-        }
-    }else{
-        console.log("qwerty");
-        res.redirect('/user/logout')
+//user Address book
+async function getAddressBook(req,res){
+    try{
+        let user = req.session.user
+        const userAddressData = await userCollection.findOne({userName:user})
+        res.render('userView/userAddress',{title:"Address view",user,userAddressData})
+    }catch(error){
+        console.log("can't add Address");
+    }
+}
+// add address
+const postAddress = async(req,res)=>{
+    try{
+        let email=req.session.email
+        let data=req.body
+        const address = await userCollection.findOneAndUpdate({email:email},
+            {$set:{address:data}})
+        res.redirect('/user/profile')
+    }catch(error){
+        console.log("can't post Address");
     }
 }
 
@@ -287,18 +328,23 @@ async function getProducDetails(req,res){
 
 //Logout
 const logout = (req,res) => {
-    req.session.destroy((err)=>{
+    // req.session.destroy((err)=>{
         if(err){
             console.log(err);
             res.send('Error');
         }else{
             res.redirect('/');
         }
-    });
+    // });
 }
 
 module.exports={
     gustView,
+    getLoginPage,
+    getSignupPageToLogin,
+    getSignupPage,
+    getOtpPage,
+    getHomePage,
     usersignup,
     otpSender,
     OtpConfirmation,
@@ -306,7 +352,9 @@ module.exports={
     forgotPass,
     forgot_password_page,
     get_password_reset,
-    getProducDetails,
     password_reset,
+    getUserprofile,
+    getAddressBook,
+    postAddress,
     logout
 }

@@ -22,9 +22,10 @@
                <label>Email Address</label>
             </div>
             <div class="field">
-               <input type="password" name="password" required>
+               <input type="password" name="password"  id="password" onchange="validatePassword();" required>
                <label>Password</label>
             </div>
+            <p class="msg" id="message3"></p>
             <br>
             <div class="field">
                <input type="submit" value="Login">
@@ -33,3 +34,5 @@
       </div>
    </div>
 <%-include('../adminView/include/_footer')-%>
+
+<script src="/javascript/signupScript.js"></script>

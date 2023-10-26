@@ -6,13 +6,16 @@
             <div class="title pb-1">
                 <h2 class="font-weight-bold text-daek">Add Categories</h2>
             </div>
+            <% if(err){ %>
+                <h6 style="margin: 5px; color: red;"><%-err%></h6>
+              <% } %>
             <form action="/admin/add-category" method="POST" >  
                 <div class="form-group">
                     <small class="form-text text-white text-left">Categories Name</small>
                     <input class="form-control" name="categoryName" required placeholder="Category Name">
                 </div>
                 
-                <button type="submit" class="btn-btn-success rounded pi">Add</button>
+                <button type="submit" onclick="return confirm('Do you want new Categories')" class="btn-btn-success rounded pi">Add</button>
             </form>
         </div>
     </div>

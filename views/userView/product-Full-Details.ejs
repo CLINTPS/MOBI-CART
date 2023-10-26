@@ -1,0 +1,217 @@
+<%-include('../userView/include/user_header')-%>
+<section class="p-3" style="background:linear-gradient(135deg, #ffffff, #f9a0f0);">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- sidebar -->
+        <div class="col-lg-2">
+          <!-- Toggle button -->
+          <button
+                  class="btn btn-outline-secondary mb-3 w-100 d-lg-none"
+                  type="button"
+                  data-mdb-toggle="collapse"
+                  data-mdb-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
+                  >
+            <span>Show filter</span>
+          </button>
+          <!-- Collapsible wrapper -->
+          <div class="collapse card d-lg-block mb-5" id="navbarSupportedContent">
+            <div class="accordion" id="accordionPanelsStayOpenExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                </h2>
+                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h4 class="accordion-header" id="headingTwo">
+                  <button
+                          class="accordion-button text-dark bg-light"
+                          type="button"
+                          data-mdb-toggle="collapse"
+                          data-mdb-target="#panelsStayOpen-collapseTwo"
+                          aria-expanded="true"
+                          aria-controls="panelsStayOpen-collapseTwo"
+                          >
+                    Brand 
+                  </button>
+                </h4>
+                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
+                  <div class="accordion-body">
+                    <div>
+                      <!-- Checked checkbox -->
+                      <%if(brandData){%>
+                        <%brandData.forEach((data)=>{%>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1"  />
+                        <label class="form-check-label" for="flexCheckChecked1"><%=data.name%></label>
+                      </div>
+                      <%})%>
+                    <%}%>  
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h4 class="accordion-header" id="headingThree">
+                  <button
+                          class="accordion-button text-dark bg-light"
+                          type="button"
+                          data-mdb-toggle="collapse"
+                          data-mdb-target="#panelsStayOpen-collapseThree"
+                          aria-expanded="false"
+                          aria-controls="panelsStayOpen-collapseThree"
+                          >
+                    Price
+                  </button>
+                </h4>
+                <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree">
+                  <div class="accordion-body">
+                    <div class="range">
+                      <input type="range" class="form-range" id="customRange1" />
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col-6">
+                        <p class="mb-0">
+                          Min
+                        </p>
+                        <div class="form-outline">
+                          <input type="number" id="typeNumber" class="form-control" />
+                          <label class="form-label" for="typeNumber">$0</label>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <p class="mb-0">
+                          Max
+                        </p>
+                        <div class="form-outline">
+                          <input type="number" id="typeNumber" class="form-control" />
+                          <label class="form-label" for="typeNumber">$1,0000</label>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+              </div>
+              <div class="accordion-item">
+                <h4 class="accordion-header" id="headingThree">
+                    <button
+                    class="accordion-button text-dark bg-light"
+                    type="button"
+                    data-mdb-toggle="collapse"
+                    data-mdb-target="#panelsStayOpen-collapseFour"
+                    aria-expanded="false"
+                    aria-controls="panelsStayOpen-collapseFour"
+                    >
+                    Size
+                </button>
+                </h4>
+                <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse show" aria-labelledby="headingThree">
+                  <div class="accordion-body">
+                      <input type="checkbox" class="btn-check border justify-content-center" id="btn-check1" checked autocomplete="off" />
+                      <label class="btn btn-white mb-1 px-1" style="width: 60px;" for="btn-check1">XS</label>
+                      <input type="checkbox" class="btn-check border justify-content-center" id="btn-check2" checked autocomplete="off" />
+                    <label class="btn btn-white mb-1 px-1" style="width: 60px;" for="btn-check2">SM</label>
+                    <input type="checkbox" class="btn-check border justify-content-center" id="btn-check3" checked autocomplete="off" />
+                    <label class="btn btn-white mb-1 px-1" style="width: 60px;" for="btn-check3">LG</label>
+                    <input type="checkbox" class="btn-check border justify-content-center" id="btn-check4" checked autocomplete="off" />
+                    <label class="btn btn-white mb-1 px-1" style="width: 60px;" for="btn-check4">XXL</label>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-white w-100 border border-secondary">apply</button>
+    </div>
+</div>
+</div>
+
+<!-- sidebar -->
+<!-- content -->
+<div class="col-lg-9">
+    <header class="d-sm-flex align-items-center border-bottom mb-4 pb-3"></header>
+          <% if (productData) { %>
+            <% productData.forEach((data) => { %>
+              <div class="row justify-content-center mb-3" >
+                <div class="col-md-12">
+                  <div class="card shadow-0 border rounded-3">
+                    <div class="card-body" style="background:linear-gradient(135deg, #ffffff, #eba8e8);">
+                      <div class="row g-0">
+                        <div class="col-xl-3 col-md-4 d-flex justify-content-center" >
+                          <div class="bg-image hover-zoom ripple rounded ripple-surface me-md-3 mb-3 mb-md-0">
+                            <a href="/productDetails/<%=data._id%>">
+                                <img src="/product-img/<%= data.images[0]%>" alt="Products img.." class="w-75" />
+                            </a>
+                          </div>
+                        </div>
+                        <div class="col-xl-6 col-md-5 col-sm-7">
+                          <a href="/productDetails/<%=data._id%>" style="text-decoration: none;"> <h5><%=data.ProductName%></h5></a>
+                          <br>
+                          <p class="para"><i class="fa-solid fa-circle fa-2xs"></i>
+                            <%=data.Specification1%>
+                        </p>
+                        <p class="para"><i class="fa-solid fa-circle fa-2xs"></i>
+                            <%=data.Specification2%>
+                        </p>
+                        <p class="para"><i class="fa-solid fa-circle fa-2xs"></i>
+                            <%=data.Specification3%>
+                        </p>
+                        <p class="para"><i class="fa-solid fa-circle fa-2xs"></i>
+                            <%=data.Specification4%>
+                        </p>
+                          <p class="text mb-4 mb-md-0">
+                            <%=data.Description%>
+                          </p>
+                        </div>
+                        <div class="col-xl-3 col-md-3 col-sm-5">
+                          <div class="d-flex flex-row align-items-center mb-1">
+                            <h4 class="mb-1 me-1">₹<%=data.DiscountAmount%></h4>
+                            <s class="text-danger">₹<%=data.Price%></s>
+                          </div>
+                          <% if (data.AvailableQuantity > 0) { %>
+                            <h6 class="text-success">In stock</h6>
+                          <% } else { %>
+                            <h6 class="text-danger">out of stock</h6>
+                          <% } %>
+                          <div class="mt-4">
+                            <button class="btn btn-dark shadow-0" type="button">Add to cart</button>
+                            <a href="#!" class="btn btn-dark border px-2 pt-2 icon-hover"><i class="fa-solid fa-heart fa-lg" style="color: #ffffff;"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          <% } else { %>
+            <h1>404 not found</h1>
+          <% } %>
+          <!-- Pagination code here -->
+          <!-- Pagination -->
+          <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
+            <ul class="pagination">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">5</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+        </div>
+      </div>
+    </div>
+  </section>
+  
+<%-include('../userView/include/user_footer')-%>

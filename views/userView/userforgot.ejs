@@ -15,9 +15,10 @@
            <%}%>
          <form action="/user/forgot-PassWord" method="POST">
             <div class="field">
-               <input type="text" name="email" required>
+               <input type="text" name="email" id="myInput2" onchange="validateUserEmail()" required>
                <label>Enter the registered email</label>
             </div>
+            <p class="msg" id="message2"></p>
             <br>
             <div class="field">
                <input type="submit" value="Send OTP">
@@ -29,3 +30,4 @@
       </div>
    </div>
 <%-include('../userView/include/_footer')-%>
+<script src="/javascript/signupScript.js"></script>

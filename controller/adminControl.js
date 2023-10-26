@@ -6,7 +6,7 @@ const userCollection=require('../model/user')
 //Admin password and user id
 const credential = {
     email: "clint@gmail.com",
-    password: "010"
+    password: "00000000"
 }
 
 //admin page
