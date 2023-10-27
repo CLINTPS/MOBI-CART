@@ -1,5 +1,5 @@
 <%-include('../userView/include/user_header')-%>
-<section class="p-3" style="background:linear-gradient(135deg, #ffffff, #f9a0f0);">
+<section class="p-3" style="background:linear-gradient(135deg, #ffffff, #ffffff);">
     <div class="container-fluid">
       <div class="row">
         <!-- sidebar -->
@@ -135,7 +135,7 @@
               <div class="row justify-content-center mb-3" >
                 <div class="col-md-12">
                   <div class="card shadow-0 border rounded-3">
-                    <div class="card-body" style="background:linear-gradient(135deg, #ffffff, #eba8e8);">
+                    <div class="card-body" style="background:linear-gradient(135deg, #ffffff, #ffffff);">
                       <div class="row g-0">
                         <div class="col-xl-3 col-md-4 d-flex justify-content-center" >
                           <div class="bg-image hover-zoom ripple rounded ripple-surface me-md-3 mb-3 mb-md-0">
@@ -174,8 +174,8 @@
                             <h6 class="text-danger">out of stock</h6>
                           <% } %>
                           <div class="mt-4">
-                            <button class="btn btn-dark shadow-0" type="button">Add to cart</button>
-                            <a href="#!" class="btn btn-dark border px-2 pt-2 icon-hover"><i class="fa-solid fa-heart fa-lg" style="color: #ffffff;"></i></a>
+                            <button class="btn btn-dark shadow-0 add-to-cart-button" data-product-id="<%= data._id %>">Add to Cart</button>
+                            <!-- <a href="#!" class="btn btn-dark border px-2 pt-2 icon-hover"><i class="fa-solid fa-heart fa-lg" style="color: #17e14a;"></i></a> -->
                           </div>
                         </div>
                       </div>
@@ -215,3 +215,31 @@
   </section>
   
 <%-include('../userView/include/user_footer')-%>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="your-script.js"></script>
+
+<script>
+     document.querySelectorAll('.add-to-cart-button').forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            const productId = this.getAttribute('data-product-id');
+            console.log(productId);
+
+            $.ajax({
+                url: '/addtocart/' + productId,
+                method: 'POST',
+                success: function (response) {
+
+                    alert('Product added to cart');
+                    updateCartQuantity();
+                    location.reload()
+                },
+                error: function (error) {
+                    console.error('Error adding product to cart:', error);
+                }
+            });
+        });
+    });
+</script>

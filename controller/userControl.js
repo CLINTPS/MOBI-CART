@@ -329,6 +329,30 @@ const postAddress = async(req,res)=>{
         console.log("can't post Address");
     }
 }
+//Delete address
+const deleteAddress= async (req,res)=>{
+    try {
+        const userEmail = req.session.email;
+        const user = await userCollection.findOne({ email: userEmail });
+  
+        if (!user) {
+          console.log('User not found');
+          res.render('errorView/404')
+        }
+        const addressId = req.params.addressId; 
+        const userId = user._id;
+  
+        await userCollection.findOneAndUpdate(
+          { _id: userId },
+          { $pull: { Address: { _id: addressId } } }
+        );
+        res.json({success:true})
+    } catch (err) {
+        console.error('Error deleting address:', err);
+       res.render('errorView/404')
+    }
+  };
+
 
 
 
@@ -362,5 +386,6 @@ module.exports={
     getUserprofile,
     getAddressBook,
     postAddress,
+    deleteAddress,
     logout
 }

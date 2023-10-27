@@ -87,6 +87,38 @@
     });
 
 
-   
+    document.querySelectorAll('.add-to-wishlist-button').forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+
+
+            const productId = this.getAttribute('data-product-id');
+            const icon = this.querySelector('.fa-heart');
+
+            $.ajax({
+                url: '/wishlist/',
+                method: 'POST',
+                data: {
+                    productId: productId,
+                },
+                success: function (response) {
+                    console.log(icon.style.color)
+                    if (response.added) {
+                        // icon.style.color = 'red';
+                        icon.classList.add('text-danger')
+                        //   location.reload()
+                    } else {
+
+                        // icon.style.color = '';
+                        icon.classList.remove('text-danger')
+                        //   location.reload()
+                    }
+                },
+                error: function (error) {
+                    console.error('Error updating wishlist:', error);
+                }
+            });
+        });
+    });
 
 </script>

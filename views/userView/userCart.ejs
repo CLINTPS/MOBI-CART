@@ -21,7 +21,9 @@
                                         <a href="#" class="nav-link" style="text-decoration: none; color: #000000; font-weight: 500;">
                                             <%= item.productId.ProductName %>
                                             <br>
-                                            <div class="text-primary"><b>Rs. <%= item.productId.DiscountAmount %></b></div>
+                                            <div class="text-primary"><b>Rs. <%= item.productId.DiscountAmount %></b>
+                                                <s class="text-danger">₹<%=item.productId.Price%></s>
+                                            </div>
                                         </a>
                                     </div>
                                 </div>
@@ -49,7 +51,7 @@
                         <% subtotal += item.quantity * item.productId.DiscountAmount; %>
                     <% }); %>
                     <% } else { %>
-                    <h2>Your cart is empty. Please add products.</h2>
+                    <h6 style="color: red;">Your cart is empty. Please add products.</h6>
                     <% } %>
                 </div>
 

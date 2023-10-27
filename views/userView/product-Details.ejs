@@ -32,7 +32,9 @@
                 <%=productData.ProductName%>
             </h4>     
         </p>
-        <p class="para"><i class="fa-solid fa-circle fa-2xs"></i> ₹<%=productData.Price%>/-</p>
+        <p class="para"><i class="fa-solid fa-circle fa-2xs">
+        </i> ₹<%=productData.DiscountAmount%>/- <s class="text-danger">₹<%=productData.Price%></s></p>
+        
         <% if (productData.AvailableQuantity > 0) { %>
             <h6 class="text-success">In stock</h6>
           <% } else { %>
@@ -59,7 +61,7 @@
         <br>
         <div class="d-flex" style="width: 301px;">
             <div class="col-6 d-flex justify-content-center">
-                <button class="btn btn-warning" id="addToCartButton" data-item-id="<%= productData._id %>" onclick="addEventListener">Add to Cart</button>
+                <button class="btn btn-warning add-to-cart-button" data-product-id="<%= productData._id %>" onclick="addEventListener">Add to Cart</button>
             </div>
             <div class="col-6 d-flex justify-content-center">
                 <a href="#" class="btn btn-primary">Buy now</a>
@@ -68,6 +70,10 @@
     </div>
 </div>
 
+
+<%-include('../userView/include/user_footer')-%>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="your-script.js"></script>
 <script>
     // Your JavaScript code for image switching remains the same
     // Ensure the productData object is properly defined and contains image URLs
@@ -97,22 +103,29 @@
     });
 
 
+    document.querySelectorAll('.add-to-cart-button').forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
 
-    document.getElementById("addToCartButton").addEventListener("click", function () {
-        const itemId = this.dataset.itemId;
-        console.log(itemId,"ihgdooahgh");
-        fetch("/addToCart", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ itemId: itemId })
-        })
-        
- });
+            const productId = this.getAttribute('data-product-id');
+            console.log(productId);
+
+            $.ajax({
+                url: '/addtocart/' + productId,
+                method: 'POST',
+                success: function (response) {
+
+                    alert('Product added to cart');
+                    updateCartQuantity();
+                    location.reload()
+                },
+                error: function (error) {
+                    console.error('Error adding product to cart:', error);
+                }
+            });
+        });
+    });
 
 
 
 </script>
-
-<%-include('../userView/include/user_footer')-%>
