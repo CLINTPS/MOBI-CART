@@ -11,17 +11,18 @@
                          
                 <div class="row" style="margin:0%;">
                     <% if (Array.isArray(productData)) { %>
-                    <% productData.forEach((x)=>{ %>
-                        <% if(x.AvailableQuantity > 0 && x.Status===true){%>
+                    <% productData.forEach((product)=>{ %>
+                        <% if(product.AvailableQuantity > 0 && product.Status===true){%>
                     <div class="col-md-3 p-4">
                         <div class="card" style="width: 18rem; margin-left: 20px;">
-                            <img class="card-img-top" style="height: 290px; width: 250px; padding: 20px; margin-left: 20px;" src="/product-img/<%= x.images[0] %>" alt="Card image cap">
+                            <img class="card-img-top" style="height: 290px; width: 250px; padding: 20px; margin-left: 20px;" src="/product-img/<%= product.images[0] %>" alt="Card image cap">
                             <div class="card-body">
-                                <h6 class="card-title"><%=x.ProductName%></h6>
-                                <p class="card-title"><%=x.BrandName%></p>
-                                <p class="card-text" style="font-weight: 700;">₹<%=x.Price%>/-</p>
-                                <a href="/addTocart/<%=x._id%>" class="btn btn-warning">Add To Cart</a>
-                                <a href="/productDetails/<%=x._id%>" class="btn btn-primary">view Details</a>
+                                <h6 class="card-title"><%=product.ProductName%></h6>
+                                <p class="card-title"><%=product.BrandName%></p>
+                                <p class="card-text" style="font-weight: 700;">₹<%=product.Price%>/-</p>
+                                <button class="btn btn-warning add-to-cart-button"
+                                    data-product-id="<%= product._id %>">Add To Cart</button>
+                                <a href="/productDetails/<%=product._id%>" class="btn btn-primary">view Details</a>
                             </div>
                         </div>     
                     </div>
@@ -35,3 +36,57 @@
     </div>
 </div>
 <%-include('../userView/include/user_footer')-%>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="your-script.js"></script>
+
+<script>
+
+
+
+
+    function updateCartQuantity() {
+
+        $.ajax({
+            url: '/getcartquantity',
+            method: 'GET',
+            success: function (response) {
+                const cartQuantityElement = document.getElementById('cart-quantity');
+                cartQuantityElement.textContent = response.quantity;
+            },
+            error: function (error) {
+                console.error('Error fetching cart quantity:', error);
+            }
+        });
+    }
+
+
+
+
+    document.querySelectorAll('.add-to-cart-button').forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            const productId = this.getAttribute('data-product-id');
+            console.log(productId);
+
+            $.ajax({
+                url: '/addtocart/' + productId,
+                method: 'POST',
+                success: function (response) {
+
+                    alert('Product added to cart');
+                    updateCartQuantity();
+                    location.reload()
+                },
+                error: function (error) {
+                    console.error('Error adding product to cart:', error);
+                }
+            });
+        });
+    });
+
+
+   
+
+</script>

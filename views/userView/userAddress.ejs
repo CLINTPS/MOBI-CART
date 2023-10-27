@@ -1,7 +1,7 @@
 <%-include('../userView/include/user_header')-%>
 <div class="col-lg-12">
     <header class="d-sm-flex align-items-center border-bottom mb-4 pb-3"></header>
-          <% if (userAddressData) { %>
+    <% userAddressData.address.forEach(address => { %>
 
               <div class="row justify-content-center mb-3" >
                 <div class="col-md-12">
@@ -9,30 +9,30 @@
                     <div class="card-body" style="background:linear-gradient(135deg, #ffffff, #ffffff);">
                       <div class="row g-0">
                         <div class="col-xl-6 col-md-5 col-sm-7">
-                          <a href="#" style="text-decoration: none;"> <h5><%=userAddressData.userName%></h5></a>
-                          <br>
+                          <a href="#" style="text-decoration: none;"> <h5><%=address.nameuser%></h5></a>
                           <p class="text mb-4 mb-md-0">
-                              <%=userAddressData.address[0].addressLine%>
-                          </p>
-                          <p class="text mb-4 mb-md-0">
-                            <%=userAddressData.address[0].mobile%>
+                            <%= address.addressLine %>
                         </p>
                         <p class="text mb-4 mb-md-0">
-                            <%=userAddressData.address[0].city%>
+                            <%= address.mobile %>
                         </p>
-                          <p class="text mb-4 mb-md-0">
-                            <%=userAddressData.address[0].state%>
-                          </p>
+                        <p class="text mb-4 mb-md-0">
+                            <%= address.city %>
+                        </p>
+                        <p class="text mb-4 mb-md-0">
+                            <%= address.state %>
+                        </p>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <% }); %>
               
-          <% } else { %>
-            <h1>Address Empty</h1>
-          <% } %>
+              <% if (userAddressData.address.length === 0) { %>
+                <h1 style="text-align: center;">Address Empty</h1>
+            <% } %>
           <div class="row">
             <div class="col-sm-12">
                 <button type="button" class="btn btn-secondary" data-toggle="modal"
@@ -52,6 +52,10 @@
                     </div>
                     <div class="modal-body">
                         <form action="/user/addAddress" method="post">
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Name:</label>
+                                <input type="text" name="nameuser" class="form-control" id="recipient-name">
+                            </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="col-form-label">Address:</label>
                                 <input type="text" name="addressLine" class="form-control" id="recipient-name">

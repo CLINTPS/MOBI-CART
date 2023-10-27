@@ -70,7 +70,10 @@ userRout.get('/user/AddressBook',userControl.getAddressBook)
 userRout.post('/user/addAddress',userControl.postAddress)
 
 //User cart
-userRout.get('/user/cart',userAuth.verifyUser,cartControl.getuserCart)
-userRout.get('/addTocart/:id',userAuth.verifyUser,cartControl.getAddcart)
+userRout.post('/addtocart/:productId',userAuth.verifyUser,cartControl.postAddtocart)
+userRout.get('/user/cart',userAuth.verifyUser,cartControl.getCartPage)
+userRout.post('/updatequantity',userAuth.verifyUser,cartControl.postQuantity)
+userRout.post('/romoveProduct',userAuth.verifyUser,cartControl.postRemoveProduct)
+
 
 module.exports = userRout

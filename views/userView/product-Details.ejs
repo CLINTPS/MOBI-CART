@@ -58,12 +58,12 @@
         </p>
         <br>
         <div class="d-flex" style="width: 301px;">
-            <div class="col-6 d-flex justify-content-center"><a
-                    style="padding: 12px 16px; color: #fcfcfc; font-weight: 700; font-size: small; background-color: rgb(244, 137, 44); border-radius: 10px;">ADD
-                    TO CART</a></div>
-            <div class="col-6 d-flex justify-content-center"><a
-                    style="padding: 12px 25px; color: #fff; font-weight: 700; font-size: small; background-color: rgb(255, 94, 0); border-radius: 10px;">BUY
-                    NOW</a></div>
+            <div class="col-6 d-flex justify-content-center">
+                <button class="btn btn-warning" id="addToCartButton" data-item-id="<%= productData._id %>" onclick="addEventListener">Add to Cart</button>
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+                <a href="#" class="btn btn-primary">Buy now</a>
+            </div>
         </div>
     </div>
 </div>
@@ -95,6 +95,24 @@
             });
         });
     });
+
+
+
+    document.getElementById("addToCartButton").addEventListener("click", function () {
+        const itemId = this.dataset.itemId;
+        console.log(itemId,"ihgdooahgh");
+        fetch("/addToCart", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ itemId: itemId })
+        })
+        
+ });
+
+
+
 </script>
 
 <%-include('../userView/include/user_footer')-%>

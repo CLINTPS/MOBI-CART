@@ -11,6 +11,7 @@ const UsersSchema = new Schema({
   status: { type: Boolean,
             default:true},
   address: [{
+     nameuser: { type:String},
      addressLine: { type: String },
      city: { type: String },
      pincode: { type: Number },

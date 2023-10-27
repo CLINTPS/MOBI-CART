@@ -37,8 +37,7 @@ const getOtpPage = (req, res) => {
 async function getHomePage(req, res){
     if (req.session.logged || req.user) {
         let user = req.session.user
-        // console.log(user);
-        // console.log(req.session.logged);
+        
         const productData = await productsCollections.find({});
         res.render("userView/userhome", { title: "Home Page", productData, user, err: false })
     }
@@ -151,39 +150,34 @@ const forgotPass = async (req, res) => {
 
 const userLogin = async (req, res) => {
 
-        try {
-            const check = await userCollection.findOne({ email: req.body.email },{})
-            // console.log(check);
-            if(check){
-            // console.log(req.body);
-            let isMatch = await bcrypt.compare(
-                req.body.password,
-                check.password
-            );
+    try {
+        const check = await userCollection.findOne({ email: req.body.email }, {});
+
+        if (check) {
+            let isMatch = await bcrypt.compare(req.body.password, check.password);
             if (isMatch) {
-                if(check.status===true){
+                if (check.status === true) {
                     req.session.email = check.email;
                     req.session.user = check.userName;
                     req.session.logged = true;
                     console.log("Login success");
-                    res.redirect("/user/home");
-                }else{
+                    res.json({ success: true });
+                } else {
                     console.log("user blocked");
-                    res.render("userView/userlogin",{title:"login page",err:"You are blocked"})
+                    res.json({ success: false, message: "You are blocked" });
                 }
+            } else {
+                res.json({ success: false, message: "Invalid user name or password" });
+                console.log("Invalid password");
             }
-            else {
-                res.render("userView/userlogin",{title:"login page",err:"invalid user name or password.."})
-                console.log("invalid password");
-            }}else{
-                res.render("userView/userlogin",{title:"login page",err:"invalid user name or password."})
-                console.log("User not found..");
-    
-            }
-        } catch {
-            res.redirect('/')
-            console.log("user not found");
+        } else {
+            res.json({ success: false, message: "Invalid user name or password" });
+            console.log("User not found");
         }
+    } catch (error) {
+        res.json({ success: false, message: "An error occurred" });
+        console.error("An error occurred", error);
+    }
     
 }
 // -----------------------OTP verification of SignUp and forgotPass------------------------------
@@ -247,6 +241,7 @@ async  function OtpConfirmation(req,res){
                     req.session.logged=true;
                     req.session.signotp=false
                     req.session.user = data.userName;
+                    req.session.email= data.email
                     res.redirect("/user/home")
     
                 }
@@ -314,10 +309,21 @@ async function getAddressBook(req,res){
 // add address
 const postAddress = async(req,res)=>{
     try{
-        let email=req.session.email
-        let data=req.body
-        const address = await userCollection.findOneAndUpdate({email:email},
-            {$set:{address:data}})
+        let email =req.session.email
+        console.log(email);
+        let data={
+            nameuser:req.body.nameuser,
+            addressLine:req.body.addressLine,
+            city:req.body.city,
+            pincode:req.body.pincode,
+            state:req.body.state,
+            mobile:req.body.mobile
+        }
+        console.log(data);
+        const userAddress = await userCollection.findOne({email:email})
+        console.log(userAddress);
+        userAddress.address.push(data)
+        await  userAddress.save()
         res.redirect('/user/profile')
     }catch(error){
         console.log("can't post Address");
@@ -328,14 +334,14 @@ const postAddress = async(req,res)=>{
 
 //Logout
 const logout = (req,res) => {
-    // req.session.destroy((err)=>{
+    req.session.destroy((err)=>{
         if(err){
             console.log(err);
             res.send('Error');
         }else{
             res.redirect('/');
         }
-    // });
+    });
 }
 
 module.exports={

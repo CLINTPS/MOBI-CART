@@ -11,12 +11,13 @@ const passport=require('passport')
 require('dotenv').config()
 const flash=require("connect-flash")
 const nocache = require("nocache");
+// const morgan=require("morgan")
 
 //Set Template Engin
 app.set('view engine',"ejs")
 app.set('views',path.join(__dirname,'views'))
 
-
+// app.use(morgan('tiny'))
 app.use(nocache())
 app.use(express.static('public'))
 app.use(express.urlencoded({extended:true}))
