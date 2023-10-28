@@ -66,9 +66,11 @@ userRout.get('/allProducts',userAuth.verifyUser,userProduct.getAllProducts)
 //User profile
 userRout.get('/user/profile',userAuth.verifyUser,userControl.getUserprofile)
 //User addresses
-userRout.get('/user/AddressBook',userControl.getAddressBook)
-userRout.post('/user/addAddress',userControl.postAddress)
-userRout.delete('/deleteAddress/:addressId',userAuth.verifyUser,userControl.deleteAddress)
+userRout.get('/user/AddressBook',userAuth.verifyUser,userControl.getAddressBook)
+userRout.post('/user/addAddress',userAuth.verifyUser,userControl.postAddress)
+userRout.post('/user/editUserAddress/:id', userAuth.verifyUser, userControl.postEditAddress);
+userRout.get('/deleteAddress/:id',userAuth.verifyUser,userControl.getDeleteAddress)
+
 
 //User cart
 userRout.post('/addtocart/:productId',userAuth.verifyUser,cartControl.postAddtocart)

@@ -3,41 +3,41 @@ const bcrypt = require('bcrypt')
 const sendOTP = require("./otpController");
 const { use } = require("../router/adminRoutes");
 const productsCollections = require('../model/product')
-const { ObjectId} = require('mongodb')
+const { ObjectId } = require('mongodb')
 require("../util/otpindex")
 const OTP = require("../model/otp");
 
 // to index
-async function gustView(req,res){
-        const productData = await productsCollections.find({});
-        res.render('userView/index',{title:'Mobi cart',productData,err:false});
+async function gustView(req, res) {
+    const productData = await productsCollections.find({});
+    res.render('userView/index', { title: 'Mobi cart', productData, err: false });
 }
 
 //gust page to login page
-const getLoginPage = (req,res)=>{
-        res.render('userView/userLogin', { title: 'Login page', err: false });
+const getLoginPage = (req, res) => {
+    res.render('userView/userLogin', { title: 'Login page', err: false });
 }
 
 // login to sign up
-const getSignupPage= (req, res) => {
-        res.render("userView/userSignup", { title: "Signup page", err: false })
+const getSignupPage = (req, res) => {
+    res.render("userView/userSignup", { title: "Signup page", err: false })
 }
 
 //Signup to login
 const getSignupPageToLogin = (req, res) => {
-        res.redirect('/user/Login-Signup')   
+    res.redirect('/user/Login-Signup')
 }
 
 //sign up to otp page
 const getOtpPage = (req, res) => {
-        res.render('userView/otplogin', { title: 'otp page', err: false })
+    res.render('userView/otplogin', { title: 'otp page', err: false })
 }
 
 //user logged home page
-async function getHomePage(req, res){
+async function getHomePage(req, res) {
     if (req.session.logged || req.user) {
         let user = req.session.user
-        
+
         const productData = await productsCollections.find({});
         res.render("userView/userhome", { title: "Home Page", productData, user, err: false })
     }
@@ -47,7 +47,7 @@ async function getHomePage(req, res){
 }
 
 //User signup
-async function usersignup(req,res){
+async function usersignup(req, res) {
     console.log("user sign up");
     console.log(req.body);
     try {
@@ -68,7 +68,7 @@ async function usersignup(req,res){
             console.log('reached')
             res.redirect("/user/otp-sent");
         } else {
-            
+
             res.redirect('/user/signup')
             console.log("user already exist");
         }
@@ -81,22 +81,22 @@ async function usersignup(req,res){
 
 // ------------------------------------OTP Sender----------------------------------------------
 
-async function otpSender(req,res){
-    if(req.session.signotp || req.session.forgot){
-        try{
+async function otpSender(req, res) {
+    if (req.session.signotp || req.session.forgot) {
+        try {
             console.log(req.session.email);
             console.log("otp route");
-            const email=req.session.email;
+            const email = req.session.email;
             console.log(email);
-            const createdOTP=await sendOTP(email)
-            req.session.email=email;
-            console.log("session before verifiying otp :",req.session.email);
+            const createdOTP = await sendOTP(email)
+            req.session.email = email;
+            console.log("session before verifiying otp :", req.session.email);
             res.status(200).redirect("/user/otp")
-        }catch(err){
+        } catch (err) {
             console.log(err);
-            req.session.errmsg="Sorry at this momment we can't sent otp";
+            req.session.errmsg = "Sorry at this momment we can't sent otp";
             console.log(req.session.errmsg);
-            if(req.session.forgot){
+            if (req.session.forgot) {
                 res.redirect("/user/forgot-pass")
             }
             res.redirect("/userView/userSignup");
@@ -105,42 +105,42 @@ async function otpSender(req,res){
 }
 // -----------------------------------Forgot OTP section----------------------------------------
 //password forgote page
-const forgot_password_page=(req,res)=>{
-    if(req.session.logged){
+const forgot_password_page = (req, res) => {
+    if (req.session.logged) {
         res.redirect('/user/login-page')
-    }else{
-        res.render('userView/userforgot',{title:"Forgot password",err:false})
+    } else {
+        res.render('userView/userforgot', { title: "Forgot password", err: false })
     }
 }
 
 //password forgote
 const forgotPass = async (req, res) => {
-    try{
+    try {
         console.log(req.body);
-        const check=await userCollection.findOne({email:req.body.email})
-        if(check){
-            console.log("good to go:",check);
-            const userdata={
-                email:check.email,
-                userName:check.userName,
-                _id:check._id,
+        const check = await userCollection.findOne({ email: req.body.email })
+        if (check) {
+            console.log("good to go:", check);
+            const userdata = {
+                email: check.email,
+                userName: check.userName,
+                _id: check._id,
             }
-            const email=req.body.email
-            console.log("Email::: ",email);
-            req.session.userdata=userdata;
-            req.session.forgot=true
-            req.session.email=email;
-            console.log("EmailID: ",req.session.email)
-           res.redirect("/user/otp-sent") 
+            const email = req.body.email
+            console.log("Email::: ", email);
+            req.session.userdata = userdata;
+            req.session.forgot = true
+            req.session.email = email;
+            console.log("EmailID: ", req.session.email)
+            res.redirect("/user/otp-sent")
         }
-        else{
+        else {
             console.log(check);
-            req.session.errmsg="no email found"
+            req.session.errmsg = "no email found"
             res.redirect("/user/forgot-pass");
         }
-    }catch(err){
+    } catch (err) {
         console.log(err);
-        req.session.errmsg="no email found"
+        req.session.errmsg = "no email found"
         res.redirect("/user/forgot-pass")
     }
 
@@ -178,47 +178,47 @@ const userLogin = async (req, res) => {
         res.json({ success: false, message: "An error occurred" });
         console.error("An error occurred", error);
     }
-    
+
 }
 // -----------------------OTP verification of SignUp and forgotPass------------------------------
 
 //OTP VERIFICATION
-async  function OtpConfirmation(req,res){
-    if(req.session.forgot){
+async function OtpConfirmation(req, res) {
+    if (req.session.forgot) {
         console.log(req.body);
-    try{
-        const email=req.session.email
-        console.log("forgot confirmation :",email);
-        const Otp= await OTP.findOne({email:email},{})
-        
-        if(Date.now()>Otp.expireAt){
-            await OTP.deleteOne({email: req.session.email});
+        try {
+            const email = req.session.email
+            console.log("forgot confirmation :", email);
+            const Otp = await OTP.findOne({ email: email }, {})
 
-        }else{
-            const hashed=Otp.otp
-            const match=await bcrypt.compare(req.body.code,hashed);
-            if(match){
-                req.session.logged=true;
-                req.session.forgot=false;
-                req.session.pass_reset = true
-                req.session.user=Otp.email
-                res.render("userView/resetPass",{title:"Reset password"});
+            if (Date.now() > Otp.expireAt) {
+                await OTP.deleteOne({ email: req.session.email });
+
+            } else {
+                const hashed = Otp.otp
+                const match = await bcrypt.compare(req.body.code, hashed);
+                if (match) {
+                    req.session.logged = true;
+                    req.session.forgot = false;
+                    req.session.pass_reset = true
+                    req.session.user = Otp.email
+                    res.render("userView/resetPass", { title: "Reset password" });
+                }
+                else {
+                    console.log("no match");
+                    req.session.userdata = "";
+                    res.render('userView/otplogin', { title: "Otp page", err: "Invalid OTP" })
+                }
             }
-            else{
-                console.log("no match");
-                req.session.userdata="";
-                res.render('userView/otplogin',{title:"Otp page",err:"Invalid OTP"})
-            }
+        } catch (err) {
+            console.log(err);
+            req.session.errmsg = "Email not found";
         }
-    }catch(err){
-        console.log(err);
-        req.session.errmsg="Email not found";
     }
-    }
-    else if(req.session.signotp){
+    else if (req.session.signotp) {
         console.log(req.body)
-        try{
-            const data =req.session.data;
+        try {
+            const data = req.session.data;
             const dataplus = {
                 userName: data.userName,
                 email: data.email,
@@ -227,32 +227,32 @@ async  function OtpConfirmation(req,res){
                 timeStamp: Date.now()
             }
             console.log(req.session.data);
-            const Otp= await OTP.findOne({email:data.email})
+            const Otp = await OTP.findOne({ email: data.email })
             console.log(Otp.expireAt);
-            if(Date.now()>Otp.expiredAt){
-                await OTP.deleteOne({email});
-            }else{
-                const hashed=Otp.otp
-                const match=await bcrypt.compare(req.body.code,hashed);
-                if(match){
+            if (Date.now() > Otp.expiredAt) {
+                await OTP.deleteOne({ email });
+            } else {
+                const hashed = Otp.otp
+                const match = await bcrypt.compare(req.body.code, hashed);
+                if (match) {
                     console.log(data);
 
-                    const result=await userCollection.create({...data,name:data.email})
-                    req.session.logged=true;
-                    req.session.signotp=false
+                    const result = await userCollection.create({ ...data, name: data.email })
+                    req.session.logged = true;
+                    req.session.signotp = false
                     req.session.user = data.userName;
-                    req.session.email= data.email
+                    req.session.email = data.email
                     res.redirect("/user/home")
-    
+
                 }
-                else{
+                else {
                     // req.session.errmsg="Invalid OTP"
-                    res.render('userView/otplogin',{title:"Otp page",err:"Invalid OTP"})
+                    res.render('userView/otplogin', { title: "Otp page", err: "Invalid OTP" })
                 }
             }
-            
-            
-        }catch(err){
+
+
+        } catch (err) {
             console.log(err);
             res.redirect("/user/otp")
         }
@@ -262,7 +262,7 @@ async  function OtpConfirmation(req,res){
 //Reset password section
 const get_password_reset = (req, res) => {
     if (req.session.pass_reset) {
-        res.render("userView/resetPass",{title:"Reset password"});
+        res.render("userView/resetPass", { title: "Reset password" });
 
     } else {
         res.redirect("/user/login-page")
@@ -286,89 +286,124 @@ const password_reset = async (req, res) => {
 }
 
 //User profile
-async function getUserprofile(req,res){
-    try{
+async function getUserprofile(req, res) {
+    try {
         let user = req.session.user
-        const UserData = await userCollection.findOne({userName:user})
-        res.render('userView/userProfile',{title:"Profile view",user,UserData})
-    }catch(error){
+        const UserData = await userCollection.findOne({ userName: user })
+        res.render('userView/userProfile', { title: "Profile view", user, UserData })
+    } catch (error) {
         console.log("can't profile details");
     }
 }
 
 //user Address book
-async function getAddressBook(req,res){
-    try{
+async function getAddressBook(req, res) {
+    try {
         let user = req.session.user
-        const userAddressData = await userCollection.findOne({userName:user})
-        res.render('userView/userAddress',{title:"Address view",user,userAddressData})
-    }catch(error){
+        const userAddressData = await userCollection.findOne({ userName: user })
+        res.render('userView/userAddress', { title: "Address view", user, userAddressData })
+    } catch (error) {
         console.log("can't add Address");
     }
 }
 // add address
-const postAddress = async(req,res)=>{
-    try{
-        let email =req.session.email
+const postAddress = async (req, res) => {
+    try {
+        let email = req.session.email
         console.log(email);
-        let data={
-            nameuser:req.body.nameuser,
-            addressLine:req.body.addressLine,
-            city:req.body.city,
-            pincode:req.body.pincode,
-            state:req.body.state,
-            mobile:req.body.mobile
+        let data = {
+            nameuser: req.body.nameuser,
+            addressLine: req.body.addressLine,
+            city: req.body.city,
+            pincode: req.body.pincode,
+            state: req.body.state,
+            mobile: req.body.mobile
         }
         console.log(data);
-        const userAddress = await userCollection.findOne({email:email})
+        const userAddress = await userCollection.findOne({ email: email })
         console.log(userAddress);
         userAddress.address.push(data)
-        await  userAddress.save()
-        res.redirect('/user/profile')
-    }catch(error){
+        await userAddress.save()
+        res.redirect('/user/AddressBook')
+    } catch (error) {
         console.log("can't post Address");
     }
 }
-//Delete address
-const deleteAddress= async (req,res)=>{
-    try {
-        const userEmail = req.session.email;
-        const user = await userCollection.findOne({ email: userEmail });
-  
-        if (!user) {
-          console.log('User not found');
-          res.render('errorView/404')
-        }
-        const addressId = req.params.addressId; 
-        const userId = user._id;
-  
-        await userCollection.findOneAndUpdate(
-          { _id: userId },
-          { $pull: { Address: { _id: addressId } } }
-        );
-        res.json({success:true})
-    } catch (err) {
-        console.error('Error deleting address:', err);
-       res.render('errorView/404')
-    }
-  };
 
+
+// //Edit address
+// async function getEditAddress(req,res){
+//     let user = req.session.user
+//     const id = req.params.id;
+//     console.log("Edit:"+id);
+//     res.render('userView/userEditaddress',{title:"Edit Address",user})
+//   }
+
+async function postEditAddress(req,res){
+    try{
+        let id = req.params.id;
+        console.log("id:"+id);
+        // let email = req.session.email
+        // console.log(email);
+        let data = {
+            nameuser: req.body.nameuser,
+            addressLine: req.body.addressLine,
+            city: req.body.city,
+            pincode: req.body.pincode,
+            state: req.body.state,
+            mobile: req.body.mobile
+        }
+        // console.log(data);
+        const user=await userCollection.findOneAndUpdate(
+            {'address._id':id},
+            {$set:{'address.$':data}},
+            {new:true}
+        )
+        if(user){
+            res.redirect('/user/AddressBook')
+        }
+ 
+    }catch (error) {
+        console.log("can't post Address");
+    }
+}
+
+//Delete address
+async function getDeleteAddress(req, res) {
+    try{
+        let email = req.session.email
+        console.log(email);
+        let id = req.params.id
+        console.log(id);
+        const data = await userCollection.findOne({ email: email })
+        await userCollection.updateOne({_id:new ObjectId(data._id)},{
+            $pull:{
+                address:{_id:new ObjectId(id)}
+            }
+        })
+        console.log("delete:" + data);
+        res.redirect('/user/AddressBook')
+    }catch(error){
+        console.log("reached:"+error);
+
+    }
+}
 
 
 
 //Logout
-const logout = (req,res) => {
-    req.session.destroy((err)=>{
-        if(err){
+const logout = (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
             console.log(err);
             res.send('Error');
-        }else{
+        } else {
             res.redirect('/');
         }
     });
 }
 
-module.exports={
+module.exports = {
     gustView,
     getLoginPage,
     getSignupPageToLogin,
@@ -386,6 +421,8 @@ module.exports={
     getUserprofile,
     getAddressBook,
     postAddress,
-    deleteAddress,
+    postEditAddress,
+    // getEditAddress,
+    getDeleteAddress,
     logout
 }

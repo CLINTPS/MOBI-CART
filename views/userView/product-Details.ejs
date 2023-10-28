@@ -1,9 +1,8 @@
 <%-include('../userView/include/user_header')-%>
 
 <div class="row" style="width: 100%;">
-    
     <div class="col-12 col-lg-5"
-    style="border-right: 1px solid rgb(141, 141, 141); border-bottom: 1px solid rgb(141, 141, 141); padding-top: 50px;">
+        style="border-right: 1px solid rgb(141, 141, 141); border-bottom: 1px solid rgb(141, 141, 141); padding-top: 50px;">
         <div class="col-lg-12 d-flex justify-content-center align-items-center">
             <div id="img-container" style="z-index: 1;">
                 <img id="main-image" src="/product-img/<%=productData.images[0]%>" alt="Product Image 1">
@@ -71,10 +70,10 @@
 </div>
 
 
-<%-include('../userView/include/user_footer')-%>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="your-script.js"></script>
+
 <script>
+    
+    
     // Your JavaScript code for image switching remains the same
     // Ensure the productData object is properly defined and contains image URLs
     var productData = {
@@ -102,7 +101,6 @@
         });
     });
 
-
     document.querySelectorAll('.add-to-cart-button').forEach(button => {
         button.addEventListener('click', function (event) {
             event.preventDefault();
@@ -125,7 +123,8 @@
             });
         });
     });
-
-
-
 </script>
+
+<%-include('../userView/include/user_footer')-%>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="your-script.js"></script>
