@@ -2,20 +2,22 @@ const categoriesCollection = require('../model/categories')
 
 //To Catagories section details
 async function  getCategory (req, res){
-    if (req.session.adminLogin) {
-        var i = 0;
-        const categoryData = await categoriesCollection.find({});
-        // console.log(categoryData);
-        res.render('adminView/categories',{title:"categories details",categoryData,i})
-    } else {
-        res.redirect("/admin");
-    }
+  try{
+    var i = 0;
+    const categoryData = await categoriesCollection.find({});
+    // console.log(categoryData);
+    res.render('adminView/categories',{title:"categories details",categoryData,i})
+  }catch(error){
+    console.log("Category:"+error);
+    res.render("errorView/404admin");
+  }
 };
 
 //add catogories
 function getCatagoriesData(req,res){
     res.render('adminView/add-categories',{title:"add new categories",err:false})
 }
+
 //add post catogories
 async function postCatagoriesData(req, res) {
   try {
@@ -36,40 +38,59 @@ async function postCatagoriesData(req, res) {
           const insertResult = await newCategory.save();
           res.redirect('/admin/add-category');
       }
-  } catch (error) {
-      console.error(error);
-      res.status(500).send('Internal Server Error');
+  }catch(err){
+    console.log(err);
+    res.render('errorView/404admin')
+    res.status(500).send('Internal Server Error');
   }
 }
 
 
 //edit category
 async function getCatagoriesedit(req,res){
+  try{
     const id = req.params.id;
     const categoryName = await categoriesCollection.findOne({_id: id})
     res.render('adminView/edit-categories',{title:"Edit category",categoryName})
+  }catch(err){
+    console.log(err);
+    res.render('errorView/404admin')
+    res.status(500).send('Internal Server Error');
   }
+  }
+
   // edit category = category view page
   async function postCatagoriesedit(req,res){
-    let newData = req.body;
-    let id = req.params.id;
-    console.log(newData,id);
-    const date=Date.now();
-    await categoriesCollection.updateOne(
-      {_id:id},{
-        $set:{name:newData.categoryName,timeStamp:date}
-      }
-    )
-      res.redirect('/admin/category')
-  
+    try{
+      let newData = req.body;
+      let id = req.params.id;
+      console.log(newData,id);
+      const date=Date.now();
+      await categoriesCollection.updateOne(
+        {_id:id},{
+          $set:{name:newData.categoryName,timeStamp:date}
+        }
+      )
+        res.redirect('/admin/category')
+    }catch(err){
+      console.log(err);
+      res.render('errorView/404admin')
+      res.status(500).send('Internal Server Error');
+    }
     }
 
 //Delete category
 async function getCategoryDelete(req,res){
+  try{
     const id = req.params.id
     console.log(id);
     await categoriesCollection.deleteOne({ _id:id })
     res.redirect('/admin/category')
+  }catch(err){
+    console.log(err);
+    res.render('errorView/404admin')
+    res.status(500).send('Internal Server Error');
+  }
 }
 
 module.exports={

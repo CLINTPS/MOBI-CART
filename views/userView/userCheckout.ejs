@@ -1,0 +1,87 @@
+<%- include('../userView/include/user_header') -%>
+<body>
+    <form id="orderForm" action="/placeOrder" method="post">
+        <div class="container p-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="mb-4">Delivery Addresses</h3>
+                    <% userAddressData.address.forEach((address) => { %>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input address-radio" type="radio" name="selectedAddress" id="address_<%= address._id %>" value="<%= address._id %>"  />
+                                <h5 class="card-title"><%= address.nameuser %></h5>
+                                <p class="card-text"><%= address.addressLine %></p>
+                                <p class="card-text"><%= address.city %>, <%= address.state %> <%= address.pincode %></p>
+                                <p class="card-text"><%= address.mobile %></p>
+                            </div>
+                        </div>
+                    </div>
+                    <% }); %>
+                    <% if (userAddressData.address.length === 0) { %>
+                    <p class="text-center">No saved addresses. Please add a new address.</p>
+                    <% } %>
+                </div>
+                <div class="col-md-4 mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Payment Methods</h5>
+                            <div class="form-check">
+                                <input class="form-check-input payment-radio" type="radio" name="selectedPayment" id="payment_cod" value="cod" checked/>
+                                <label class="form-check-label" for="payment_cod">Cash on Delivery</label>
+                            </div>
+                            <div class="form-check mt-3">
+                                <input class="form-check-input payment-radio" type="radio" name="selectedPayment" id="payment_online" value="online"/>
+                                <label class="form-check-label" for="payment_online">Online Payment</label>
+                            </div>
+                            <div class="text-center mt-4">
+                                <button class="btn btn-warning mt-4" id="confirmOrderButton" type="button">Confirm Order</button>
+                                <a href="/user/home"><button class="btn btn-success mt-4" type="button">Back to Shop</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script>
+        // JavaScript to handle the radio button selections and form submission
+        const addressRadios = document.querySelectorAll('.address-radio');
+        const paymentRadios = document.querySelectorAll('.payment-radio');
+        const confirmOrderButton = document.getElementById('confirmOrderButton');
+        const orderForm = document.getElementById('orderForm');
+
+        confirmOrderButton.addEventListener('click', () => {
+            const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+            if (!selectedAddress) {
+                alert('Please select a delivery address before confirming your order.');
+            } else {
+                // Submit the form
+                orderForm.submit();
+            }
+        });
+
+        addressRadios.forEach(addressRadio => {
+            addressRadio.addEventListener('change', () => {
+                // Unselect other address radios
+                addressRadios.forEach(radio => {
+                    if (radio !== addressRadio) {
+                        radio.checked = false;
+                    }
+                });
+            });
+        });
+
+        paymentRadios.forEach(paymentRadio => {
+            paymentRadio.addEventListener('change', () => {
+                // Unselect other payment radios
+                paymentRadios.forEach(radio => {
+                    if (radio !== paymentRadio) {
+                        radio.checked = false;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+<%- include('../userView/include/user_footer') -%>

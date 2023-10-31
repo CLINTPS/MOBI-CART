@@ -6,44 +6,40 @@ const userCollection=require('../model/user')
 //Admin password and user id
 const credential = {
     email: "clint@gmail.com",
-    password: "00000000"
+    password: "12345678"
 }
 
 //admin page
 function getAdminpage(req, res) {
-    if(req.session.adminLogin){
-        res.redirect('/admin/dashboard')
-    }else{
         res.render('adminView/adminLog',{title:"admin-login"})
-    }
 }
 
 //Admin login to admin view page
 
 function postAdminpage(req, res){
-    if (req.body.email == credential.email && req.body.password == credential.password) {
-        req.session.admin = req.body.email;
-        // req.session.logged = true
-        req.session.adminLogin = true
-        console.log("logined");
-        // res.redirect('/dashboard')
-        res.render("adminView/dashboard",{title:"Admin Dashboard"})
-    } else {
-        res.render('adminView/adminLog', { title: "admin page", err: "Invalid Username or Password" })
+    try{
+        if (req.body.email == credential.email && req.body.password == credential.password) {
+            req.session.admin = req.body.email;
+            // req.session.logged = true
+            req.session.adminLogin = true
+            console.log("logined");
+            // res.redirect('/dashboard')
+            res.render("adminView/dashboard",{title:"Admin Dashboard"})
+        } else {
+            res.render('adminView/adminLog', { title: "admin page", err: "Invalid Username or Password" })
+        }
+    }catch(error){
+        console.log("Error 1:"+error);
     }
 }
 // TO dashboard
 function getDashboard (req,res){
-    if(req.session.adminLogin){
         res.render('adminView/dashboard',{title:"admin-Dashboard"})
-    }else{
-        res.redirect('/admin')
-    }
 }
 
 //To coustomer details
 async function  userdetails (req, res){
-    if (req.session.adminLogin) {
+    try{
         var i = 0;
         const useData = await userCollection.find({});
         useData.forEach(data => {
@@ -51,8 +47,9 @@ async function  userdetails (req, res){
         });
         // console.log(useData);
         res.render('adminView/customers',{title:"coustome details",useData,i})
-    } else {
-        res.redirect("/admin");
+    }catch(error){
+
+        res.render("errorView/404admin");
     }
 };
 

@@ -12,26 +12,29 @@
 
                             <div class="address-card row">
 
-                                <div class="col-5">
-                                    <div class="address-line">Name</div>
-                                    <div class="address-line">Address</div>
-                                    <div class="address-line">Mobile</div>
-                                    <div class="address-line">City</div>
-                                    <div class="address-line">State</div>
-                                    <div class="address-line">Pincode code</div>
-                                </div>
+                                    <div class="col-5">
+                                        <div class="address-line"><h4>Name</h4></div>
+                                        <div class="address-line">Address</div>
+                                        <div class="address-line">Mobile</div>
+                                        <div class="address-line">City</div>
+                                        <div class="address-line">State</div>
+                                        <div class="address-line">Pincode code</div>
+                                    </div>
                                 <div class="col-6">
-                                    <div class="address-value">:<%= address.nameuser %>
+                                    <div class="address-value">
+                                        <h4>
+                                            <%= address.nameuser %>
+                                        </h4>
                                     </div>
-                                    <div class="address-value">:<%= address.addressLine %>
+                                    <div class="address-value">: <%= address.addressLine %>
                                     </div>
-                                    <div class="address-value">:<%= address.mobile %>
+                                    <div class="address-value">: <%= address.mobile %>
                                     </div>
-                                    <div class="address-value">:<%= address.city%>
+                                    <div class="address-value">: <%= address.city%>
                                     </div>
-                                    <div class="address-value">:<%= address.state %>
+                                    <div class="address-value">: <%= address.state %>
                                     </div>
-                                    <div class="address-value">:<%= address.pincode %>
+                                    <div class="address-value">: <%= address.pincode %>
                                     </div>
                                 </div>
                                 <div class="col-5">

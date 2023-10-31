@@ -14,6 +14,7 @@ const router = require("./adminRoutes");
 const userAuth = require('../middleware/userAuth')
 const userBlock = require('../middleware/userBlock')
 const cartControl = require('../controller/cartControl')
+const orderControl = require('../controller/orderControl')
 
 
 // Gust view
@@ -63,8 +64,9 @@ userRout.get('/productDetails/:id',userAuth.verifyUser,userProduct.getProducDeta
 //product full details
 userRout.get('/allProducts',userAuth.verifyUser,userProduct.getAllProducts)
 
-//User profile
+//User profile side
 userRout.get('/user/profile',userAuth.verifyUser,userControl.getUserprofile)
+
 //User addresses
 userRout.get('/user/AddressBook',userAuth.verifyUser,userControl.getAddressBook)
 userRout.post('/user/addAddress',userAuth.verifyUser,userControl.postAddress)
@@ -77,6 +79,17 @@ userRout.post('/addtocart/:productId',userAuth.verifyUser,cartControl.postAddtoc
 userRout.get('/user/cart',userAuth.verifyUser,cartControl.getCartPage)
 userRout.post('/updatequantity',userAuth.verifyUser,cartControl.postQuantity)
 userRout.post('/romoveProduct',userAuth.verifyUser,cartControl.postRemoveProduct)
+
+//Check ou page
+userRout.get('/checkOut',userAuth.verifyUser,orderControl.getOrderpage)
+userRout.post('/placeOrder',userAuth.verifyUser,orderControl.postplaceOrder)
+
+//User order details
+userRout.get('/user/orderDetails',userAuth.verifyUser,orderControl.getOrderPage)
+
+
+
+
 
 
 module.exports = userRout

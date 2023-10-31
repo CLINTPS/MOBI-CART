@@ -1,52 +1,31 @@
 const router=require('express').Router();
 const uplode = require('../middleware/multer')
+const adminAuth = require('../middleware/adminAuth')
+const adminControl = require('../controller/adminControl')
+const categoryControl = require('../controller/categoryControl')
+const productControl = require('../controller/productControl')
+const brandControl = require('../controller/brandControl')
 
-
-const {
-    getAdminpage,
-    postAdminpage,
-    adminLogout,
-    userdetails,
-    UserStatus,
-    getDashboard
-}=require("../controller/adminControl");
 
 //admin
-router.get("/",getAdminpage);
-router.post('/adminlogin',postAdminpage);
-router.get("/adLogout", adminLogout);
-//useres
-router.get('/userDetails',userdetails)
-router.get('/block/:id',UserStatus)
-router.get('/dashboard',getDashboard)
+router.get("/",adminAuth.adminExist,adminControl.getAdminpage);
+router.post('/adminlogin',adminAuth.adminExist,adminControl.postAdminpage);
+router.get("/adLogout", adminControl.adminLogout);
+
+//Admin user control
+router.get('/userDetails',adminAuth.verifyAdmin,adminControl.userdetails)
+router.get('/block/:id',adminAuth.verifyAdmin,adminControl.UserStatus)
+router.get('/dashboard',adminAuth.verifyAdmin,adminControl.getDashboard)
 
 //category
-const{
-    getCategory,
-    getCatagoriesData,
-    postCatagoriesData,
-    getCatagoriesedit,
-    postCatagoriesedit,
-    getCategoryDelete
-}=require('../controller/categoryControl')
-
-router.get('/category',getCategory)
-router.get('/add-category',getCatagoriesData)
-router.post('/add-category',postCatagoriesData)
-router.get('/edit-category/:id',getCatagoriesedit)
-router.post('/upadte-catogory/:id',postCatagoriesedit)
-router.get('/delete-category/:id',getCategoryDelete)
+router.get('/category',adminAuth.verifyAdmin,categoryControl.getCategory)
+router.get('/add-category',adminAuth.verifyAdmin,categoryControl.getCatagoriesData)
+router.post('/add-category',adminAuth.verifyAdmin,categoryControl.postCatagoriesData)
+router.get('/edit-category/:id',adminAuth.verifyAdmin,categoryControl.getCatagoriesedit)
+router.post('/upadte-catogory/:id',adminAuth.verifyAdmin,categoryControl.postCatagoriesedit)
+router.get('/delete-category/:id',adminAuth.verifyAdmin,categoryControl.getCategoryDelete)
 
 //product
-const {
-    getProductPage,
-    getProductdata,
-    postProductdata,
-    getProductedit,
-    postProductedit,
-    getProductDelete,
-    getBlockProduct
-}=require('../controller/productControl')
 
 const uploadFields = [
     { name: "main", maxCount: 1 },
@@ -55,29 +34,20 @@ const uploadFields = [
     { name: "image3", maxCount:1},
 ];
 
-router.get('/productPage',getProductPage)
-router.get('/add-productPage',getProductdata)
-router.post('/add-productPage',uplode.fields(uploadFields),postProductdata)
-router.get('/edit-product/:id',getProductedit)
-router.post('/update-productPage/:id',uplode.fields(uploadFields),postProductedit)
-router.get('/delete-product/:id',getProductDelete)
-router.get('/productblock/:id',getBlockProduct)
+router.get('/productPage',productControl.getProductPage)
+router.get('/add-productPage',productControl.getProductdata)
+router.post('/add-productPage',uplode.fields(uploadFields),productControl.postProductdata)
+router.get('/edit-product/:id',productControl.getProductedit)
+router.post('/update-productPage/:id',uplode.fields(uploadFields),productControl.postProductedit)
+router.get('/delete-product/:id',productControl.getProductDelete)
+router.get('/productblock/:id',productControl.getBlockProduct)
 
 //Brand
-const {
-    getBrand,
-    getbrandsData,
-    postbrandsData,
-    getBrandedit,
-    postBrandedit,
-    getBrandDelete
-} = require('../controller/brandControl')
-
-router.get('/brand',getBrand)
-router.get('/add-brand',getbrandsData)
-router.post('/add-brand',postbrandsData)
-router.get('/edit-brand/:id',getBrandedit)
-router.post('/update-brand/:id',postBrandedit)
-router.get('/delete-brand/:id',getBrandDelete)
+router.get('/brand',adminAuth.verifyAdmin,brandControl.getBrand)
+router.get('/add-brand',adminAuth.verifyAdmin,brandControl.getbrandsData)
+router.post('/add-brand',adminAuth.verifyAdmin,brandControl.postbrandsData)
+router.get('/edit-brand/:id',adminAuth.verifyAdmin,brandControl.getBrandedit)
+router.post('/update-brand/:id',adminAuth.verifyAdmin,brandControl.postBrandedit)
+router.get('/delete-brand/:id',adminAuth.verifyAdmin,brandControl.getBrandDelete)
 
 module.exports  = router;

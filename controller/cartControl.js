@@ -5,10 +5,9 @@ const { ObjectId } = require('mongodb');
 const  getCartPage=async(req,res)=>{
  
     try{
-    // console.log("@@@@@@@@@@@@");
       let user=req.session.user
         const email = req.session.email;
-   
+        // console.log("get 3:" +email)
         const users = await userCollection.findOne({ email: email });
 
         if (!users) {
@@ -203,7 +202,7 @@ const postRemoveProduct= async(req,res)=>{
         cart.products = cart.products.filter((item)=>!item.productId.equals(productId))
         await cart.save();
         res.json({success:true})
-        
+
     }catch(error){
         console.error('Error removing product from the cart:', error)
         res.status(500).json({ success: false, error: "Failed to remove product from the cart" });
