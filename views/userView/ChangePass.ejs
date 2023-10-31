@@ -1,0 +1,77 @@
+<%- include('../userView/include/user_header') -%>
+<div class="text-center center-div d-flex align-items-center justify-content-center mt-4 mb-4">
+    <div class="card text-center" style="width: 500px; background-color: #f0f0f0; border: 1px solid #ccc; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+
+        <div class="card-header h4 text-primary bg-white" style="border-bottom: 1px solid #ccc; padding: 10px;">Password Reset</div>
+
+        <div class="card-body px-5" style="padding: 20px;">
+            <% if(err){ %>
+                <h6 style="color: red;"><%- err %></h6>
+            <% } %>
+
+            <% if(success){ %>
+                <h6 style="color: green;"><%- success %></h6>
+            <% } %>
+
+            <form action="javascript:void(0);" method="POST" id="resetPasswordForm">
+                <div class="field" style="margin: 15px 0;">
+                    <p class="msg" id="message3"></p>
+                    <input type="password" name="oldPassword" placeholder="Old Password" id="newpassword" onchange="validatePassword();" required class="form-control">
+                </div>
+
+                <div class="field" style="margin: 15px 0;">
+                    <input type="password" name="newPassword" placeholder="New Password" id="password" onchange="validatePassword();" required class="form-control">
+                </div>
+
+                <div class="field" style="margin: 15px 0;">
+                    <input type="password" name="confirmPassword" placeholder="Confirm Password" id="confirmpass1" onkeyup="checkPasswordMatch();" required class="form-control">
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Reset Password</button>
+            </form>
+            <p style="margin: 15px 0;">
+                <a href="/user/profile">Back to profile</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<%-include('../userView/include/user_footer')-%>
+<script src="/javascript/signupScript.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#resetPasswordForm').submit(function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get form data
+            var formData = {
+                oldPassword: $('input[name=oldPassword]').val(),
+                newPassword: $('input[name=newPassword]').val(),
+                confirmPassword: $('input[name=confirmPassword]').val()
+            };
+
+            // Make an Ajax request
+            $.ajax({
+                type: 'POST',
+                url: '/changePasswordData',
+                data: formData,
+                success: function(response) {
+                    // Clear the input fields
+                    $('input[name=oldPassword]').val('');
+                    $('input[name=newPassword]').val('');
+                    $('input[name=confirmPassword]').val('');
+
+                    // Handle the response from the server (e.g., display success or error messages)
+                    if (response.success) {
+                        // Password updated successfully
+                        $('#message3').html('<h6 style="color: green;">' + response.success + '</h6>');
+                    } else if (response.err) {
+                        // Error message
+                        $('#message3').html('<h6 style="color: red;">' + response.err + '</h6>');
+                    }
+                }
+            });
+        });
+    });
+</script>

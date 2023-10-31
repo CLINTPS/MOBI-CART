@@ -304,6 +304,7 @@ async function getAddressBook(req, res) {
         res.render('userView/userAddress', { title: "Address view", user, userAddressData })
     } catch (error) {
         console.log("can't add Address");
+        res.render("errorView/404admin");
     }
 }
 // add address
@@ -327,18 +328,12 @@ const postAddress = async (req, res) => {
         res.redirect('/user/AddressBook')
     } catch (error) {
         console.log("can't post Address");
+        res.render("errorView/404admin");
     }
 }
 
 
 // //Edit address
-// async function getEditAddress(req,res){
-//     let user = req.session.user
-//     const id = req.params.id;
-//     console.log("Edit:"+id);
-//     res.render('userView/userEditaddress',{title:"Edit Address",user})
-//   }
-
 async function postEditAddress(req,res){
     try{
         let id = req.params.id;
@@ -365,6 +360,7 @@ async function postEditAddress(req,res){
  
     }catch (error) {
         console.log("can't post Address");
+        res.render("errorView/404admin");
     }
 }
 
@@ -385,10 +381,57 @@ async function getDeleteAddress(req, res) {
         res.redirect('/user/AddressBook')
     }catch(error){
         console.log("reached:"+error);
-
+        res.render("errorView/404admin");
     }
 }
 
+//User change password
+async function getChangepass(req,res){
+    try{
+        let user=req.session.user
+        // let email=req.session.email
+        // console.log("pass:",email);
+        res.render('userView/ChangePass',{title:"Change password",user,err:false,success:false})
+    }catch(error){
+        console.log("Pass cahnge:"+error);
+        res.render("errorView/404admin");
+    }
+}
+
+async function postChangepass(req, res) {
+    try {
+        if (!req.session.user || !req.session.email) {
+            throw new Error("User session data is missing.");
+        }
+
+        let user = req.session.user;
+        let email = req.session.email;
+        let oldPassword = req.body.oldPassword;
+        let newPassword = req.body.newPassword;
+        let confirmPassword = req.body.confirmPassword;
+        const check = await userCollection.findOne({ email: email }, {});
+
+        if (check) {
+            let isMatch = await bcrypt.compare(oldPassword, check.password);
+            if (isMatch && newPassword === confirmPassword) {
+                const hashedPassword = await bcrypt.hash(newPassword, 10);
+                await userCollection.updateOne({ email: email }, { $set: { password: hashedPassword } });
+                console.log("Password updated successfully");
+
+                res.json({ success: "Password updated successfully", err: null });
+            } else {
+                console.log("Old password is not a match");
+                res.status(400).json({ success: null, err: "Old password is not a match or new password and confirm password do not match" });
+            }
+        } else {
+            console.log("User not found");
+            res.status(404).json({ success: null, err: "User not found" });
+        }
+    } catch (error) {
+        console.error("Password change error:", error);
+        res.status(500).json({ success: null, err: "Internal server error" });
+    }
+}
 
 
 //Logout
@@ -424,5 +467,7 @@ module.exports = {
     postEditAddress,
     // getEditAddress,
     getDeleteAddress,
+    getChangepass,
+    postChangepass,
     logout
 }

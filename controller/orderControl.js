@@ -4,6 +4,7 @@ const userCollection = require('../model/user')
 const cartCollection=require('../model/cart')
 const productsCollections = require ('../model/product')
 const moment = require("moment")
+const mongoose = require('mongoose')
 
 //Get check out page
 async function getOrderpage(req,res){
@@ -18,7 +19,7 @@ async function postplaceOrder(req, res) {
     console.log("cart 1=" + email);
     let datas = req.body;
     console.log(datas);
-    const addressID = req.body.selectedAddress;
+    const Address = req.body.selectedAddress;
     const paymentMethod = req.body.selectedPayment;
     const amount = req.session.totalPrice;
     console.log(amount);
@@ -34,10 +35,10 @@ async function postplaceOrder(req, res) {
         }
 
         const userID = userData._id;
-        console.log(userID);
+        console.log("order time user id ",userID);
 
         const cartData = await cartCollection.findOne({ userId: userID }).populate("products.productId");
-        console.log(cartData);
+        console.log("cartData",cartData);
 
         if (!cartData) {
             console.log("Cart data not available");
@@ -45,14 +46,29 @@ async function postplaceOrder(req, res) {
             return;
         }
 
+        const addressNew = await userCollection.findOne({
+            _id:userID,
+            address:{$elemMatch:{_id: new mongoose.Types.ObjectId(Address)}}
+        })
+        console.log("address 0001:",addressNew); 
+
+        const add = {
+            Name: addressNew.address[0].nameuser,
+            Address:  addressNew.address[0].addressLine,
+            Pincode: addressNew.address[0].pincode,
+            City: addressNew.address[0].city,
+            State: addressNew.address[0].state,
+            Mobile:  addressNew.address[0].mobile,
+        }
+
         const newOrder = new orderCollection({
-            userId: userID,
+            UserId: userID,
             Items: cartData.products,
             PaymentMethod: paymentMethod,
             OrderDate: moment(new Date()).format("llll"),
             ExpectedDeliveryDate: moment().add(4, "days").format("llll"),
             TotalPrice: amount,
-            Address: addressID,
+            Address: add,
         });
 
         const order = await newOrder.save();
@@ -78,7 +94,7 @@ async function postplaceOrder(req, res) {
         }
 
         if (paymentMethod === "cod") {
-            res.render('userView/codSucces');
+            res.render('userView/placeOrder');
         }
     } catch (error) {
         console.error("An error occurred:", error);
@@ -90,7 +106,8 @@ async function postplaceOrder(req, res) {
 
 
 async function getOrderPage(req,res){
-    res.render('userView/userOrder')
+    let user=req.session.user
+    res.render('userView/userOrder',{title:"Order details",user})
 }
 
 module.exports={

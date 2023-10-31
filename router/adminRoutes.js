@@ -5,6 +5,7 @@ const adminControl = require('../controller/adminControl')
 const categoryControl = require('../controller/categoryControl')
 const productControl = require('../controller/productControl')
 const brandControl = require('../controller/brandControl')
+const adminOrderControl = require('../controller/adminOrderControl')
 
 
 //admin
@@ -49,5 +50,10 @@ router.post('/add-brand',adminAuth.verifyAdmin,brandControl.postbrandsData)
 router.get('/edit-brand/:id',adminAuth.verifyAdmin,brandControl.getBrandedit)
 router.post('/update-brand/:id',adminAuth.verifyAdmin,brandControl.postBrandedit)
 router.get('/delete-brand/:id',adminAuth.verifyAdmin,brandControl.getBrandDelete)
+
+//Order control
+router.get('/OrderControl',adminAuth.verifyAdmin,adminOrderControl.getOrderDetails)
+router.put('/updateOrderStatus/:orderId',adminAuth.verifyAdmin,adminOrderControl.putUpdateStatus)
+router.get('/orders/details/:orderId',adminAuth.verifyAdmin,adminOrderControl.getViewOrder)
 
 module.exports  = router;

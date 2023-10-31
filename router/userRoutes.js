@@ -73,6 +73,9 @@ userRout.post('/user/addAddress',userAuth.verifyUser,userControl.postAddress)
 userRout.post('/user/editUserAddress/:id', userAuth.verifyUser, userControl.postEditAddress);
 userRout.get('/deleteAddress/:id',userAuth.verifyUser,userControl.getDeleteAddress)
 
+//user change password
+userRout.get('/user/changepass',userAuth.verifyUser,userControl.getChangepass)
+userRout.post('/changePasswordData',userAuth.verifyUser,userControl.postChangepass)
 
 //User cart
 userRout.post('/addtocart/:productId',userAuth.verifyUser,cartControl.postAddtocart)
@@ -86,6 +89,7 @@ userRout.post('/placeOrder',userAuth.verifyUser,orderControl.postplaceOrder)
 
 //User order details
 userRout.get('/user/orderDetails',userAuth.verifyUser,orderControl.getOrderPage)
+
 
 
 
