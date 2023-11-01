@@ -1,3 +1,82 @@
+
 <%-include('../userView/include/user_header')-%>
-order details.....
+<section class="" style="background-color: #f5ebeb;">
+    <div class="container py-5 ">
+        <h3>Orders Status</h3>
+        <hr>
+        <div class="row d-flex justify-content-center align-items-center ">
+        <div class="col">
+            <% if(orders){%>
+                <% orders.forEach((order) =>{ %>
+                    <div class="card card-stepper m-3" style="border-radius: 10px;">
+                      <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div class="d-flex flex-column">
+                            <h4 >Your order has been <%= order.Status %></h4>
+                            <hr>
+                            <span class="text-muted small">Orderd by :<%= order.OrderDate %></span>
+                            <% if(order.Status == "Delivered"){%>
+                                <p class="text-success">Delivered</p>
+                                <%}else{%>
+                                    <span class="text-muted small">Expected by :<%= order.ExpectedDeliveryDate %></span>
+                                    <%}%>
+                                    <hr>
+                                    <h6>Order ID : <%= order._id%></h6>
+                          </div>
+                          <div>
+                            <a href="/orderProductView/<%= order._id%>">
+                                <button class="btn btn-outline-success" type="button">Product details</button>
+                            </a>
+                          </div>
+                        </div>
+                        <hr class="my-4">
+            
+                        <div class="d-flex flex-row justify-content-between align-items-center align-content-center">
+                                <% if(order.Status == "Pending"){%>
+                                <span class="d-flex justify-content-center align-items-center big-dot dot">
+                                <i class="fa fa-check text-white"></i></span>
+                                <%}else{%>
+                                <span class="dot"></span>
+                                <%}%>
+                          <hr class="flex-fill track-line">
+                                <% if(order.Status == "Order Placed"){%>
+                                <span class="d-flex justify-content-center align-items-center big-dot dot">
+                                <i class="fa fa-check text-white"></i></span>
+                                <%}else{%>
+                                <span class="dot"></span>
+                                <%}%>
+                          <hr class="flex-fill track-line">
+                                <% if(order.Status == "Shipped"){%>
+                                <span class="d-flex justify-content-center align-items-center big-dot dot">
+                                <i class="fa fa-check text-white"></i></span>
+                                <%}else{%>
+                                <span class="dot"></span>
+                                <%}%>
+                          <hr class="flex-fill track-line">
+                                <% if(order.Status == "Delivered"){%>
+                                <span class="d-flex justify-content-center align-items-center big-dot dot">
+                                <i class="fa fa-check text-white"></i></span>
+                                <%}else{%>
+                                <span class="dot"></span>
+                                <%}%>
+                        </div>
+            
+                        <div class="d-flex flex-row justify-content-between align-items-center">
+                          <div class="d-flex flex-column align-items-start"><span>----</span><span>Pending</span>
+                          </div>
+                          <div class="d-flex flex-column justify-content-center"><span>----</span><span>Order Placed</span></div>
+                          <div class="d-flex flex-column justify-content-center"><span>----</span><span>Shipped</span></div>
+                          <div class="d-flex flex-column align-items-end"><span>----</span><span>Delivered</span></div>
+                        </div>
+            
+                      </div>
+                    </div>
+                    <% }); %>
+          <%}else{%>
+            <h1 style="text-align: center;">Orders Data is Empty</h1>
+            <%}%>
+        </div>
+      </div>
+    </div>
+  </section>
 <%-include('../userView/include/user_footer')-%>

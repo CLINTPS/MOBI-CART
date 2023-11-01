@@ -9,6 +9,7 @@ const mongoose = require('mongoose')
 //Get check out page
 async function getOrderpage(req,res){
     let user=req.session.user
+    // req.session.totalPrice=total
     const userAddressData = await userCollection.findOne({ userName: user })
     res.render('userView/userCheckout',{title:"Checkout page",user,userAddressData})
 }
@@ -103,11 +104,23 @@ async function postplaceOrder(req, res) {
     }
 }
 
-
+//User order details page
 
 async function getOrderPage(req,res){
-    let user=req.session.user
-    res.render('userView/userOrder',{title:"Order details",user})
+    try{        
+        let user=req.session.user
+        let email=req.session.email
+        // console.log("orderss",email);
+        const userData= await userCollection.findOne({ email:email})
+        const userId = userData._id
+        const orders = await orderCollection.find({UserId:userId}).sort({OrderDate:-1}).populate('Items.productId')
+        // console.log("gyugffg",orders);
+        res.render('userView/userOrder',{title:"Order details",user,orders})
+    }catch (error) {
+        console.error("An error occurred:", error);
+        console.log("cart data note available 01--");
+        res.render("errorView/404admin");
+    }
 }
 
 module.exports={

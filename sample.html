@@ -1,173 +1,90 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Order Placed</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #fdfdfd;
-            text-align: center;
-            justify-content: center;
-            margin-top: 120px;
-        }
+<%-include('./partial/header')%>
+<link rel="stylesheet" href="/orders.css">
 
-        .container {
-            background-color: #b9ff99;
-            border: 1px solid #ccc;
-            box-shadow: 0 0 50px rgba(52, 51, 51, 0.9);
-            border-radius: 5px;
-            padding: 20px;
-            margin: 20px auto;
-            max-width: 500px;
-            /* max-height: 100vh; */
-        }
-
-        h3 {
-            color: #333;
-        }
-
-        p {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin: 10px;
-        }
-
-        .btn-success {
-            background-color: #268c26;
-        }
-
-        .btn-primary {
-            background-color: #007BFF;
-        }
-
-      h1 {
-        color: #88B04B;
-        font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-        font-weight: 900;
-        font-size: 40px;
-        margin-bottom: 10px;
-      }
-      p {
-        color: #404F5E;
-        font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-        font-size:20px;
-        margin: 0;
-      }
-
-    
-    .box{
-  margin-top:0px;
-  display:flex;
-  justify-content:space-around;
-  flex-wrap:wrap;
-}
-
-.alert{
-  margin-top:25px;
-  /* background-color:#b9ff99; */
-  font-size:35px;
-  font-family:sans-serif;
-  text-align:center;
-  width:300px;
-  height:100px;
-  padding-top: 150px;
-  position:relative;
-  border-radius: 5%;
-}
-
-.alert::before{
-  width:100px;
-  height:100px;
-  position:absolute;
-  border-radius: 100%;
-  inset: 20px 0px 0px 100px;
-  font-size: 60px;
-  line-height: 100px;
-  animation-name: reveal;
-  animation-duration: 1.5s;
-  animation-timing-function: ease-in-out;
-}
-
-.alert>.alert-body{
-  opacity:0;
-  animation-name: reveal-message;
-  animation-duration:1s;
-  animation-timing-function: ease-out;
-  animation-delay:1.5s;
-  animation-fill-mode:forwards;
-}
-
-@keyframes reveal-message{
-  from{
-    opacity:0;
-  }
-  to{
-    opacity:1;
-  }
-}
-
-.success{
-  color:green;
-}
-
-.success::before{
-  content: '✓';
-  background-color: rgb(255, 255, 255);
-  box-shadow: 0px 0px 12px 7px rgba(200,255,150,0.8) inset;
-  border : 5px solid green;
-}
-@keyframes reveal {
-  0%{
-    border: 5px solid transparent;
-    color: transparent;
-    box-shadow: 0px 0px 12px 7px rgba(255,250,250,0.8) inset;
-    transform: rotate(1000deg);
-  }
-  25% {
-    border-top:5px solid gray;
-    color: transparent;
-    box-shadow: 0px 0px 17px 10px rgba(255,250,250,0.8) inset;
-    }
-  50%{
-    border-right: 5px solid gray;
-    border-left : 5px solid gray;
-    color:transparent;
-    box-shadow: 0px 0px 17px 10px rgba(200,200,200,0.8) inset;
-  }
-  75% {
-    border-bottom: 5px solid gray;
-    color:gray;
-    box-shadow: 0px 0px 12px 7px rgba(200,200,200,0.8) inset;
-    }
-  100%{
-    border: 5px solid gray;
-    box-shadow: 0px 0px 12px 7px rgba(200,200,200,0.8) inset;
-  }
-}
-  </style>
-  <body>
-      <div class="container">
-        <div class="box"> 
-            <div class="success alert">
-              <div class="alert-body">
-                Success !
+<section style="background-color: #eee;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col">
+        <% if (orderData.length > 0) { %>
+          <% orderData.forEach((x) => { %>
+            <div class="card card-stepper p-4 shadow" style="border-radius: 10px;">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="d-flex flex-column">
+                    <span class="lead fw-normal">Your order has been <%= x.Status %></span>
+                    <ul>
+                      <% x.Items.forEach((item) => { %>
+                        <li>
+                          <b>
+                            <%= item.productId ? item.productId.ProductName : 'Product Name Not Available' %>
+                          </b><br>
+                          Quantity: <%= item.quantity %>
+                        </li>
+                        <br>
+                      <% }); %>
+                    </ul>
+                  </div>
+                  <div>
+                    <a href=""><button class="btn btn-outline-primary" type="button">Order details</button></a>
+                  </div>
+                </div>
+                <hr class="my-4">
+                <ul id="progressbar-2" class="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2">
+                  <li class="step0 active text-center" id="step1"></li>
+                  <li class="step0 active text-center" id="step2"></li>
+                  <li class="step0 active text-center" id="step3"></li>
+                  <li class="step0 text-muted text-end" id="step4"></li>
+                </ul>
+                <p class="lead fw-bold mb-4 pb-2" style="color: #276ef3;">Tracking Order</p>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="horizontal-timeline">
+                      <ul class="list-inline items d-flex justify-content-between">
+                        <li class="list-inline-item items-list">
+                          <p class="py-1 px-2 rounded text-white" style="background-color: #2790f3;">Ordered</p>
+                        </li>
+                        <% if (x.Status === "Cancelled") { %>
+                          <li class="list-inline-item items-list">
+                            <p class="py-1 px-2 rounded text-white" style="background-color: #2790f3;">Order Cancelled</p>
+                          </li>
+                        <% } else if (x.Status === "Shipped") { %>
+                          <li class="list-inline-item items-list">
+                            <p class="py-1 px-2 rounded text-white" style="background-color: #2790f3;">Shipped</p>
+                          </li>
+                          <li class="list-inline-item items-list">
+                            <p class="py-1 px-2 rounded text-white" style="background-color: #2790f3;">On the way</p>
+                          
+                          </li>
+                          <li class="list-inline-item items-list">
+                            <p class="py-1 px-2 rounded text-white" style="background-color: #2790f3;">expecting</p>
+                          </li>
+                        <% } else if (x.Status === "Delivered") { %>
+                          <li class="list-inline-item items-list text-end" style="margin-right: 8px;">
+                            <p class="py-1 px-2 rounded text-white" style="background-color: #2790f3;">Delivered</p>
+                          </li>
+                        <% } else if (x.Status === "Rejected") { %>
+                          <li class="list-inline-item items-list text-end" style="margin-right: 8px;">
+                            <span class="py-1 px-2 rounded text-white" style="background-color: #f32727;">Rejected By Seller</span>
+                          </li>
+                        <% } %>
+                      </ul>
+                      <% if (x.Status==="Delivered"){%>
+                        <a href=""><span class="py-1 px-2 rounded text-white" style="background-color: #f3ac27;">Invoice</span></a>
+                        <%}%>
+                        <!-- <a href=""><span class="py-1 px-2 rounded text-white" style="background-color: #f3ac27;">Cancell Order</span></a> -->
+                    </div>
+                  </div>
+                </div>
+                <br>
               </div>
             </div>
-          </div>
-          <h3>Your order has been placed successfully!</h3>
-          <p>Your order ID: 000000</p>
-          <a class="btn btn-success" href="/user/home">Go to Home</a>
-        <a class="btn btn-primary" href="/user/trackOrder">Track Order</a>
-        </div>
+          <br>
+        <% }); %>
+        <% } else { %>
+          <h3>No orderData Available</h3>
+        <% } %>
+      </div>
     </div>
-</body>
-</html>
+  </div>
+</section>
+<%-include('./partial/footer')%>

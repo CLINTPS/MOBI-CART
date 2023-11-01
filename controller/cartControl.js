@@ -177,6 +177,8 @@ const postAddtocart = async (req, res) => {
       total -= couponValue;
     }
 
+    req.session.totalPrice=total
+    
     res.json({
       success: true,
       subtotal: subtotal,
@@ -185,6 +187,7 @@ const postAddtocart = async (req, res) => {
       coupon: coupon,
       total: total,
     });
+
 
     }catch (error) {
       console.error('Error updating stock quantity:', error);

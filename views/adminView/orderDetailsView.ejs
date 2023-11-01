@@ -11,7 +11,7 @@
                   <thead>
                     <tr>
                         <th scope="col">Image</th>
-                        <th scope="col">Name</th>
+                        <th scope="col">Product Name</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Category</th>
                         <th scope="col">Brand</th>
@@ -24,6 +24,7 @@
                     <% if(ProductAllDetails){%>
                     <% ProductAllDetails.forEach((product)=>{ %>
                         <tr>
+            
                             <td><img src="/product-img/<%= product.productId.images[0] %>" alt="product image"
                                 style="height: 50px; width: 50px;">
                             </td>

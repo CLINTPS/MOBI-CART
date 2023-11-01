@@ -1,11 +1,13 @@
 const orderCollection = require('../model/order')
+const userCollection = require('../model/user')
+
 
 
 //Order details page
 async function getOrderDetails(req,res){
     try{
         var i = 0;
-        const ordersData = await orderCollection.find();
+        const ordersData = await orderCollection.find().sort({OrderDate:-1});
         console.log("orders : ",ordersData);
         res.render('adminView/orderDetails',{title:"Order detailrsrss",ordersData,i})
     }catch(err){

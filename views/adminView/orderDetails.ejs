@@ -37,6 +37,7 @@
                   <% if (ordersData[i].Status !== 'Cancelled') { %>
                       <% const currentStatus = ordersData[i].Status || 'Order Placed'; %>
                       <select class="form-select" id="statusSelect<%= i %>" onchange="updateOrderStatus('<%= ordersData[i]._id %>', this.value)">
+                        <option value="Pending" <%= currentStatus === 'Pending' ? 'selected' : '' %>>Pending</option>
                           <option value="Order Placed" <%= currentStatus === 'Order Placed' ? 'selected' : '' %>>Order Placed</option>
                           <option value="Shipped" <%= currentStatus === 'Shipped' ? 'selected' : '' %>>Shipped</option>
                           <option value="Delivered" <%= currentStatus === 'Delivered' ? 'selected' : '' %>>Delivered</option>
