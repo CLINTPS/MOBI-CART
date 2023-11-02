@@ -41,7 +41,7 @@ async function postCatagoriesData(req, res) {
   }catch(err){
     console.log(err);
     res.render('errorView/404admin')
-    res.status(500).send('Internal Server Error');
+    // res.status(500).send('Internal Server Error');
   }
 }
 
@@ -55,7 +55,7 @@ async function getCatagoriesedit(req,res){
   }catch(err){
     console.log(err);
     res.render('errorView/404admin')
-    res.status(500).send('Internal Server Error');
+    // res.status(500).send('Internal Server Error');
   }
   }
 
@@ -75,7 +75,7 @@ async function getCatagoriesedit(req,res){
     }catch(err){
       console.log(err);
       res.render('errorView/404admin')
-      res.status(500).send('Internal Server Error');
+      // res.status(500).send('Internal Server Error');
     }
     }
 
@@ -89,7 +89,7 @@ async function getCategoryDelete(req,res){
   }catch(err){
     console.log(err);
     res.render('errorView/404admin')
-    res.status(500).send('Internal Server Error');
+    // res.status(500).send('Internal Server Error');
   }
 }
 

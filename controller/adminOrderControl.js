@@ -7,13 +7,25 @@ const userCollection = require('../model/user')
 async function getOrderDetails(req,res){
     try{
         var i = 0;
-        const ordersData = await orderCollection.find().sort({OrderDate:-1});
-        console.log("orders : ",ordersData);
-        res.render('adminView/orderDetails',{title:"Order detailrsrss",ordersData,i})
+        const page = parseInt(req.query.page) || 1;
+        const orderDataCount = await orderCollection.find().count()
+        console.log("uuuuu",orderDataCount);
+        const pageSize = 5;
+        const totalOrder = Math.ceil(orderDataCount / pageSize);
+        console.log("wwttttwww",totalOrder);  
+        const skip = (page - 1) * pageSize;
+        const ordersData = await orderCollection.find().skip(skip).limit(pageSize); //.sort({OrderDate:-1});
+        console.log("yyyyy",ordersData); 
+        res.render('adminView/orderDetails',{title:"Order detailrsrss",
+                i,
+                ordersData,
+                orderDataCount:totalOrder,
+                page: page
+            })
     }catch(err){
     console.log(err);
     res.render('errorView/404admin')
-    res.status(500).send('Internal Server Error');
+    // res.status(500).send('Internal Server Error');
   }
 }
 
@@ -42,7 +54,7 @@ async function getViewOrder(req,res){
     }catch(err){
     console.log(err);
     res.render('errorView/404admin')
-    res.status(500).send('Internal Server Error');
+    // res.status(500).send('Internal Server Error');
   }
 }
 

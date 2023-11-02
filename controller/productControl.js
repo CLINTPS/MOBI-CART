@@ -5,13 +5,19 @@ const { ObjectId } = require('mongodb');
 
 //dashboard to product details
 async function getProductPage(req,res){
-    if(req.session.adminLogin){
-      var i=0
-      const productData = await productsCollections.find({});
-      res.render('adminView/products',{title:"Product Details",productData,i})
-    }else{
-      res.redirect('/admin')
-    }
+    try{
+        if(req.session.adminLogin){
+          var i=0
+          const productData = await productsCollections.find({});
+          res.render('adminView/products',{title:"Product Details",productData,i})
+        }else{
+          res.redirect('/admin')
+        }
+    }catch(err){
+        console.log(err);
+        res.render('errorView/404admin')
+        // res.status(500).send('Internal Server Error');
+      }
 }
 //add get product
 async function getProductdata(req,res){

@@ -43,7 +43,7 @@ async function postbrandsData(req, res) {
   catch(err){
     console.log(err);
     res.render('errorView/404admin')
-    res.status(500).send('Internal Server Error');
+    // res.status(500).send('Internal Server Error');
   } 
   // catch (error) {
   //     console.error(error);
@@ -60,7 +60,7 @@ async function getBrandedit(req,res){
   }catch(err){
     console.log(err);
     res.render('errorView/404admin')
-    res.status(500).send('Internal Server Error');
+    // res.status(500).send('Internal Server Error');
   } 
 }
 
@@ -80,7 +80,7 @@ async function postBrandedit(req,res){
   }catch(err){
     console.log(err);
     res.render('errorView/404admin')
-    res.status(500).send('Internal Server Error');
+    // res.status(500).send('Internal Server Error');
   } 
 
   }
@@ -95,7 +95,7 @@ async function getBrandDelete(req,res){
   }catch(err){
     console.log(err);
     res.render('errorView/404admin')
-    res.status(500).send('Internal Server Error');
+    // res.status(500).send('Internal Server Error');
   } 
 }
 

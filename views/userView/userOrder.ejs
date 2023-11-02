@@ -1,4 +1,3 @@
-
 <%-include('../userView/include/user_header')-%>
 <section class="" style="background-color: #f5ebeb;">
     <div class="container py-5 ">
@@ -17,7 +16,9 @@
                             <span class="text-muted small">Orderd by :<%= order.OrderDate %></span>
                             <% if(order.Status == "Delivered"){%>
                                 <p class="text-success">Delivered</p>
-                                <%}else{%>
+                                <%}else if(order.Status == "Rejected"){%>
+                                  <p class="text-danger">Rejected</p>
+                                  <%}else{%>
                                     <span class="text-muted small">Expected by :<%= order.ExpectedDeliveryDate %></span>
                                     <%}%>
                                     <hr>
@@ -27,6 +28,9 @@
                             <a href="/orderProductView/<%= order._id%>">
                                 <button class="btn btn-outline-success" type="button">Product details</button>
                             </a>
+                            <a href="#">
+                              <button class="btn btn-outline-danger" type="button">Cancel Order</button>
+                          </a>
                           </div>
                         </div>
                         <hr class="my-4">
@@ -59,15 +63,32 @@
                                 <%}else{%>
                                 <span class="dot"></span>
                                 <%}%>
+                                <% if(order.Status == "Rejected"){%>
+                                  <hr class="flex-fill track-line">
+                                  <span class="d-flex justify-content-center align-items-center big-dot dot custom-dot">
+                                  <i class="fa fa-check text-white"></i></span>
+                                  <%}%>
+                                  
+
                         </div>
-            
-                        <div class="d-flex flex-row justify-content-between align-items-center">
-                          <div class="d-flex flex-column align-items-start"><span>----</span><span>Pending</span>
+                        <% if(order.Status == "Rejected"){%>
+                          <div class="d-flex flex-row justify-content-between align-items-center">
+                            <div class="d-flex flex-column align-items-start"><span>----</span><span>Pending</span>
+                            </div>
+                            <div class="d-flex flex-column justify-content-center"><span>----</span><span>Order Placed</span></div>
+                            <div class="d-flex flex-column justify-content-center"><span>----</span><span>Shipped</span></div>
+                            <div class="d-flex flex-column justify-content-center"><span>----</span><span>Delivered</span></div>
+                            <div class="d-flex flex-column align-items-end"><span>----</span><span>Rejected</span></div>
                           </div>
-                          <div class="d-flex flex-column justify-content-center"><span>----</span><span>Order Placed</span></div>
-                          <div class="d-flex flex-column justify-content-center"><span>----</span><span>Shipped</span></div>
-                          <div class="d-flex flex-column align-items-end"><span>----</span><span>Delivered</span></div>
-                        </div>
+                          <%}else{%>
+                            <div class="d-flex flex-row justify-content-between align-items-center">
+                              <div class="d-flex flex-column align-items-start"><span>----</span><span>Pending</span>
+                              </div>
+                              <div class="d-flex flex-column justify-content-center"><span>----</span><span>Order Placed</span></div>
+                              <div class="d-flex flex-column justify-content-center"><span>----</span><span>Shipped</span></div>
+                              <div class="d-flex flex-column align-items-end"><span>----</span><span>Delivered</span></div>
+                            </div>
+                        <%}%>
             
                       </div>
                     </div>

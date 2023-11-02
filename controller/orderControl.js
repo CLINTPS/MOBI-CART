@@ -8,10 +8,16 @@ const mongoose = require('mongoose')
 
 //Get check out page
 async function getOrderpage(req,res){
-    let user=req.session.user
-    // req.session.totalPrice=total
-    const userAddressData = await userCollection.findOne({ userName: user })
-    res.render('userView/userCheckout',{title:"Checkout page",user,userAddressData})
+    try{
+        let user=req.session.user
+        // req.session.totalPrice=total
+        const userAddressData = await userCollection.findOne({ userName: user })
+        res.render('userView/userCheckout',{title:"Checkout page",user,userAddressData})
+    }catch (error) {
+        console.error("An error occurred:", error);
+        console.log("cart data note available");
+        res.render("errorView/404");
+    }
 }
 
 //post ckeck out page
@@ -100,7 +106,7 @@ async function postplaceOrder(req, res) {
     } catch (error) {
         console.error("An error occurred:", error);
         console.log("cart data note available 01--");
-        res.render("errorView/404admin");
+        res.render("errorView/404");
     }
 }
 
@@ -113,18 +119,51 @@ async function getOrderPage(req,res){
         // console.log("orderss",email);
         const userData= await userCollection.findOne({ email:email})
         const userId = userData._id
-        const orders = await orderCollection.find({UserId:userId}).sort({OrderDate:-1}).populate('Items.productId')
-        // console.log("gyugffg",orders);
+        // .sort({OrderDate:-1})
+        const orders = await orderCollection.find({UserId:userId}).populate('Items.productId')
+        console.log("gyugffg",orders);
         res.render('userView/userOrder',{title:"Order details",user,orders})
     }catch (error) {
         console.error("An error occurred:", error);
         console.log("cart data note available 01--");
-        res.render("errorView/404admin");
+        res.render("errorView/404");
     }
 }
+
+//User order product view details
+async function getOrderProductViewPage(req,res){
+    try{
+        let orderID=req.params.id
+        if (!mongoose.Types.ObjectId.isValid(orderID)) {
+            // Handle invalid order ID here, e.g., render an error page
+            console.error("Invalid order ID");
+            res.render("errorView/404");
+            return;
+        }
+        console.log(orderID);
+        let user=req.session.user
+        const orders = await orderCollection.findOne({_id:orderID}).populate('Items.productId')
+        console.log("222222",orders);
+        const TotalPrice = orders.TotalPrice
+        if(!orders){
+            console.log("DATA NOT");
+            res.render("errorView/404");
+        }
+        // const productId = orderData.Items[0].productId;
+        // const productData = await productsCollections.findOne({_id:productId})
+        // console.log("33333333",productData);
+        res.render('userView/userOrderProductView',{title:"Order product view",user,TotalPrice,orderData:orders.Items})
+    }catch (error) {
+        console.error("An error occurred:", error);
+        console.log("cart data note available 02--");
+        res.render("errorView/404");
+    }
+}
+
 
 module.exports={
     getOrderpage,
     postplaceOrder,
     getOrderPage,
+    getOrderProductViewPage
 }

@@ -293,6 +293,7 @@ async function getUserprofile(req, res) {
         res.render('userView/userProfile', { title: "Profile view", user, UserData })
     } catch (error) {
         console.log("can't profile details");
+        res.render("errorView/404");
     }
 }
 
@@ -304,7 +305,7 @@ async function getAddressBook(req, res) {
         res.render('userView/userAddress', { title: "Address view", user, userAddressData })
     } catch (error) {
         console.log("can't add Address");
-        res.render("errorView/404admin");
+        res.render("errorView/404");
     }
 }
 // add address
@@ -328,7 +329,7 @@ const postAddress = async (req, res) => {
         res.redirect('/user/AddressBook')
     } catch (error) {
         console.log("can't post Address");
-        res.render("errorView/404admin");
+        res.render("errorView/404");
     }
 }
 
@@ -360,7 +361,7 @@ async function postEditAddress(req,res){
  
     }catch (error) {
         console.log("can't post Address");
-        res.render("errorView/404admin");
+        res.render("errorView/404");
     }
 }
 
@@ -381,7 +382,7 @@ async function getDeleteAddress(req, res) {
         res.redirect('/user/AddressBook')
     }catch(error){
         console.log("reached:"+error);
-        res.render("errorView/404admin");
+        res.render("errorView/404");
     }
 }
 
@@ -394,7 +395,7 @@ async function getChangepass(req,res){
         res.render('userView/ChangePass',{title:"Change password",user,err:false,success:false})
     }catch(error){
         console.log("Pass cahnge:"+error);
-        res.render("errorView/404admin");
+        res.render("errorView/404");
     }
 }
 

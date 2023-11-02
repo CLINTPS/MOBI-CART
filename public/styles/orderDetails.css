@@ -30,6 +30,9 @@
     font-size: 12px;
     }
     
+    .custom-dot {
+        background-color: red;
+    }
     .card-stepper {
     z-index: 0
     }

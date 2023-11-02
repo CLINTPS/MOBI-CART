@@ -15,6 +15,7 @@ async function getProducDetails(req,res){
             res.render('userView/product-Details',{title:"product details",user,productData})
         }catch(error){
             res.status(500).send('Internal server error')
+            res.render("errorView/404");
         }
 }
 
@@ -25,11 +26,25 @@ async function getAllProducts(req,res){
         let user = req.session.user
         console.log(user);
         const brandData = await brandCollection.find({})
-        const productData = await productsCollections.find({});
-        console.log(productData);   
-        res.render('userView/product-Full-Details',{title:"All product",user,productData,brandData})
+        const page = parseInt(req.query.page) || 1;
+        const productDataCount = await productsCollections.find().count()
+        console.log("qqqqqqq",productDataCount);
+        const pageSize = 2;
+        const totalProducts = Math.ceil(productDataCount / pageSize);
+        console.log("wwwww",totalProducts);  
+        const skip = (page - 1) * pageSize;
+        const productData = await productsCollections.find().skip(skip).limit(pageSize); 
+        console.log("rrrrrr",productData); 
+        res.render('userView/product-Full-Details',{title:"All product",
+                user,
+                brandData,
+                productData,
+                productDataCount : totalProducts,
+                page: page
+            })
     }catch(error){
         res.status(500).send('Internal server error')
+        res.render("errorView/404");
     }
 }
 

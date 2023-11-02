@@ -89,6 +89,8 @@ userRout.post('/placeOrder',userAuth.verifyUser,orderControl.postplaceOrder)
 
 //User order details
 userRout.get('/user/orderDetails',userAuth.verifyUser,orderControl.getOrderPage)
+//User order view product
+userRout.get('/orderProductView/:id',userAuth.verifyUser,orderControl.getOrderProductViewPage)
 
 
 
