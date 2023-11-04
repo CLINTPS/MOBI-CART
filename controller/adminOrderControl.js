@@ -9,13 +9,13 @@ async function getOrderDetails(req,res){
         var i = 0;
         const page = parseInt(req.query.page) || 1;
         const orderDataCount = await orderCollection.find().count()
-        console.log("uuuuu",orderDataCount);
+        // console.log("uuuuu",orderDataCount);
         const pageSize = 5;
         const totalOrder = Math.ceil(orderDataCount / pageSize);
-        console.log("wwttttwww",totalOrder);  
+        // console.log("wwttttwww",totalOrder);  
         const skip = (page - 1) * pageSize;
         const ordersData = await orderCollection.find().skip(skip).limit(pageSize); //.sort({OrderDate:-1});
-        console.log("yyyyy",ordersData); 
+        // console.log("yyyyy",ordersData); 
         res.render('adminView/orderDetails',{title:"Order detailrsrss",
                 i,
                 ordersData,

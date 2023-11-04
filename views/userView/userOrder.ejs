@@ -1,5 +1,5 @@
 <%-include('../userView/include/user_header')-%>
-<section class="" style="background-color: #f5ebeb;">
+<section class="" style="background: linear-gradient(135deg, #817f7f, #ffffff);">
     <div class="container py-5 ">
         <h3>Orders Status</h3>
         <hr>
@@ -18,7 +18,9 @@
                                 <p class="text-success">Delivered</p>
                                 <%}else if(order.Status == "Rejected"){%>
                                   <p class="text-danger">Rejected</p>
-                                  <%}else{%>
+                                  <%}else if(order.Status == "Cancelled"){%>
+                                  <p class="text-danger">Cancelled</p>
+                                    <%}else{%>
                                     <span class="text-muted small">Expected by :<%= order.ExpectedDeliveryDate %></span>
                                     <%}%>
                                     <hr>
@@ -28,9 +30,17 @@
                             <a href="/orderProductView/<%= order._id%>">
                                 <button class="btn btn-outline-success" type="button">Product details</button>
                             </a>
-                            <a href="#">
-                              <button class="btn btn-outline-danger" type="button">Cancel Order</button>
-                          </a>
+                            <% if(order.Status == "Delivered"){%>
+                              <a href="#">
+                                <button class="btn btn-outline-warning" type="button">Download Invoice</button>
+                            </a>
+                              <%}else if(order.Status == "Cancelled" || order.Status == "Rejected"){%>
+
+                                <%}else{%>
+                                  <a href="/cancelOrderData/<%= order._id%>">
+                                    <button class="btn btn-outline-danger" type="button">Cancel Order</button>
+                                </a>
+                                  <%}%>
                           </div>
                         </div>
                         <hr class="my-4">
@@ -68,27 +78,24 @@
                                   <span class="d-flex justify-content-center align-items-center big-dot dot custom-dot">
                                   <i class="fa fa-check text-white"></i></span>
                                   <%}%>
-                                  
+                                  <% if(order.Status == "Cancelled"){%>
+                                    <hr class="flex-fill track-line">
+                                    <span class="d-flex justify-content-center align-items-center big-dot dot custom-dot">
+                                    <i class="fa fa-check text-white"></i></span>
+                                    <%}%>
 
                         </div>
-                        <% if(order.Status == "Rejected"){%>
-                          <div class="d-flex flex-row justify-content-between align-items-center">
-                            <div class="d-flex flex-column align-items-start"><span>----</span><span>Pending</span>
-                            </div>
-                            <div class="d-flex flex-column justify-content-center"><span>----</span><span>Order Placed</span></div>
-                            <div class="d-flex flex-column justify-content-center"><span>----</span><span>Shipped</span></div>
-                            <div class="d-flex flex-column justify-content-center"><span>----</span><span>Delivered</span></div>
+                        <div class="d-flex flex-row justify-content-between align-items-center">
+                          <div class="d-flex flex-column align-items-start"><span>----</span><span>Pending</span></div>
+                          <div class="d-flex flex-column justify-content-center"><span>----</span><span>Order Placed</span></div>
+                          <div class="d-flex flex-column justify-content-center"><span>----</span><span>Shipped</span></div>
+                          <div class="d-flex flex-column justify-content-center"><span>----</span><span>Delivered</span></div>
+                          <% if(order.Status == "Rejected"){%>
                             <div class="d-flex flex-column align-items-end"><span>----</span><span>Rejected</span></div>
-                          </div>
-                          <%}else{%>
-                            <div class="d-flex flex-row justify-content-between align-items-center">
-                              <div class="d-flex flex-column align-items-start"><span>----</span><span>Pending</span>
-                              </div>
-                              <div class="d-flex flex-column justify-content-center"><span>----</span><span>Order Placed</span></div>
-                              <div class="d-flex flex-column justify-content-center"><span>----</span><span>Shipped</span></div>
-                              <div class="d-flex flex-column align-items-end"><span>----</span><span>Delivered</span></div>
+                            <%}else if(order.Status == "Cancelled"){%>
+                              <div class="d-flex flex-column align-items-end"><span>----</span><span>Cancelled</span></div>
+                              <%}%>
                             </div>
-                        <%}%>
             
                       </div>
                     </div>

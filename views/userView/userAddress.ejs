@@ -1,12 +1,12 @@
 <%- include('../userView/include/user_header') -%>
-    <div class="col-lg-12">
+    <div class="col-lg-12" style="background: linear-gradient(135deg, #817f7f, #ffffff);;">
         <header class="d-sm-flex align-items-center border-bottom mb-4 pb-3"></header>
 
         <% userAddressData.address.forEach(address=> { %>
             <div class="row justify-content-center mb-3">
                 <div class="col-md-6">
                     <div class="card shadow border rounded-3">
-                        <div class="card-body" style="background: linear-gradient(135deg, #ffffff, #b0f2af);">
+                        <div class="card-body" style="background: linear-gradient(135deg, #ffffff, #ffffff);">
 
 
 
@@ -42,11 +42,11 @@
 
                                     <!-- <a href="/editAddress/<%= address._id%>" 
                                   class="btn btn-secondary"> Edit</a> -->
-                                    <button class="btn btn-success"
+                                    <button class="btn btn-outline-success"
                                         onclick="openEditAddressModal('<%= address._id %>')">Edit</button>
                                     <a href="/deleteAddress/<%= address._id%>"
                                         onclick="return confirm('Do you want delete the address')"
-                                        class="btn btn-danger">Delete</a>
+                                        class="btn btn-outline-danger">Delete</a>
                                 </div>
                             </div>
                         </div>

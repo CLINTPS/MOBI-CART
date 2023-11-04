@@ -1,8 +1,8 @@
 <%- include('../userView/include/user_header') -%>
-<div class="text-center center-div d-flex align-items-center justify-content-center mt-4 mb-4">
-    <div class="card text-center" style="width: 500px; background-color: #f0f0f0; border: 1px solid #ccc; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+<div class="text-center center-div d-flex align-items-center justify-content-center mt-4 mb-4" style="background: linear-gradient(135deg, #817f7f, #ffffff);">
+    <div class="card text-center" style="width: 400px; background-color: #f0f0f0; border: 2px solid #ccc; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
 
-        <div class="card-header h4 text-primary bg-white" style="border-bottom: 1px solid #ccc; padding: 10px;">Password Reset</div>
+        <div class="card-header h4 text-dark bg-white" style="border-bottom: 1px solid #0a0a0a; padding: 15px;">Password Reset</div>
 
         <div class="card-body px-5" style="padding: 20px;">
             <% if(err){ %>
@@ -27,7 +27,7 @@
                     <input type="password" name="confirmPassword" placeholder="Confirm Password" id="confirmpass1" onkeyup="checkPasswordMatch();" required class="form-control">
                 </div>
 
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Reset Password</button>
+                <button type="submit" class="btn btn-outline-success" style="width: 100%;">Reset Password</button>
             </form>
             <p style="margin: 15px 0;">
                 <a href="/user/profile">Back to profile</a>

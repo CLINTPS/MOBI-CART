@@ -7,6 +7,20 @@
 <body>
     <div class="container-fluid ">
         <h2>USER DETAILS</h2>
+        <form action="/admin/searchCustomer" method="POST" name="name">
+            <div class="form-outline d-flex p-3">
+                <input type="search" class="form-control" name="search" placeholder="Search" >
+                <button id="search-button" type="submit" class="btn btn-outline-primary mx-2">
+                    <lord-icon
+                        class="fa-solid fa-magnifying-glass"
+                        trigger="hover"
+                        colors="primary:#fff"
+                        style="width:12px;height:20px">
+                    </lord-icon>
+                </button>
+            </div>
+        </form>
+        
         <br>
         <table class="table table-striped table-bordered">
             <thead>

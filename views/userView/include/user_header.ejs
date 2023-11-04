@@ -48,13 +48,14 @@
                         <input type="search" placeholder="search product">
                         <img src="/images/search.svg" alt="">
                     </div>
-                    <!-- <a href="">
-
-                        <img class="whish" src="/images/heart.svg" alt="">
-                    </a> -->
-
+                    <a href="/allProducts">
+                        <img width="30" height="28" src="https://img.icons8.com/ios/30/000000/shopping-mall.png" alt="shopping-mall"/>
+                        <!-- <img width="34" height="34" src="https://img.icons8.com/material-rounded/24/shop.png" alt="shop"/> -->
+                    </a>
                     <a href="/user/cart">
                         <img class="cart" src="/images/cart.svg" alt="">
+                        <!-- <img width="30" height="36" src="https://img.icons8.com/pulsar-line/48/shopping-cart.png" alt="shopping-cart"/> -->
+                        <!-- <img width="34" height="36" src="https://img.icons8.com/sf-black-filled/64/shopping-cart.png" alt="shopping-cart"/> -->
                         <span id="cartCnt"></span>
                     </a>
                     
@@ -63,11 +64,11 @@
                     </a> -->
                     <div class="dropdown">
                         <%if(user){%>
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <%=user%>
                             </button>
                             <%}else{%>
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Account
                                   </button>
                                 <%}%>

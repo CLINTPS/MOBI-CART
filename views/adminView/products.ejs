@@ -73,5 +73,30 @@
                 </tr>
                 <%}%>
             </div>
-                      
         </table>
+
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3" id="pagination-navbar">
+            <ul class="pagination">
+                <li class="page-item <%= page <= 1 ? 'disabled' : '' %>">
+                    <a class="page-link" href="<%= page <= 1 ? '#' : '/admin/productPage?page=' + (page - 1) %>" style="color: black;" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="/admin/productPage?page=<%= page %>" style="color: black"><%= page %></a>
+                </li>
+                <li class="page-item <%= page >= productDataCount ? 'disabled' : '' %>">
+                    <a class="page-link" href="<%= page >= productDataCount ? '#' : '/admin/productPage?page=' + (page + 1) %>" style="color: black;" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <style>
+            #pagination-navbar {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+            }
+        </style>

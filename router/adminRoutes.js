@@ -1,6 +1,7 @@
 const router=require('express').Router();
 const uplode = require('../middleware/multer')
 const adminAuth = require('../middleware/adminAuth')
+const errorHandler = require('../middleware/errorMiddleware')
 const adminControl = require('../controller/adminControl')
 const categoryControl = require('../controller/categoryControl')
 const productControl = require('../controller/productControl')
@@ -10,12 +11,17 @@ const adminOrderControl = require('../controller/adminOrderControl')
 
 //admin
 router.get("/",adminAuth.adminExist,adminControl.getAdminpage);
-router.post('/adminlogin',adminAuth.adminExist,adminControl.postAdminpage);
+router.post('/',adminAuth.adminExist,adminControl.postAdminpage);
+
+// admin Log-out
 router.get("/adLogout", adminControl.adminLogout);
 
 //Admin user control
 router.get('/userDetails',adminAuth.verifyAdmin,adminControl.userdetails)
+router.post('/searchCustomer',adminAuth.verifyAdmin,adminControl.userSerch)
 router.get('/block/:id',adminAuth.verifyAdmin,adminControl.UserStatus)
+
+//Dash board
 router.get('/dashboard',adminAuth.verifyAdmin,adminControl.getDashboard)
 
 //category
@@ -35,13 +41,13 @@ const uploadFields = [
     { name: "image3", maxCount:1},
 ];
 
-router.get('/productPage',productControl.getProductPage)
-router.get('/add-productPage',productControl.getProductdata)
+router.get('/productPage',adminAuth.verifyAdmin,productControl.getProductPage)
+router.get('/add-productPage',adminAuth.verifyAdmin,productControl.getProductdata)
 router.post('/add-productPage',uplode.fields(uploadFields),productControl.postProductdata)
-router.get('/edit-product/:id',productControl.getProductedit)
+router.get('/edit-product/:id',adminAuth.verifyAdmin,productControl.getProductedit)
 router.post('/update-productPage/:id',uplode.fields(uploadFields),productControl.postProductedit)
-router.get('/delete-product/:id',productControl.getProductDelete)
-router.get('/productblock/:id',productControl.getBlockProduct)
+router.get('/delete-product/:id',adminAuth.verifyAdmin,productControl.getProductDelete)
+router.get('/productblock/:id',adminAuth.verifyAdmin,productControl.getBlockProduct)
 
 //Brand
 router.get('/brand',adminAuth.verifyAdmin,brandControl.getBrand)
@@ -55,5 +61,7 @@ router.get('/delete-brand/:id',adminAuth.verifyAdmin,brandControl.getBrandDelete
 router.get('/OrderControl',adminAuth.verifyAdmin,adminOrderControl.getOrderDetails)
 router.put('/updateOrderStatus/:orderId',adminAuth.verifyAdmin,adminOrderControl.putUpdateStatus)
 router.get('/orders/details/:orderId',adminAuth.verifyAdmin,adminOrderControl.getViewOrder)
+
+router.use(errorHandler.errorHandler)
 
 module.exports  = router;

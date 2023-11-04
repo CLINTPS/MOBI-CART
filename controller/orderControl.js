@@ -42,10 +42,10 @@ async function postplaceOrder(req, res) {
         }
 
         const userID = userData._id;
-        console.log("order time user id ",userID);
+        // console.log("order time user id ",userID);
 
         const cartData = await cartCollection.findOne({ userId: userID }).populate("products.productId");
-        console.log("cartData",cartData);
+        // console.log("cartData",cartData);
 
         if (!cartData) {
             console.log("Cart data not available");
@@ -80,7 +80,7 @@ async function postplaceOrder(req, res) {
 
         const order = await newOrder.save();
         req.session.orderID = order._id;
-        console.log("Order detail", order);
+        // console.log("Order detail", order);
         await cartCollection.findByIdAndDelete(cartData._id);
 
         for (const item of order.Items) {
@@ -121,7 +121,7 @@ async function getOrderPage(req,res){
         const userId = userData._id
         // .sort({OrderDate:-1})
         const orders = await orderCollection.find({UserId:userId}).populate('Items.productId')
-        console.log("gyugffg",orders);
+        // console.log("gyugffg",orders);
         res.render('userView/userOrder',{title:"Order details",user,orders})
     }catch (error) {
         console.error("An error occurred:", error);
@@ -143,7 +143,7 @@ async function getOrderProductViewPage(req,res){
         console.log(orderID);
         let user=req.session.user
         const orders = await orderCollection.findOne({_id:orderID}).populate('Items.productId')
-        console.log("222222",orders);
+        // console.log("222222",orders);
         const TotalPrice = orders.TotalPrice
         if(!orders){
             console.log("DATA NOT");
@@ -160,10 +160,47 @@ async function getOrderProductViewPage(req,res){
     }
 }
 
+//Cancel order 
+async function getCancelOrder(req,res){
+    try{
+        let id=req.params.id
+        console.log("111",id);
+        const orderData = await orderCollection.findById(id)
+        console.log("222",orderData);
+        if(!orderData){
+            console.log("Order datas no fount");
+            res.render("errorView/404");
+        }
+
+        if(orderData.Status === "Order Placed" || orderData.Status === "Shipped" || orderData.Status === "Pending"){
+            const updateProducts = orderData.Items
+            console.log("333",updateProducts);
+            for(const product of updateProducts){
+                const cancelProduct = await productsCollections.findById(product.productId)
+                console.log("444",cancelProduct);
+                if(cancelProduct){
+                    cancelProduct.AvailableQuantity += product.quantity;
+                    await cancelProduct.save();
+                }
+            }
+            orderData.Status = "Cancelled";
+            await orderData.save();
+            res.redirect('/user/orderDetails')
+        }else{
+            console.log("Order canot be cancelled");
+        }
+
+    }catch (error) {
+        console.error("An error occurred:", error);
+        console.log("cart data note available 03--");
+        res.render("errorView/404");
+    }
+}
 
 module.exports={
     getOrderpage,
     postplaceOrder,
     getOrderPage,
-    getOrderProductViewPage
+    getOrderProductViewPage,
+    getCancelOrder
 }

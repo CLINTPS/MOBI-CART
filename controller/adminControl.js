@@ -32,7 +32,12 @@ function postAdminpage(req, res){
 }
 // TO dashboard
 function getDashboard (req,res){
+    try{
         res.render('adminView/dashboard',{title:"admin-Dashboard"})
+    }catch(error){
+
+        res.render("errorView/404admin");
+    }
 }
 
 //To coustomer details
@@ -51,6 +56,25 @@ async function  userdetails (req, res){
     }
 };
 
+//User serch
+async function userSerch(req,res){
+    try{
+        var i = 0;
+        const data = req.body.search; 
+        console.log(data);
+        let useData = await userCollection.find({
+            userName: { $regex: "^" + data, $options: "i" },
+    });
+    useData.forEach(data => {
+        data.createdAt = new Date(data.createdAt);
+    });
+    console.log(`Search Data ${useData} `);
+    res.render('adminView/customers',{title:"coustome details",useData,i})
+    }catch(error){
+
+        res.render("errorView/404admin");
+    }
+}
 
 //user block unblock
 const UserStatus = async (req, res) => {
@@ -73,6 +97,7 @@ const UserStatus = async (req, res) => {
     res.redirect("/admin/userDetails");
 };
 
+
 //admin logout
 function adminLogout(req,res){
     req.session.destroy((err)=>{
@@ -94,5 +119,6 @@ module.exports={
     adminLogout,
     userdetails,
     UserStatus,
+    userSerch,
     getDashboard
 }

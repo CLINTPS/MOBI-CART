@@ -5,29 +5,36 @@ const { ObjectId } = require('mongodb');
 
 //dashboard to product details
 async function getProductPage(req,res){
-    try{
-        if(req.session.adminLogin){
+    try{ 
           var i=0
-          const productData = await productsCollections.find({});
-          res.render('adminView/products',{title:"Product Details",productData,i})
-        }else{
-          res.redirect('/admin')
-        }
+          const page = parseInt(req.query.page) || 1;
+          const productDataCount = await productsCollections.find().count()
+          const pageSize = 3;
+          const totalOrder = Math.ceil(productDataCount / pageSize);
+          const skip = (page - 1) * pageSize;
+          const productData = await productsCollections.find().skip(skip).limit(pageSize);
+          res.render('adminView/products',{title:"Product Details",
+          i,
+          productData,
+          productDataCount:totalOrder,
+          page: page
+        })
     }catch(err){
         console.log(err);
         res.render('errorView/404admin')
-        // res.status(500).send('Internal Server Error');
       }
 }
 //add get product
 async function getProductdata(req,res){
-    if(req.session.adminLogin){
+    try{
         const categoryData = await categoriesCollection.find({});
         const brandData = await brandCollection.find({});
         res.render('adminView/add-products',{title:"add new products",categoryData,brandData})
-    }else{
-        res.redirect('/admin')
-    }
+    }catch(err){
+        console.log(err);
+        res.render('errorView/404admin')
+      }
+
 }
 
 
@@ -65,7 +72,6 @@ async function postProductdata(req,res) {
 
 //edit get product
 async function getProductedit(req,res){
-    if(req.session.adminLogin){
         try{
             let id = req.params.id
             console.log(id);
@@ -76,11 +82,9 @@ async function getProductedit(req,res){
             res.render('adminView/edit-products',{title:"add new products",categoryData,brandData,ProductData})
         }catch(err){
             res.render.err=true
-            res.redirect('/admin/404')
+            res.render('errorView/404admin')
         }
-    }else{
-        res.redirect('/admin/productPage')
-    }
+
 }
 //edit post product
 async function postProductedit(req,res) {
@@ -131,24 +135,34 @@ async function postProductedit(req,res) {
 
 //Delete product
 async function getProductDelete(req,res){
-    const id = req.params.id
-    console.log(id);
-    await productsCollections.deleteOne({_id:id})
-    res.redirect('/admin/productPage')
+    try{
+        const id = req.params.id
+        // console.log(id);
+        await productsCollections.deleteOne({_id:id})
+        res.redirect('/admin/productPage')
+    }catch(err){
+        console.log(err);
+        res.render('errorView/404admin')
+      }
 }
 
 //Block Product
 async function getBlockProduct(req,res){
-    const id = req.params.id
-    // console.log(id);
-    const data= await productsCollections.findOne({_id:id})
-    if(data.Status===true){
-        await productsCollections.updateOne({_id:id},{$set:{Status:false}})
-    }else{
-        await productsCollections.updateOne({_id:id},{$set:{Status:true}})
-
-    }
-    res.redirect('/admin/productPage')
+    try{
+        const id = req.params.id
+        // console.log(id);
+        const data= await productsCollections.findOne({_id:id})
+        if(data.Status===true){
+            await productsCollections.updateOne({_id:id},{$set:{Status:false}})
+        }else{
+            await productsCollections.updateOne({_id:id},{$set:{Status:true}})
+    
+        }
+        res.redirect('/admin/productPage')
+    }catch(err){
+        console.log(err);
+        res.render('errorView/404admin')
+      }
 }
 
 
