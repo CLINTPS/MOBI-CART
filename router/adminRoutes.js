@@ -41,6 +41,7 @@ const uploadFields = [
     { name: "image3", maxCount:1},
 ];
 
+
 router.get('/productPage',adminAuth.verifyAdmin,productControl.getProductPage)
 router.get('/add-productPage',adminAuth.verifyAdmin,productControl.getProductdata)
 router.post('/add-productPage',uplode.fields(uploadFields),productControl.postProductdata)
@@ -48,6 +49,7 @@ router.get('/edit-product/:id',adminAuth.verifyAdmin,productControl.getProducted
 router.post('/update-productPage/:id',uplode.fields(uploadFields),productControl.postProductedit)
 router.get('/delete-product/:id',adminAuth.verifyAdmin,productControl.getProductDelete)
 router.get('/productblock/:id',adminAuth.verifyAdmin,productControl.getBlockProduct)
+router.post('/searchProduct',adminAuth.verifyAdmin,productControl.serchProduct)
 
 //Brand
 router.get('/brand',adminAuth.verifyAdmin,brandControl.getBrand)

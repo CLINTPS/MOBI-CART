@@ -59,13 +59,17 @@ async function postplaceOrder(req, res) {
         })
         console.log("address 0001:",addressNew); 
 
+        if (addressNew) {
+            var addressObjIndex = addressNew.address.findIndex(addr=>addr._id == Address)
+          } 
+
         const add = {
-            Name: addressNew.address[0].nameuser,
-            Address:  addressNew.address[0].addressLine,
-            Pincode: addressNew.address[0].pincode,
-            City: addressNew.address[0].city,
-            State: addressNew.address[0].state,
-            Mobile:  addressNew.address[0].mobile,
+            Name: addressNew.address[addressObjIndex].nameuser,
+            Address:  addressNew.address[addressObjIndex].addressLine,
+            Pincode: addressNew.address[addressObjIndex].pincode,
+            City: addressNew.address[addressObjIndex].city,
+            State: addressNew.address[addressObjIndex].state,
+            Mobile:  addressNew.address[addressObjIndex].mobile,
         }
 
         const newOrder = new orderCollection({

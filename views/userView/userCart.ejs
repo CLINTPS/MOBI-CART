@@ -13,10 +13,13 @@
                         <div class="row d-flex gy-3 mb-4">
                             <div class="col-lg-5">
                                 <div class="d-flex align-items-center">
-                                    <img src="/product-img/<%= item.productId.images[0] %>"
-                                         alt="<%= item.productId.ProductName %>"
-                                         class="border rounded me-3"
-                                         style="width: 80px; height: 96px" />
+                                    <a href="/productDetails/<%=item.productId._id%>">
+
+                                        <img src="/product-img/<%= item.productId.images[0] %>"
+                                             alt="<%= item.productId.ProductName %>"
+                                             class="border rounded me-3"
+                                             style="width: 80px; height: 96px" />
+                                    </a>
                                     <div class="">
                                         <a href="#" class="nav-link" style="text-decoration: none; color: #000000; font-weight: 500;">
                                             <%= item.productId.ProductName %>

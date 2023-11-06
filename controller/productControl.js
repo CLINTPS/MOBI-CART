@@ -12,7 +12,8 @@ async function getProductPage(req,res){
           const pageSize = 3;
           const totalOrder = Math.ceil(productDataCount / pageSize);
           const skip = (page - 1) * pageSize;
-          const productData = await productsCollections.find().skip(skip).limit(pageSize);
+          const productData = await productsCollections.find().sort({ updatedAt: -1 }).skip(skip).limit(pageSize);
+          console.log(productData);
           res.render('adminView/products',{title:"Product Details",
           i,
           productData,
@@ -75,10 +76,13 @@ async function getProductedit(req,res){
         try{
             let id = req.params.id
             console.log(id);
+            const ProductData = await productsCollections.findById(id);
+            if(!ProductData){
+                console.log("ProductData not found");
+                return res.render('errorView/404admin')
+            }
             const categoryData = await categoriesCollection.find({});
             const brandData = await brandCollection.find({});
-            const ProductData = await productsCollections.findOne({_id:id});
-            // console.log(ProductData);
             res.render('adminView/edit-products',{title:"add new products",categoryData,brandData,ProductData})
         }catch(err){
             res.render.err=true
@@ -87,51 +91,71 @@ async function getProductedit(req,res){
 
 }
 //edit post product
-async function postProductedit(req,res) {
+async function postProductedit(req, res) {
     try {
+        let id = req.params.id;
         const productDetails = req.body;
-        console.log(productDetails);
-        let id = req.params.id  
+        console.log("asss", productDetails);
 
-        const files = req?.files;
+        const files = req.files;
 
-        if (files && files.main) {
-            const ret = [
-                files.main[0].filename,
-                files.image1[0].filename,
-                files.image2[0].filename,
-                files.image3[0].filename,
-            ];
-            const date=Date.now();
-            const uploaded = await productsCollections.updateOne({_id:id},{
-                $set:{
-                    ProductName:req.body.ProductName,
-                    Description:req.body.Description,
-                    Specification1:req.body.Specification1,
-                    Specification2:req.body.Specification2,
-                    Specification3:req.body.Specification3,
-                    Specification4:req.body.Specification4,
-                    Price:req.body.Price,
-                    DiscountAmount:req.body.DiscountAmount,
-                    AvailableQuantity:req.body.AvailableQuantity,
-                    Category:req.body.Category,
-                    images: ret,
-                    timeStamp:date
-                }
-            });
+        const date = Date.now();
 
-            if (uploaded) {
-                console.log('Product updated');
-                res.redirect('/admin/productPage');
+        const ProductData = await productsCollections.findById(id);
+            if(!ProductData){
+                console.log("ProductData not found");
+                return res.render('errorView/404admin')
             }
+
+        const updateData = {
+            ProductName: req.body.ProductName,
+            Description: req.body.Description,
+            Specification1: req.body.Specification1,
+            Specification2: req.body.Specification2,
+            Specification3: req.body.Specification3,
+            Specification4: req.body.Specification4,
+            Price: req.body.Price,
+            DiscountAmount: req.body.DiscountAmount,
+            AvailableQuantity: req.body.AvailableQuantity,
+            Category: req.body.Category,
+            BrandName:req.body.BrandName,
+            timeStamp: date,
+            images: [] 
+        };
+
+        // Handle main image
+        if (files && files.main) {
+            updateData.images[0] = files.main[0].filename;
         } else {
-            console.log('One or more files are missing.');
+            updateData.images[0] = ProductData.images[0]; // Use the existing image if not updated
+        }
+
+        // Handle additional images (image1, image2, image3)
+        for (let i = 1; i <= 3; i++) {
+            const imageName = `image${i}`;
+            if (files && files[imageName]) {
+                updateData.images[i] = files[imageName][0].filename;
+            } else {
+                updateData.images[i] = ProductData.images[i]; // Use the existing image if not updated
+            }
+        }
+
+        const uploaded = await productsCollections.updateOne({ _id: id }, { $set: updateData });
+
+        if (uploaded) {
+            console.log('Product updated');
+            res.redirect('/admin/productPage');
+        } else {
+            console.log('Failed to update product');
         }
     } catch (error) {
         console.log('An error happened');
         throw error;
-  }
-};
+    }
+}
+
+
+
 
 //Delete product
 async function getProductDelete(req,res){
@@ -165,6 +189,50 @@ async function getBlockProduct(req,res){
       }
 }
 
+async function serchProduct(req,res){
+    try{
+        var i = 0;
+        const data = req.body.search; 
+        console.log(data);
+        const page = parseInt(req.query.page) || 1;
+        const productDataCount = await productsCollections.find().count()
+        const pageSize = 3;
+              const totalOrder = Math.ceil(productDataCount / pageSize);
+              const skip = (page - 1) * pageSize;
+        let productData = await productsCollections.find({
+            ProductName: { $regex: "^" + data, $options: "i" },
+    }).skip(skip).limit(pageSize);;
+
+    if(productDataCount.length===0){
+        const productData = await productsCollections.find({});
+        const successMessage = req.query.successMessage || '';
+        const errorMessage = req.query.errorMessage || '';
+        res.render('adminView/products',{title:"Product Details",
+            productData,
+            productDataCount:totalOrder,
+            i,
+            successMessage,
+            errorMessage,
+            page: page
+         });
+    }else{
+        console.log(`Search Data ${productDataCount} `);
+        const successMessage = req.query.successMessage || '';
+        const errorMessage = req.query.errorMessage || '';
+        res.render('adminView/products',{title:"Product Details",
+        productData,
+        productDataCount:totalOrder,
+        i, 
+        successMessage, 
+        errorMessage,
+        page: page
+     });
+    }
+    }catch(error){
+
+        res.render("errorView/404admin");
+    }
+}
 
   module.exports ={
     getProductPage,
@@ -173,5 +241,6 @@ async function getBlockProduct(req,res){
     getProductedit,
     postProductedit,
     getProductDelete,
-    getBlockProduct
+    getBlockProduct,
+    serchProduct
   }

@@ -37,17 +37,27 @@
                 <br>
                 <div class="border p-3 mb-3">
                     <h2>Images</h2>
-                    <!-- Display existing images here -->
-                    <!-- Add file input elements for new images if needed -->
-                    <input type="file" name="main" accept="image/*" style="width: 188px; height: 188px;">
+                    <!-- Main Image -->
+                    <label for="mainImage">Main Image:</label>
+                    <input type="file" name="main" accept="image/*" id="mainImage">
                     <img src="/product-img/<%= ProductData.images[0] %>" alt="Old Main Image" width="88" height="88">
-                    <input type="file" name="image1" accept="image/*" style="width: 188px; height: 188px;">
+                
+                    <!-- Image 1 -->
+                    <label for="image1">Image 1:</label>
+                    <input type="file" name="image1" accept="image/*" id="image1">
                     <img src="/product-img/<%= ProductData.images[1] %>" alt="Old Image 1" width="88" height="88">
-                    <input type="file" name="image2" accept="image/*" style="width: 188px; height: 188px;">
+                
+                    <!-- Image 2 -->
+                    <label for="image2">Image 2:</label>
+                    <input type="file" name="image2" accept="image/*" id="image2">
                     <img src="/product-img/<%= ProductData.images[2] %>" alt="Old Image 2" width="88" height="88">
-                    <input type="file" name="image3" accept="image/*" style="width: 188px; height: 188px;">
+                
+                    <!-- Image 3 -->
+                    <label for="image3">Image 3:</label>
+                    <input type="file" name="image3" accept="image/*" id="image3">
                     <img src="/product-img/<%= ProductData.images[3] %>" alt="Old Image 3" width="88" height="88">
                 </div>
+                
 
 
                 <div class="border p-3 mb-3">
@@ -83,7 +93,7 @@
                 <div class="form-group">
                     <br>
                     <label>Category:</label>
-                    <select class="form-select bg-light" id="category" name="Category" required>
+                    <select class="form-select bg-light" id="category" name="Category" >
                         <option value="" selected disabled><%- ProductData.Category%></option>
                          <%if(categoryData){%>
                             <%categoryData.forEach((data)=>{%>
@@ -97,7 +107,7 @@
                 <div class="form-group">
                     <br>
                     <label>Brand Name:</label>
-                    <select name="BrandName" class="form-select bg-light" id="brand" required>
+                    <select name="BrandName" class="form-select bg-light" id="brand" >
                         <option value="" selected disabled><%- ProductData.BrandName%></option>
                         <%if(brandData){%>
                             <%brandData.forEach((data)=>{%>

@@ -8,7 +8,9 @@
             </div>
             <% if(err){ %>
                 <h6 style="margin: 5px; color: red;"><%-err%></h6>
-              <% } %>
+              <% }else if(success){ %>
+                <h6 style="margin: 5px; color: rgb(10, 105, 7);"><%-success%></h6>
+                <%}%>
             <form action="/admin/add-brand" method="POST" >  
                 <div class="form-group">
                     <small class="form-text text-white text-left">Brand Name</small>
