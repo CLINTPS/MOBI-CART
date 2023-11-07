@@ -37,7 +37,7 @@
                               <%}else if(order.Status == "Cancelled" || order.Status == "Rejected"){%>
 
                                 <%}else{%>
-                                  <a href="/cancelOrderData/<%= order._id%>">
+                                  <a href="/cancelOrderData/<%= order._id%>" onclick="return confirm('Do you want to Cancel this product')">
                                     <button class="btn btn-outline-danger" type="button">Cancel Order</button>
                                 </a>
                                   <%}%>

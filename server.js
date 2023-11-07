@@ -12,6 +12,8 @@ require('dotenv').config()
 const flash=require("connect-flash")
 const nocache = require("nocache");
 // const morgan=require("morgan")
+const errorMiddleware = require('./middleware/errorMiddleware');
+
 
 //Set Template Engin
 app.set('view engine',"ejs")
@@ -35,6 +37,10 @@ app.use(flash())
 app.use("/", userRouter);
 app.use("/otp",OTProutes)
 app.use("/admin", adminRouter);
+
+app.use((err, req, res, next) => {
+    errorMiddleware(err, req, res, next);
+  });
 
 //port setting
 const PORT = process.env.PORT||5000

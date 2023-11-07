@@ -234,6 +234,41 @@ async function serchProduct(req,res){
     }
 }
 
+//Delete one image
+async function deleteImage(req, res) {
+    try {
+        const productId = req.params.id;
+        console.log("product id",productId);
+        const imageIndex = req.params.index;
+        console.log("image index",imageIndex);
+        
+        // Retrieve the product data
+        const product = await productsCollections.findById(productId);
+        console.log("Product",product);
+        if (!product) {
+            // Product not found, handle the error
+            res.status(404).send('Product not found');
+            return;
+        }
+        
+        // Delete the image file from the server (you need to implement this)
+        // You can use the fs module to delete the image from the file system.
+        // For example: fs.unlink(`path/to/images/${product.images[imageIndex]}`, (err) => { ... });
+
+        // Remove the image from the product's images array
+        product.images.splice(imageIndex, 1);
+        
+        // Save the updated product data
+        await product.save();
+        
+        res.status(200).send('Image deleted successfully');
+        
+    } catch (error) {
+        console.error('Error deleting image:', error);
+        res.status(500).send('Failed to delete image');
+    }
+}
+
   module.exports ={
     getProductPage,
     getProductdata,
@@ -242,5 +277,6 @@ async function serchProduct(req,res){
     postProductedit,
     getProductDelete,
     getBlockProduct,
-    serchProduct
+    serchProduct,
+    deleteImage
   }

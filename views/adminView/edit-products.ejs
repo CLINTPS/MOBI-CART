@@ -38,25 +38,31 @@
                 <div class="border p-3 mb-3">
                     <h2>Images</h2>
                     <!-- Main Image -->
-                    <label for="mainImage">Main Image:</label>
-                    <input type="file" name="main" accept="image/*" id="mainImage">
-                    <img src="/product-img/<%= ProductData.images[0] %>" alt="Old Main Image" width="88" height="88">
-                
+                    <label for="mainImage">Image 0:</label>
+                    <input type="file" name="main" accept="image/*" id="mainImage" onchange="viewImage(event)">
+                    <img src="/product-img/<%= ProductData.images[0] %>" alt="Old Main Image" width="88" height="88" id="imgView">
+                    <input type="hidden" id="productId" value="<%= ProductData.id %>">
+                    <button type="button" onclick="deleteImage(0)">Delete</button>
+                    <br>
                     <!-- Image 1 -->
                     <label for="image1">Image 1:</label>
-                    <input type="file" name="image1" accept="image/*" id="image1">
-                    <img src="/product-img/<%= ProductData.images[1] %>" alt="Old Image 1" width="88" height="88">
-                
+                    <input type="file" name="image1" accept="image/*" id="image1" onchange="viewImage1(event)">
+                    <img src="/product-img/<%= ProductData.images[1] %>" alt="Old Image 1" width="88" height="88" id="imgView1">
+                    <button type="button" onclick="deleteImage(1)">Delete</button>
+                    <br>
                     <!-- Image 2 -->
                     <label for="image2">Image 2:</label>
-                    <input type="file" name="image2" accept="image/*" id="image2">
-                    <img src="/product-img/<%= ProductData.images[2] %>" alt="Old Image 2" width="88" height="88">
-                
+                    <input type="file" name="image2" accept="image/*" id="image2" onchange="viewImage2(event)">
+                    <img src="/product-img/<%= ProductData.images[2] %>" alt="Old Image 2" width="88" height="88" id="imgView2">
+                    <button type="button" onclick="deleteImage(2)">Delete</button>
+                    <br>
                     <!-- Image 3 -->
                     <label for="image3">Image 3:</label>
-                    <input type="file" name="image3" accept="image/*" id="image3">
-                    <img src="/product-img/<%= ProductData.images[3] %>" alt="Old Image 3" width="88" height="88">
+                    <input type="file" name="image3" accept="image/*" id="image3" onchange="viewImage3(event)">
+                    <img src="/product-img/<%= ProductData.images[3] %>" alt="Old Image 3" width="88" height="88" id="imgView3">
+                    <button type="button" onclick="deleteImage(3)">Delete</button>
                 </div>
+                
                 
 
 
@@ -131,14 +137,53 @@
     </div>
 </main>
 
+<script>
+    function refreshImages() {
+        window.location.reload();
+    }
+
+    function deleteImage(index) {
+        const productId = document.getElementById('productId').value;
+
+        fetch(`/admin/delete-image/${productId}/${index}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.status === 200) {
+                alert('Image deleted successfully');
+                refreshImages(); 
+            } else {
+                alert('Failed to delete image');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting image:', error);
+        });
+    }
+</script>
+
 
 
 <script>
+    
     function openNav() {
         document.getElementById("mySidenav").style.width = "200px";
     }
 
     function closeNav() {
         document.getElementById("mySidenav").style.width = "0";
+    }
+
+    function viewImage(event){
+        document.getElementById('imgView').src=URL.createObjectURL(event.target.files[0])
+    }
+    function viewImage1(event){
+        document.getElementById('imgView1').src=URL.createObjectURL(event.target.files[0])
+    }
+    function viewImage2(event){
+        document.getElementById('imgView2').src=URL.createObjectURL(event.target.files[0])
+    }
+    function viewImage3(event){
+        document.getElementById('imgView3').src=URL.createObjectURL(event.target.files[0])
     }
 </script>

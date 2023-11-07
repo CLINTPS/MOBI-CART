@@ -1,25 +1,31 @@
 const categoriesCollection = require('../model/categories')
+const errorMiddleware = require('../middleware/errorMiddleware');
 
 //To Catagories section details
-async function  getCategory (req, res){
-  try{
+async function getCategory(req, res, next) {
+  try {
     var i = 0;
     const categoryData = await categoriesCollection.find({});
     // console.log(categoryData);
-    res.render('adminView/categories',{title:"categories details",categoryData,i})
-  }catch(error){
-    console.log("Category:"+error);
-    res.render("errorView/404admin");
+    res.render('adminView/categories', { title: "categories details", categoryData, i });
+  } catch (error) {
+    console.error(error);
+    next(error);
   }
-};
+}
 
 //add catogories
-function getCatagoriesData(req,res){
+function getCatagoriesData(req,res, next){
+  try{
     res.render('adminView/add-categories',{title:"add new categories",success:false,err:false})
+  }catch (error) {
+    console.error(error);
+    next(error);
+}
 }
 
 //add post catogories
-async function postCatagoriesData(req, res) {
+async function postCatagoriesData(req, res, next) {
   try {
       const { categoryName } = req.body;
       const existingCategory = await categoriesCollection.findOne({ name: categoryName });
@@ -35,27 +41,27 @@ async function postCatagoriesData(req, res) {
           const insertResult = await newCategory.save();
           res.render('adminView/add-categories', { title: "add new categories",err:false,success: "Category added successfully" });
       }
-  }catch(err){
-    console.log(err);
-    res.render('errorView/404admin')
+  }catch (error) {
+    console.error(error);
+    next(error);
   }
 }
 
 
 //edit category
-async function getCatagoriesedit(req,res){
+async function getCatagoriesedit(req,res, next){
   try{
     const id = req.params.id;
     const categoryName = await categoriesCollection.findOne({_id: id})
     res.render('adminView/edit-categories',{title:"Edit category",categoryName})
-  }catch(err){
-    console.log(err);
-    res.render('errorView/404admin')
+  }catch (error) {
+    console.error(error);
+    next(error);
   }
   }
 
   // edit category = category view page
-  async function postCatagoriesedit(req, res) {
+  async function postCatagoriesedit(req, res, next) {
     try {
         const newData = req.body;
         const id = req.params.id;
@@ -76,23 +82,23 @@ async function getCatagoriesedit(req,res){
             );
             res.redirect('/admin/category');
         }
-    } catch (err) {
-        console.log(err);
-        res.render('errorView/404admin');
+    } catch (error) {
+      console.error(error);
+      next(error);
     }
 }
 
 
 //Delete category
-async function getCategoryDelete(req,res){
+async function getCategoryDelete(req,res, next){
   try{
     const id = req.params.id
     console.log(id);
     await categoriesCollection.deleteOne({ _id:id })
     res.redirect('/admin/category')
-  }catch(err){
-    console.log(err);
-    res.render('errorView/404admin')
+  }catch (error) {
+    console.error(error);
+    next(error);
   }
 }
 

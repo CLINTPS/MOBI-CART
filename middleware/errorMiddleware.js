@@ -1,8 +1,11 @@
-function errorHandler(err, req, res, next) {
-    console.error(err);
-    res.status(500).render('errorView/404admin'); // You can customize the error page and status code
-}
+// errorMiddleware.js
 
-module.exports={
-    errorHandler,
-}
+function errorHandler(err, req, res, next) {
+    console.error(err.stack); // Log the error
+  
+    // You can customize the error response as per your requirements
+    res.status(404).render('errorView/404', { title: 'Internal Server Error' });
+  }
+  
+  module.exports = errorHandler;
+  
