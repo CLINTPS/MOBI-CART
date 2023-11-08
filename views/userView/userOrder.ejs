@@ -1,4 +1,9 @@
 <%-include('../userView/include/user_header')-%>
+<header>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</header>
+
 <section class="" style="background: linear-gradient(135deg, #817f7f, #ffffff);">
     <div class="container py-5 ">
         <h3>Orders Status</h3>
@@ -31,9 +36,9 @@
                                 <button class="btn btn-outline-success" type="button">Product details</button>
                             </a>
                             <% if(order.Status == "Delivered"){%>
-                              <a href="#">
-                                <button class="btn btn-outline-warning" type="button">Download Invoice</button>
-                            </a>
+                            <button type="button" class="btn btn-outline-warning m-2" onclick="generateAndDownloadInvoice('<%= order._id %>')">
+                              Download Invoice
+                          </button>
                               <%}else if(order.Status == "Cancelled" || order.Status == "Rejected"){%>
 
                                 <%}else{%>
@@ -107,4 +112,33 @@
       </div>
     </div>
   </section>
+
+  <script>
+    async function generateAndDownloadInvoice(orderId) {
+        try {
+            const response = await fetch('/downloadinvoice', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', 
+                },
+                body: JSON.stringify({ orderId }) 
+            });
+            if (response.ok) {
+
+              console.log("inside response");
+              Swal.fire({
+                    icon: 'success',
+                    title: 'Invoice Downloaded Successfully',
+                    showConfirmButton: false,
+                    timer: 1500 
+                });
+
+                window.location.href = `/downloadinvoice/${orderId}`;
+            }
+        } catch (error) {
+            console.error('Error in downloading the invoice:', error);
+        }
+    }
+    </script>
+
 <%-include('../userView/include/user_footer')-%>

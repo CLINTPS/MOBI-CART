@@ -5,6 +5,7 @@ const cartCollection=require('../model/cart')
 const productsCollections = require ('../model/product')
 const moment = require("moment")
 const mongoose = require('mongoose')
+const { generateInvoice } = require('../util/InvoiceGenarator')
 
 //Get check out page
 async function getOrderpage(req,res){
@@ -138,6 +139,7 @@ async function getOrderPage(req,res){
 async function getOrderProductViewPage(req,res){
     try{
         let orderID=req.params.id
+        console.log("Received order ID:", orderID);
         if (!mongoose.Types.ObjectId.isValid(orderID)) {
             // Handle invalid order ID here, e.g., render an error page
             console.error("Invalid order ID");
@@ -156,7 +158,8 @@ async function getOrderProductViewPage(req,res){
         // const productId = orderData.Items[0].productId;
         // const productData = await productsCollections.findOne({_id:productId})
         // console.log("33333333",productData);
-        res.render('userView/userOrderProductView',{title:"Order product view",user,TotalPrice,orderData:orders.Items})
+        console.log("asdrtsd",orders);
+        res.render('userView/userOrderProductView',{title:"Order product view",user,TotalPrice,orders})
     }catch (error) {
         console.error("An error occurred:", error);
         console.log("cart data note available 02--");
@@ -195,16 +198,58 @@ async function getCancelOrder(req,res){
         }
 
     }catch (error) {
-        console.error("An error occurred:", error);
         console.log("cart data note available 03--");
         res.render("errorView/404");
     }
 }
+
+//Invoivce creating
+const postGenarateInvoice=async(req,res)=>{
+    try {
+        let email=req.session.email
+        const { orderId } = req.body;
+       
+        const orderDetails= await orderCollection.find({_id:orderId}).populate("Items.productId");
+        
+        const ordersId = orderDetails[0]._id;
+    
+        console.log(ordersId);
+    
+        if (orderDetails) {
+          console.log("uSer MaIl....:",email);
+          const invoicePath = await generateInvoice(orderDetails,email); 
+          res.json({ success: true, message: 'Invoice generated successfully', invoicePath });
+        } else {
+          res.status(500).json({ success: false, message: 'Failed to generate the invoice' });
+        }
+      
+      
+      } catch (error) {
+        console.error('error in invoice downloading',error)
+        res.status(500).json({ success: false, message: 'Error in generating the invoice' });
+      }
+      }
+
+//download invoice
+const getdownloadInvoice=async(req,res)=>{
+   try {
+  const id=req.params.orderId
+  console.log(id);
+  const filePath = `E:\\MOBI CART\\pdf\\${id}.pdf`;
+  console.log('filePath:',filePath);
+  res.download(filePath,`invoice.pdf`)
+} catch (error) {
+  console.error('Error in downloading the invoice:', error);
+  res.status(500).json({ success: false, message: 'Error in downloading the invoice' });
+}
+}   
 
 module.exports={
     getOrderpage,
     postplaceOrder,
     getOrderPage,
     getOrderProductViewPage,
-    getCancelOrder
+    getCancelOrder,
+    postGenarateInvoice,
+    getdownloadInvoice
 }

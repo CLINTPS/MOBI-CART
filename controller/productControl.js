@@ -97,7 +97,7 @@ async function postProductedit(req, res) {
         const productDetails = req.body;
         console.log("asss", productDetails);
 
-        const files = req.files;
+        const files = req.files;    
 
         const date = Date.now();
 

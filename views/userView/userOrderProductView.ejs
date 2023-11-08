@@ -5,18 +5,25 @@
                     <div class="col-lg-10 col-xl-8">
                       <div class="card" style="border-radius: 10px;">
                         <div class="card-header px-4 py-5">
-                          <h5 class="text-muted mb-0">Thanks for your Order, <span style="color: #a8729a;"><%= user%></span>!</h5>
+                          <h5 class="text-muted mb-0">Thanks for your Order, <span style="color: rgb(0, 0, 0);"><%= user%></span>!</h5>
                         </div>
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <p class="lead fw-normal mb-0" style="color: #a8729a;">Receipt</p>
-                                <!-- <p class="small text-muted mb-0">Receipt Voucher : 1KAU9-84UIL</p> -->
-                            </div>
-                            <div class="card shadow-0 border mb-4">
+                        <div class="card-body">
+                          <div class="d-flex justify-content-between align-items-center mb-4">
+                            <p class="lead fw-normal mb-0" style="color: #923d7b;">Receipt</p>
+                            <!-- <p class="small text-muted mb-0">Receipt Voucher : 1KAU9-84UIL</p> -->
+                          </div>
+                          <div>
+                            <hr>
+                              <h5>Order Address :</h5>
+                              <p>Name : <%=orders.Address.Name%></p>
+                              <p>Address : <%=orders.Address.Address%> , <%=orders.Address.City%> , <%=orders.Address.State%> , <%=orders.Address.Pincode%></p>                            
+                          </div>
+                              <br>
+                              <div class="card shadow-0 border mb-4">                              
                                 <div class="card-body">
-                                <% if (orderData){%>
-                                <% orderData.forEach((data) => { %>
-                              <div class="row">
+                                  <% if (orders){%>
+                                    <% orders.Items.forEach((data) => { %>
+                                  <div class="row">
                                 <div class="col-md-2">
                                   <img src="/product-img/<%= data.productId.images[0]%>"
                                     class="img-fluid" alt="Phone">
@@ -38,6 +45,10 @@
                                   <s class="text-danger" style="font-size: 10px;">₹<%=data.productId.Price%></s>
                                 </div>
                               </div>
+                              <br>
+                              <a href="#">
+                                <button class="btn btn-outline-danger" type="button">Cancel</button>
+                            </a>
                               <hr>
                               
                               <% }); %>
@@ -49,7 +60,7 @@
 
                           
                         <div class="card-footer border-0 px-4 py-5"
-                          style="background-color: #a8729a; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                          style="background-color: #72a887; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
                           <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">Total
                             Price: <span class="h2 mb-0 ms-2">$ <%= TotalPrice %></span></h5>
                         </div>

@@ -92,6 +92,8 @@ userRout.post('/placeOrder',userAuth.verifyUser,orderControl.postplaceOrder)
 userRout.get('/user/orderDetails',userAuth.verifyUser,orderControl.getOrderPage)
 userRout.get('/orderProductView/:id',userAuth.verifyUser,orderControl.getOrderProductViewPage)
 userRout.get('/cancelOrderData/:id',userAuth.verifyUser,orderControl.getCancelOrder)
+userRout.post('/downloadinvoice',userAuth.verifyUser,orderControl.postGenarateInvoice)
+userRout.get('/downloadinvoice/:orderId',userAuth.verifyUser,orderControl.getdownloadInvoice)
 
 
 
