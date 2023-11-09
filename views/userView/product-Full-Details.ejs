@@ -3,82 +3,122 @@
     <div class="container-fluid">
       <div class="row">
         <!-- sidebar -->
-        <div class="col-lg-2">
-          <!-- Toggle button for mobile -->
-          <button class="btn btn-outline-secondary mb-3 w-100 d-lg-none" type="button" data-mdb-toggle="collapse" data-mdb-target="#filterAccordion" aria-expanded="false">
-              Show Filter
-          </button>
-      
-          <!-- Collapsible filter section -->
-          <div class="collapse card d-lg-block mb-5" id="filterAccordion">
-              <div class="accordion" id="accordionPanelsStayOpenExample">
-                  <!-- Brand filter -->
-                  <div class="accordion-item">
-                      <h2 class="accordion-header" id="brandHeading">
-                          <button class="accordion-button text-dark bg-light" type="button" data-mdb-toggle="collapse" data-mdb-target="#brandFilter" aria-expanded="true">
-                              Brand
-                          </button>
-                      </h2>
-                      <div id="brandFilter" class="accordion-collapse collapse show" aria-labelledby="brandHeading">
-                          <div class="accordion-body">
-                              <!-- Checked checkboxes for brand -->
-                              <% if (brandData) { %>
-                                  <% brandData.forEach((data) => { %>
-                                      <div class="form-check">
-                                          <input class="form-check-input" type="checkbox" value="<%= data.name %>" id="brandCheckbox<%= data.id %>" />
-                                          <label class="form-check-label" for="brandCheckbox<%= data.id %>"><%= data.name %></label>
-                                      </div>
-                                  <% }) %>
-                              <% } %>
-                          </div>
+        <div class="col-lg-3 mt-4">
+          <form action="/filterProduct" method="post">
+            <!-- Your existing code for the filter options -->
+            <div class="collapse card d-lg-block mb-5" id="filterOptions">
+                <div class="accordion" id="accordionPanelsStayOpenExample">
+                    <!-- Brand filter -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="brandFilter">
+                            <button
+                                class="accordion-button text-dark bg-light"
+                                type="button"
+                                data-mdb-toggle="collapse"
+                                data-mdb-target="#brandFilterCollapse"
+                                aria-expanded="true"
+                                aria-controls="brandFilterCollapse"
+                            >
+                                Brands
+                            </button>
+                        </h2>
+                        <div id="brandFilterCollapse" class="accordion-collapse collapse show" aria-labelledby="brandFilter">
+                            <div class="accordion-body">
+                                <div id="brandOptions">
+                                    <!-- Brand checkboxes with names -->
+                                    <% if (brandData) { %>
+                                        <% brandData.forEach((data) => { %>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="<%= data.name %>" id="brand<%= data.name %>" name="selectedBrands">
+                                                <label class="form-check-label" for="brand<%= data.name %>"><%= data.name %></label>
+                                            </div>
+                                        <% }) %>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
                       </div>
-                  </div>
-      
-                  <!-- Price range filter -->
-                  <div class="accordion-item">
-                      <h2 class="accordion-header" id="priceHeading">
-                          <button class="accordion-button text-dark bg-light" type="button" data-mdb-toggle="collapse" data-mdb-target="#priceFilter" aria-expanded="true">
-                              Price
-                          </button>
-                      </h2>
-                      <div id="priceFilter" class="accordion-collapse collapse show" aria-labelledby="priceHeading">
-                          <div class="accordion-body">
-                              <div class="range">
-                                  <input type="range" class="form-range" id="priceRange" />
-                              </div>
-                              <div class="row mb-3">
-                                  <div class="col-6">
-                                      <p class="mb-0">Min</p>
-                                      <div class="form-outline">
-                                          <input type="number" id="minPrice" class="form-control" />
-                                          <label class="form-label" for="minPrice">$0</label>
-                                      </div>
-                                  </div>
-                                  <div class="col-6">
-                                      <p class="mb-0">Max</p>
-                                      <div class="form-outline">
-                                          <input type="number" id="maxPrice" class="form-control" />
-                                          <label class="form-label" for="maxPrice">$10,000</label>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
+                
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingTwo">
+                    <button
+                            class="accordion-button text-dark bg-light"
+                            type="button"
+                            data-mdb-toggle="collapse"
+                            data-mdb-target="#panelsStayOpen-collapseTwo"
+                            aria-expanded="true"
+                            aria-controls="panelsStayOpen-collapseTwo"
+                            >
+                            Categories
+                    </button>
+                  </h2>
+                  <div id="categoryFilterCollapse" class="accordion-collapse collapse show" aria-labelledby="categoryFilter">
+                    <div class="accordion-body">
+                        <div id="categoryOptions">
+                            <!-- Brand checkboxes with names -->
+                            <% if (categoryData) { %>
+                                <% categoryData.forEach((data) => { %>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="<%= data.name %>" id="category<%= data.name %>" name="selectedCategory">
+                                        <label class="form-check-label" for="category<%= data.name %>"><%= data.name %></label>
+                                    </div>
+                                <% }) %>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>    
               </div>
-              <!-- Apply filter button -->
-              <button type="button" class="btn btn-white w-100 border border-secondary">Apply</button>
-          </div>
-      </div>
-      
-      
-        
+  
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingTwo">
+                    <button
+                            class="accordion-button text-dark bg-light"
+                            type="button"
+                            data-mdb-toggle="collapse"
+                            data-mdb-target="#panelsStayOpen-collapseTwo"
+                            aria-expanded="true"
+                            aria-controls="panelsStayOpen-collapseTwo"
+                            >
+                      Price
+                    </button>
+                  </h2>
+                  <div id="priceFilterCollapse" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
+                    <div class="accordion-body">
+                      <div>
+                        <!-- Checked checkbox -->
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="10000 above" id="price1" name="selectedPrice">
+                          <label class="form-check-label" for="price1">10000 above</label>
+                      </div>
+                      <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="30000 above" id="price2" name="selectedPrice">
+                          <label class="form-check-label" for="price2">30000 above</label>
+                      </div>
+                      <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="50000 above" id="price3" name="selectedPrice">
+                          <label class="form-check-label" for="price3">50000 above</label>
+                      </div>
+                      <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="100000 above" id="price4" name="selectedPrice">
+                          <label class="form-check-label" for="price4">100000 above</label>
+                      </div>                     
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-outline-primary w-100 border border-secondary">Apply</button>
+            </div>
+          </form>
 
+         <!-- Collapsible wrapper -->
+        </div>
 <!-- sidebar -->
+
 <!-- content -->
 <div class="col-lg-9">
-    <header class="d-sm-flex align-items-center border-bottom mb-4 pb-3"></header>
-          <% if (productData) { %>
+    <header class="d-sm-flex align-items-center border-bottom mb-4 "></header>
+          <% if (productData.length > 0 ) { %>
             <% productData.forEach((data) => { %>
               <div class="row justify-content-center mb-3" >
                 <div class="col-md-12">
@@ -152,7 +192,10 @@
                 
           
           <% } else { %>
-            <h1>404 not found</h1>
+            <div class="d-flex justify-content-center mt-5">
+
+              <h5>Data not found</h5>
+            </div>
           <% } %>
           <!-- Pagination code here -->
           <!-- Pagination -->
@@ -160,6 +203,8 @@
       </div>
     </div>
   </section>
+
+  
   
 <%-include('../userView/include/user_footer')-%>
 

@@ -62,8 +62,10 @@ userRout.get("/user/logout", userControl.logout)
 
 //product details
 userRout.get('/productDetails/:id',userAuth.verifyUser,userProduct.getProducDetails);
+
 //product full details
 userRout.get('/allProducts',userAuth.verifyUser,userProduct.getAllProducts)
+userRout.post('/filterProduct',userAuth.verifyUser,userProduct.postFilterProduct)
 
 //User profile side
 userRout.get('/user/profile',userAuth.verifyUser,userControl.getUserprofile)
