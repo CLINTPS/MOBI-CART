@@ -66,6 +66,8 @@ userRout.get('/productDetails/:id',userAuth.verifyUser,userProduct.getProducDeta
 //product full details
 userRout.get('/allProducts',userAuth.verifyUser,userProduct.getAllProducts)
 userRout.post('/filterProduct',userAuth.verifyUser,userProduct.postFilterProduct)
+// Serch product in all page
+userRout.post('/serchAllPorductsShop',userAuth.verifyUser,userProduct.postSerchAllProduct)
 
 //User profile side
 userRout.get('/user/profile',userAuth.verifyUser,userControl.getUserprofile)

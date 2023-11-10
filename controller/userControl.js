@@ -422,8 +422,7 @@ async function postChangepass(req, res) {
                 res.json({ success: "Password updated successfully", err: null });
             } else {
                 console.log("Old password is not a match");
-                res.status(400).json({ success: null, err: "Old password is not a match or new password and confirm password do not match" });
-            }
+                res.json({ err: "Old password is not a match", success: null });            }
         } else {
             console.log("User not found");
             res.status(404).json({ success: null, err: "User not found" });

@@ -1,5 +1,5 @@
 <%-include('../adminView/include/_header')-%>
-   <div class="text-center center-div d-flex align-items-center justify-content-center " style="height: 100vh; width: 100%; background:linear-gradient(-135deg, #c850c0, #4158d0)">
+   <div class="text-center center-div d-flex align-items-center justify-content-center " style="height: 100vh; width: 100%; background:linear-gradient(135deg, #544e54, #ffffff)">
       <div class="wrapper text-center center-div align-items-center justify-content-center">
          <div class="title-Two">
             Admin Login
@@ -25,6 +25,7 @@
                <input type="password" name="password"  id="password" onchange="validatePassword();" required>
                <label>Password</label>
             </div>
+            <input type="checkbox" id="showPassword"> Show Password
             <p class="msg" id="message3"></p>
             <br>
             <div class="field">
@@ -36,3 +37,16 @@
 <%-include('../adminView/include/_footer')-%>
 
 <script src="/javascript/signupScript.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+   $("#showPassword").on('change', function() {
+            const passwordField = $("#password");
+            if ($(this).is(':checked')) {
+                passwordField.attr('type', 'text');
+            } else {
+                passwordField.attr('type', 'password');
+            }
+        });
+  
+</script>

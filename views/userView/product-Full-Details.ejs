@@ -87,21 +87,25 @@
                       <div>
                         <!-- Checked checkbox -->
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="10000 above" id="price1" name="selectedPrice">
-                          <label class="form-check-label" for="price1">10000 above</label>
+                          <input class="form-check-input" type="checkbox" value="20000 Under" id="price1" name="selectedPrice">
+                          <label class="form-check-label" for="price1">0 to 20000</label>
                       </div>
                       <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="30000 above" id="price2" name="selectedPrice">
-                          <label class="form-check-label" for="price2">30000 above</label>
+                          <input class="form-check-input" type="checkbox" value="30000 Under" id="price2" name="selectedPrice">
+                          <label class="form-check-label" for="price2">20001 to 30000</label>
                       </div>
                       <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="50000 above" id="price3" name="selectedPrice">
-                          <label class="form-check-label" for="price3">50000 above</label>
+                          <input class="form-check-input" type="checkbox" value="50000 Under" id="price3" name="selectedPrice">
+                          <label class="form-check-label" for="price3">30001 to 50000</label>
                       </div>
                       <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="100000 above" id="price4" name="selectedPrice">
-                          <label class="form-check-label" for="price4">100000 above</label>
-                      </div>                     
+                          <input class="form-check-input" type="checkbox" value="100000 Under" id="price4" name="selectedPrice">
+                          <label class="form-check-label" for="price4">50001 to 100000</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="200000 Under" id="price5" name="selectedPrice">
+                        <label class="form-check-label" for="price5">100001 to 200000</label>
+                    </div>                       
                       </div>
                     </div>
                   </div>
@@ -162,7 +166,11 @@
                             <h6 class="text-danger">out of stock</h6>
                           <% } %>
                           <div class="mt-4">
-                            <button class="btn btn-dark shadow-0 add-to-cart-button" data-product-id="<%= data._id %>">Add to Cart</button>
+                            <% if (data.AvailableQuantity > 0) { %>
+                              <button class="btn btn-dark shadow-0 add-to-cart-button" data-product-id="<%= data._id %>">Add to Cart</button>
+                            <% } else { %>
+                              <button class="btn btn-danger shadow-0 add-to-cart-button">Add to Cart</button>
+                            <% } %>
                             <!-- <a href="#!" class="btn btn-dark border px-2 pt-2 icon-hover"><i class="fa-solid fa-heart fa-lg" style="color: #17e14a;"></i></a> -->
                           </div>
                         </div>
@@ -208,6 +216,7 @@
   
 <%-include('../userView/include/user_footer')-%>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="your-script.js"></script>
 
@@ -224,9 +233,12 @@
                 method: 'POST',
                 success: function (response) {
 
-                    alert('Product added to cart');
-                    updateCartQuantity();
-                    location.reload()
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Product added to cart',
+                    showConfirmButton: false,
+                    timer: 1500 // Close the alert after 1.5 seconds
+                });
                 },
                 error: function (error) {
                     console.error('Error adding product to cart:', error);

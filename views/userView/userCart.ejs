@@ -31,15 +31,16 @@
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="col-lg col-sm-3">
                                 <div class="quantity-controls">
                                     <button class="btn btn-light border px-2 icon-hover-primary"
-                                            onclick="quantityChanger('<%= item.productId._id %>', -1, '<%= cart._id %>')">
+                                            onclick="quantityChanger('<%= item.productId._id %>', -1, '<%= cart._id %>','<%= item.productId.AvailableQuantity%>')">
                                         <i class="fa-solid fa-minus" style="color: #000000;"></i>
                                     </button>
                                     <span id="quantity_<%= item.productId._id %>"><%= item.quantity %></span>
                                     <button class="btn btn-light border px-2 icon-hover-primary"
-                                            onclick="quantityChanger('<%= item.productId._id %>', 1, '<%= cart._id %>')">
+                                            onclick="quantityChanger('<%= item.productId._id %>', 1, '<%= cart._id %>','<%= item.productId.AvailableQuantity%>')">
                                         <i class="fa-solid fa-plus" style="color: #000000;"></i>
                                     </button>
                                 </div>
@@ -125,22 +126,33 @@
 <%- include('../userView/include/user_footer') -%>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 <script>
-    function quantityChanger(productId, count,cartId) {
+    function quantityChanger(productId, count,cartId,AvailableQuantity) {
       var quantityElement = document.getElementById("quantity_" + productId);
       var currentQuantity = parseInt(quantityElement.innerText, 10)
 
-      if (count === 1) {
+      var maxQuantity =10;
+      
 
+      if (count === 1 && currentQuantity < maxQuantity && currentQuantity < AvailableQuantity) {
         currentQuantity += 1;
         quantityElement.innerText = currentQuantity;
-        console.log("count increased...")
-      } else if (count === -1 && currentQuantity > 1) {
+        console.log("count increased...");
+    } else if (count === -1 && currentQuantity > 1) {
         currentQuantity -= 1;
         quantityElement.innerText = currentQuantity;
-        console.log("count decreased...")
-      }
+        console.log("count decreased...");
+    } else if (count === 1 && (currentQuantity === maxQuantity || currentQuantity === AvailableQuantity)) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Error!',
+            text: 'Cannot add more of this product. Maximum or available quantity reached.',
+        });
+        return;
+    }
 
 
   $.ajax({
@@ -159,12 +171,11 @@
       $('#totalQuantityValue').text(response.totalQuantity);
       $('#totalPrice').text('Rs. ' + response.total.toFixed(2));
 
-    }
-  });
-
+         }
+     });
       console.log("updated quantity successfully");
 
-    }
+}
 
     function removeFromCart(productId, cartId) {
   if (confirm("Are you sure you want to remove this item from your cart?")) {

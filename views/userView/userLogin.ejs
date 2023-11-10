@@ -1,5 +1,5 @@
 <%-include('../userView/include/_header')-%>
-<div class="text-center center-div d-flex align-items-center justify-content-center h-100" id="LoginPage" style="height: 100vh; width: 100%; background:linear-gradient(135deg, #cd26a6, #3027db);">
+<div class="text-center center-div d-flex align-items-center justify-content-center h-100" id="LoginPage" style="height: 100vh; width: 100%; background:linear-gradient(135deg, #3d3a3c, #ffffff);">
     <div class="wrapper text-center center-div align-items-center justify-content-center">
        <form id="login-form">
            <div class="title">
@@ -14,6 +14,7 @@
                 <input type="password" name="password" id="password" required>
                 <label>Password</label>
             </div>
+            <input type="checkbox" id="showPassword"> Show Password
             <br>
             <div class="field">
                 <input type="submit" value="Login">
@@ -55,5 +56,15 @@
                 }
             });
         });
+    
+    $("#showPassword").on('change', function() {
+            const passwordField = $("#password");
+            if ($(this).is(':checked')) {
+                passwordField.attr('type', 'text');
+            } else {
+                passwordField.attr('type', 'password');
+            }
+        });
     });
+
 </script>

@@ -34,10 +34,11 @@
                             </a>
                         </td>
 
-                        <td><a href="/admin/delete-category/<%= x._id %>" class="text-white"
-                                onclick="return confirm('Do you want delete  <%= x.CategoryName %> ?')">
+                        <td>
+                            <a href="/admin/delete-category/<%= x._id %>" class="text-white delete-link" data-category="<%= x.CategoryName %>">
                                 <i class="fa-solid fa-trash" style="color: #393939;"></i>
-                            </a></td>
+                            </a>
+                        </td>
                     </tr>
                     </div>
                     <% }); %>
@@ -47,3 +48,35 @@
                                 </tbody>
                                   
         </table>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+        
+            document.addEventListener('DOMContentLoaded', function () {
+                var deleteLinks = document.querySelectorAll('.delete-link');
+        
+                deleteLinks.forEach(function (deleteLink) {
+                    deleteLink.addEventListener('click', function (event) {
+                        event.preventDefault();
+        
+                        var category = this.getAttribute('data-category');
+                        var deleteUrl = this.getAttribute('href');
+        
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: 'Do you want to delete ' + category + '?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, delete it!',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = deleteUrl;
+                            }
+                        });
+                    });
+                });
+            });
+        </script>
+        

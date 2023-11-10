@@ -1,8 +1,8 @@
 <%- include('../userView/include/user_header') -%>
-<div class="text-center center-div d-flex align-items-center justify-content-center mt-4 mb-4" style="background: linear-gradient(135deg, #817f7f, #ffffff);">
-    <div class="card text-center" style="width: 400px; background-color: #f0f0f0; border: 2px solid #ccc; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+<div class="text-center center-div d-flex align-items-center justify-content-center " style="background: linear-gradient(135deg, #817f7f, #ffffff);">
+    <div class="card text-center mt-4 mb-4" style="width: 600px; background-color: #f0f0f0; border: 2px solid #ccc; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
 
-        <div class="card-header h4 text-dark bg-white" style="border-bottom: 1px solid #0a0a0a; padding: 15px;">Password Reset</div>
+        <div class="card-header h4 text-dark bg-white" style="border-bottom: 1px solid #0a0a0a; padding: 15px;">Reset Password</div>
 
         <div class="card-body px-5" style="padding: 20px;">
             <% if(err){ %>
@@ -20,13 +20,13 @@
                 </div>
 
                 <div class="field" style="margin: 15px 0;">
-                    <input type="password" name="newPassword" placeholder="New Password" id="password" onchange="validatePassword();" required class="form-control">
+                    <input type="password" name="newPassword" placeholder="New Password" id="password" onchange="validatePassword();" required class="form-control" >
+                    <input type="checkbox" id="showPassword">
                 </div>
-
-                <div class="field" style="margin: 15px 0;">
-                    <input type="password" name="confirmPassword" placeholder="Confirm Password" id="confirmpass1" onkeyup="checkPasswordMatch();" required class="form-control">
+                    <div class="field" style="margin: 15px 0;">
+                        <input type="password" name="confirmPassword" placeholder="Confirm Password" id="confirmpass1" onkeyup="checkPasswordMatch();" required class="form-control">
+                        <input type="checkbox" id="showPasswordNext">
                 </div>
-
                 <button type="submit" class="btn btn-outline-success" style="width: 100%;">Reset Password</button>
             </form>
             <p style="margin: 15px 0;">
@@ -39,6 +39,7 @@
 <%-include('../userView/include/user_footer')-%>
 <script src="/javascript/signupScript.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
         $('#resetPasswordForm').submit(function(event) {
@@ -51,27 +52,57 @@
                 confirmPassword: $('input[name=confirmPassword]').val()
             };
 
-            // Make an Ajax request
             $.ajax({
                 type: 'POST',
                 url: '/changePasswordData',
                 data: formData,
                 success: function(response) {
-                    // Clear the input fields
+                    
                     $('input[name=oldPassword]').val('');
                     $('input[name=newPassword]').val('');
                     $('input[name=confirmPassword]').val('');
 
-                    // Handle the response from the server (e.g., display success or error messages)
                     if (response.success) {
                         // Password updated successfully
-                        $('#message3').html('<h6 style="color: green;">' + response.success + '</h6>');
+                        // $('#message3').html('<h6 style="color: green;">' + response.success + '</h6>');
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: response.success,
+                        });
+
                     } else if (response.err) {
                         // Error message
-                        $('#message3').html('<h6 style="color: red;">' + response.err + '</h6>');
+                        // $('#message3').html('<h6 style="color: red;">' + response.err + '</h6>');
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: response.err,
+                        });
+
                     }
                 }
             });
         });
+        
     });
+    $("#showPassword").on('change', function() {
+            const passwordField = $("#password");
+            if ($(this).is(':checked')) {
+                passwordField.attr('type', 'text');
+            } else {
+                passwordField.attr('type', 'password');
+            }
+        });
+        $("#showPasswordNext").on('change', function() {
+            const passwordField = $("#confirmpass1");
+            if ($(this).is(':checked')) {
+                passwordField.attr('type', 'text');
+            } else {
+                passwordField.attr('type', 'password');
+            }
+        });
+    
 </script>

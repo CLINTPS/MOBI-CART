@@ -2,15 +2,18 @@ const productsCollections = require ('../model/product')
 const categoriesCollection=require('../model/categories')
 const brandCollection = require('../model/brand');
 const { ObjectId } = require('mongodb');
+const moment = require('moment-timezone')
 
 //dashboard to product details
 async function getProductPage(req,res){
     try{ 
           var i=0
           const page = parseInt(req.query.page) || 1;
+          const pageSize = 4;
+
           const productDataCount = await productsCollections.find().count()
-          const pageSize = 3;
           const totalOrder = Math.ceil(productDataCount / pageSize);
+          
           const skip = (page - 1) * pageSize;
           const productData = await productsCollections.find().sort({ updatedAt: -1 }).skip(skip).limit(pageSize);
           console.log(productData);
@@ -95,11 +98,11 @@ async function postProductedit(req, res) {
     try {
         let id = req.params.id;
         const productDetails = req.body;
-        console.log("asss", productDetails);
+        console.log("productDetails::", productDetails);
 
         const files = req.files;    
 
-        const date = Date.now();
+        const date = moment().format();
 
         const ProductData = await productsCollections.findById(id);
             if(!ProductData){
@@ -238,27 +241,19 @@ async function serchProduct(req,res){
 async function deleteImage(req, res) {
     try {
         const productId = req.params.id;
-        console.log("product id",productId);
+        console.log("product id::",productId);
         const imageIndex = req.params.index;
-        console.log("image index",imageIndex);
+        console.log("image index ::",imageIndex);
         
-        // Retrieve the product data
         const product = await productsCollections.findById(productId);
         console.log("Product",product);
         if (!product) {
-            // Product not found, handle the error
             res.status(404).send('Product not found');
             return;
         }
-        
-        // Delete the image file from the server (you need to implement this)
-        // You can use the fs module to delete the image from the file system.
-        // For example: fs.unlink(`path/to/images/${product.images[imageIndex]}`, (err) => { ... });
 
-        // Remove the image from the product's images array
         product.images.splice(imageIndex, 1);
         
-        // Save the updated product data
         await product.save();
         
         res.status(200).send('Image deleted successfully');

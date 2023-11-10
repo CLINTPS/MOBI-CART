@@ -10,7 +10,7 @@ async function getOrderDetails(req,res){
         const page = parseInt(req.query.page) || 1;
         const orderDataCount = await orderCollection.find().count()
         // console.log("uuuuu",orderDataCount);
-        const pageSize = 5;
+        const pageSize = 4;
         const totalOrder = Math.ceil(orderDataCount / pageSize);
         // console.log("wwttttwww",totalOrder);  
         const skip = (page - 1) * pageSize;

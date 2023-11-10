@@ -22,20 +22,17 @@ async function getProducDetails(req,res){
 //get all product
 async function getAllProducts(req,res){
     try{
-        console.log("all product");
+        // console.log("all product");
         let user = req.session.user
-        console.log(user);
+        // console.log(user);
         const brandData = await brandCollection.find({})
         const categoryData = await categoriesCollection.find({})
         const page = parseInt(req.query.page) || 1;
         const productDataCount = await productsCollections.find().count()
-        console.log("qqqqqqq",productDataCount);
-        const pageSize = 2;
+        const pageSize = 4;
         const totalProducts = Math.ceil(productDataCount / pageSize);
-        console.log("wwwww",totalProducts);  
         const skip = (page - 1) * pageSize;
         const productData = await productsCollections.find().skip(skip).limit(pageSize); 
-        console.log("rrrrrr",productData); 
         res.render('userView/product-Full-Details',{title:"All product",
                 user,
                 brandData,
@@ -58,10 +55,9 @@ async function postFilterProduct(req, res) {
         const brandData = await brandCollection.find({});
         const categoryData = await categoriesCollection.find({});
         const page = parseInt(req.query.page) || 1;
-        const pageSize = 2;
+        const pageSize = 4;
         const skip = (page - 1) * pageSize;
 
-        // Construct the filter object based on the selected filter parameters
         const filter = {};
         if (selectedBrands) {
             filter.BrandName = selectedBrands;
@@ -70,18 +66,30 @@ async function postFilterProduct(req, res) {
             filter.Category = selectedCategory;
         }
         if (selectedPrice) {
-            // Implement your price filter logic here
-            // Example: Parse selectedPrice to filter products with a price greater than or equal to a certain value
+
             const priceValue = parseInt(selectedPrice);
-            filter.Price = { $lte: priceValue };
+            
+            let priceRange;
+            if (priceValue <= 20000) {
+                priceRange = { $gte: 0, $lt: 20000 };
+            } else if (priceValue <= 30000) {
+                priceRange = { $gte: 20001, $lt: 30000 };
+            } else if (priceValue <= 50000) {
+                priceRange = { $gte: 30001, $lt: 50000 };
+            } else if (priceValue <= 100000) {
+                priceRange = { $gte: 50001, $lt: 100000 };
+            } else if (priceValue <= 200000) {
+                priceRange = { $gte: 100001, $lt: 200000 };
+            }
+
+            filter.DiscountAmount = priceRange;
         }
 
-        // Query the database with the filter conditions
         const productData = await productsCollections.find(filter).skip(skip).limit(pageSize);
-        const productDataCount = await productsCollections.countDocuments(filter); // Get the count based on the filter
+        const productDataCount = await productsCollections.countDocuments(filter);
 
         const totalProducts = Math.ceil(productDataCount / pageSize);
-        console.log("productData====",productData);
+        console.log("productData ::",productData);
         res.render('userView/product-Full-Details', {
             title: "All product",
             user,
@@ -98,9 +106,47 @@ async function postFilterProduct(req, res) {
     }
 }
 
+//Serch product all page
+async function postSerchAllProduct(req,res){
+    try{
+        let SerchProduct=req.body.searchAllProduct
+        console.log("SerchProduct:",SerchProduct);
+        let user = req.session.user
+        console.log(user);
+        const brandData = await brandCollection.find({})
+        const categoryData = await categoriesCollection.find({})
+
+        const page = parseInt(req.query.page) || 1;
+        const productDataCount = await productsCollections.find({
+            ProductName: { $regex: "^" + SerchProduct, $options: "i" },
+        }).count()
+
+        const pageSize = 2;
+        const totalProducts = Math.ceil(productDataCount / pageSize);
+        const skip = (page - 1) * pageSize;
+
+        const productData = await productsCollections.find({
+            ProductName: { $regex: "^" + SerchProduct, $options: "i" },
+        }).skip(skip).limit(pageSize); 
+
+        res.render('userView/product-Full-Details',{title:"All product",
+                user,
+                brandData,
+                categoryData,
+                productData,
+                productDataCount : totalProducts,
+                page: page
+            })
+    }catch(error){
+        res.status(500).send('Internal server error')
+        res.render("errorView/404");
+    }
+
+}
 
 module.exports={
     getProducDetails,
     getAllProducts,
-    postFilterProduct
+    postFilterProduct,
+    postSerchAllProduct
 }

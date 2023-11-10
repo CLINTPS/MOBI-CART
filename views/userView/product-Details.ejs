@@ -60,7 +60,11 @@
         <br>
         <div class="d-flex" style="width: 301px;">
             <div class="col-6 d-flex justify-content-center">
-                <button class="btn btn-warning add-to-cart-button" data-product-id="<%= productData._id %>" onclick="addEventListener">Add to Cart</button>
+                <% if (productData.AvailableQuantity > 0) { %>                    
+                    <button class="btn btn-warning add-to-cart-button" data-product-id="<%= productData._id %>" onclick="addEventListener">Add to Cart</button>
+                  <% } else { %>
+                    <button class="btn btn-danger shadow-0 add-to-cart-button">Add to Cart</button>
+                  <% } %>
             </div>
             <div class="col-6 d-flex justify-content-center">
                 <a href="#" class="btn btn-primary">Buy now</a>
@@ -71,6 +75,7 @@
 
 
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     
     
@@ -109,14 +114,19 @@
             console.log(productId);
 
             $.ajax({
-                url: '/addtocart/' + productId,
-                method: 'POST',
-                success: function (response) {
+            url: '/addtocart/' + productId,
+            method: 'POST',
+            success: function (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Product added to cart',
+                    showConfirmButton: false,
+                    timer: 1500 // Close the alert after 1.5 seconds
+                });
 
-                    alert('Product added to cart');
-                    updateCartQuantity();
-                    location.reload()
-                },
+                updateCartQuantity();
+                location.reload();
+            },
                 error: function (error) {
                     console.error('Error adding product to cart:', error);
                 }

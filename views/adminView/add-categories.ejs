@@ -1,23 +1,37 @@
 <%-include('../adminView/include/ad_header')-%>
 <%-include('../adminView/include/_sidebar')-%>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <div class="text-center center-div d-flex align-items-center justify-content-center py-5">
-        <div class="container w-25 rounded border py-4 bg-muted">
-            <div class="title pb-1">
-                <h2 class="font-weight-bold text-daek">Add Categories</h2>
-            </div>
-            <% if(err){ %>
-                <h6 style="margin: 5px; color: red;"><%-err%></h6>
-              <% }else if(success){ %>
-                <h6 style="margin: 5px; color: rgb(10, 105, 7);"><%-success%></h6>
-                <%}%>
-            <form action="/admin/add-category" method="POST" >  
-                <div class="form-group">
-                    <small class="form-text text-white text-left">Categories Name</small>
-                    <input class="form-control" name="categoryName" required placeholder="Category Name">
-                </div>
-                
-                <button type="submit" onclick="return confirm('Do you want new Categories')" class="btn-btn-success rounded pi">Add</button>
-            </form>
+<div class="text-center center-div d-flex align-items-center justify-content-center py-5">
+    <div class="container w-25 rounded border py-4 bg-muted">
+        <div class="title pb-1">
+            <h2 class="font-weight-bold text-dark">Add Categories</h2>
         </div>
+        <% if(err){ %>
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: '<%= err %>',
+                });
+            </script>
+        <% } else if(success){ %>
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: '<%= success %>',
+                });
+            </script>
+        <% } %>
+        <form action="/admin/add-category" method="POST" >  
+            <div class="form-group">
+                <small class="form-text text-white text-left">Categories Name</small>
+                <input class="form-control" name="categoryName" required placeholder="Category Name">
+            </div>
+            
+            <button type="submit" onclick="return confirm('Do you want new Categories')" class="btn btn-success rounded pi">Add</button>
+        </form>
     </div>
+</div>
+

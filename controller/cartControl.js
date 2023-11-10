@@ -145,7 +145,7 @@ const postAddtocart = async (req, res) => {
     try{
 
       const cart = await cartCollection.findOne({ _id: cartId }).populate("products.productId" )
-
+      console.log("111",cart);
       if (!cart) {
         return res.status(404).json({ success: false, error: "Cart not found" });
       }
@@ -160,6 +160,7 @@ const postAddtocart = async (req, res) => {
   
       let subtotal = 0;
       let totalQuantity = 0;
+      
       cart.products.forEach((item) => {
         console.log(item,"isinde for each");
       subtotal += item.quantity * item.productId.DiscountAmount;
@@ -195,6 +196,7 @@ const postAddtocart = async (req, res) => {
     }
   }
 
+  //Product remove to cart
 const postRemoveProduct= async(req,res)=>{
     try{
         const {productId,cartId} = req.body;
