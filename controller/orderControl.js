@@ -77,7 +77,7 @@ async function postplaceOrder(req, res) {
             UserId: userID,
             Items: cartData.products,
             PaymentMethod: paymentMethod,
-            OrderDate: moment(new Date()).format("llll"),
+            OrderDate: new Date(),
             ExpectedDeliveryDate: moment().add(4, "days").format("llll"),
             TotalPrice: amount,
             Address: add,
@@ -125,7 +125,7 @@ async function getOrderPage(req,res){
         const userData= await userCollection.findOne({ email:email})
         const userId = userData._id
         // .sort({OrderDate:-1})
-        const orders = await orderCollection.find({UserId:userId}).populate('Items.productId')
+        const orders = await orderCollection.find({UserId:userId}).sort({OrderDate:-1}).populate('Items.productId')
         // console.log("gyugffg",orders);
         res.render('userView/userOrder',{title:"Order details",user,orders})
     }catch (error) {
@@ -142,7 +142,7 @@ async function getOrderProductViewPage(req,res){
         console.log("Received order ID:", orderID);
         if (!mongoose.Types.ObjectId.isValid(orderID)) {
             // Handle invalid order ID here, e.g., render an error page
-            console.error("Invalid order ID");
+            // console.error("Invalid order ID");
             res.render("errorView/404");
             return;
         }

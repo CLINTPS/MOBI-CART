@@ -139,9 +139,9 @@ const postAddtocart = async (req, res) => {
  //update quantity
  const postQuantity=async(req,res)=>{
     const { productId, quantity,cartId } = req.body;
-    console.log("1:"+productId);
-    console.log("2:"+quantity);
-    console.log("3:"+cartId);
+    // console.log("1:"+productId);
+    // console.log("2:"+quantity);
+    // console.log("3:"+cartId);
     try{
 
       const cart = await cartCollection.findOne({ _id: cartId }).populate("products.productId" )
@@ -162,7 +162,7 @@ const postAddtocart = async (req, res) => {
       let totalQuantity = 0;
       
       cart.products.forEach((item) => {
-        console.log(item,"isinde for each");
+        // console.log(item,"isinde for each");
       subtotal += item.quantity * item.productId.DiscountAmount;
       totalQuantity += item.quantity;
     });

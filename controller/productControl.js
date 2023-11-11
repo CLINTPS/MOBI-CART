@@ -15,7 +15,7 @@ async function getProductPage(req,res){
           const totalOrder = Math.ceil(productDataCount / pageSize);
           
           const skip = (page - 1) * pageSize;
-          const productData = await productsCollections.find().sort({ updatedAt: -1 }).skip(skip).limit(pageSize);
+          const productData = await productsCollections.find().sort({ createdAt: -1 }).skip(skip).limit(pageSize);
           console.log(productData);
           res.render('adminView/products',{title:"Product Details",
           i,
@@ -130,7 +130,7 @@ async function postProductedit(req, res) {
         if (files && files.main) {
             updateData.images[0] = files.main[0].filename;
         } else {
-            updateData.images[0] = ProductData.images[0]; // Use the existing image if not updated
+            updateData.images[0] = ProductData.images[0];
         }
 
         // Handle additional images (image1, image2, image3)
@@ -139,7 +139,7 @@ async function postProductedit(req, res) {
             if (files && files[imageName]) {
                 updateData.images[i] = files[imageName][0].filename;
             } else {
-                updateData.images[i] = ProductData.images[i]; // Use the existing image if not updated
+                updateData.images[i] = ProductData.images[i];
             }
         }
 

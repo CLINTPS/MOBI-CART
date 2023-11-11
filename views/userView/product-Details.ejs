@@ -76,6 +76,7 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastr@2"></script>
 <script>
     
     
@@ -117,15 +118,27 @@
             url: '/addtocart/' + productId,
             method: 'POST',
             success: function (response) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Product added to cart',
-                    showConfirmButton: false,
-                    timer: 1500 // Close the alert after 1.5 seconds
-                });
-
-                updateCartQuantity();
-                location.reload();
+                toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-bottom-center",
+                        "preventDuplicates": true,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "3000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut",
+                        "toastClass": "black-toast"
+                    };
+                toastr.success('Product added to cart');
+                    updateCartQuantity();
+                    location.reload();
             },
                 error: function (error) {
                     console.error('Error adding product to cart:', error);
@@ -136,5 +149,20 @@
 </script>
 
 <%-include('../userView/include/user_footer')-%>
+
+<style>
+    .custom-toast-container {
+    background-color: black;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+</style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="your-script.js"></script>

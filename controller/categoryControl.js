@@ -5,7 +5,7 @@ const errorMiddleware = require('../middleware/errorMiddleware');
 async function getCategory(req, res, next) {
   try {
     var i = 0;
-    const categoryData = await categoriesCollection.find({});
+    const categoryData = await categoriesCollection.find({}).sort({timeStamp:-1});
     // console.log(categoryData);
     res.render('adminView/categories', { title: "categories details", categoryData, i });
   } catch (error) {

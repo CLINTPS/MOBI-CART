@@ -18,7 +18,15 @@
                           <div class="d-flex flex-column">
                             <h4 >Your order has been <%= order.Status %></h4>
                             <hr>
-                            <span class="text-muted small">Orderd by :<%= order.OrderDate %></span>
+                            <span class="text-muted small">Orderd by :
+
+                            <% const orderDate = new Date(order.OrderDate); %>
+                            <%= orderDate.toLocaleString('default', { month: 'short' }) %>
+                            <%= orderDate.getDate() %>,
+                            <%= orderDate.getFullYear() %>
+                            <%= orderDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></span>
+
+
                             <% if(order.Status == "Delivered"){%>
                                 <p class="text-success">Delivered</p>
                                 <%}else if(order.Status == "Rejected"){%>

@@ -16,7 +16,6 @@
 
 <div class="otp-form" style="background:linear-gradient( #61cdfb,#ececec);">
 
-  <!-- Email OTP Form -->
   <form class="email-otp" action="/user/otp" method="post">
       <h2>Email OTP</h2>
       <% if(err){ %>
@@ -24,7 +23,6 @@
       <% } %>
       <div class="email-otp-container">
         
-          <!-- Six input fields for OTP digits -->
           <input type="text" class="email-otp-input" pattern="\d" maxlength="1">
           <input type="text" class="email-otp-input" pattern="\d" maxlength="1" disabled>
           <input type="text" class="email-otp-input" pattern="\d" maxlength="1" disabled>
@@ -34,14 +32,10 @@
 
      </div>
       
-      <!-- Field to display entered OTP -->
       <input type="text" id="emailverificationCode" name="code" placeholder="Enter verification code" value="dsjhgfahcbhjasdb" style="display: none;">
       <br>
-      <!-- Timer element -->
-      <div id="timer">Time remaining: 1:59</div>
-      <!-- Button to verify OTP -->
+      <div id="timer">Time remaining: 2:59</div>
       <button type="submit" id="verifyEmailOTP" class="btn btn-info">VERIFY</button>
-      <!-- Resend OTP link (moved to the right) -->
       <div style="text-align: right;">
         <a href="/user/resend-otp">Resend OTP</a>
       </div>
@@ -51,25 +45,19 @@
 
 
 <script  src="/javascript/otp.js"></script>
-<!-- JavaScript for the timer and OTP field disabling -->
 <script>
-    // Define the duration of the timer in seconds
-    var timerDuration = 119; // 4 minutes = 240 seconds
+    var timerDuration = 179; 
     var timer = setInterval(updateTimer, 1000);
   
     function updateTimer() {
-      // Calculate minutes and seconds
       var minutes = Math.floor(timerDuration / 60);
       var seconds = timerDuration % 60;
   
-      // Display the timer
       document.getElementById("timer").textContent = "Time remaining: " + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   
-      // Decrement the timer
       timerDuration--;
   
       if (timerDuration < 0) {
-        // Timer has expired, so disable OTP fields and clear the timer
         clearInterval(timer);
         disableOTPFields();
       }

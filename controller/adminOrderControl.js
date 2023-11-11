@@ -14,7 +14,8 @@ async function getOrderDetails(req,res){
         const totalOrder = Math.ceil(orderDataCount / pageSize);
         // console.log("wwttttwww",totalOrder);  
         const skip = (page - 1) * pageSize;
-        const ordersData = await orderCollection.find().skip(skip).limit(pageSize); //.sort({OrderDate:-1});
+        const ordersData = await orderCollection.find().skip(skip).limit(pageSize).sort({OrderDate:-1});
+
         // console.log("yyyyy",ordersData); 
         res.render('adminView/orderDetails',{title:"Order detailrsrss",
                 i,

@@ -42,7 +42,7 @@ function getDashboard (req,res){
 async function userdetails(req, res) {
     try {
         var i = 0;
-        const useData = await userCollection.find({});
+        const useData = await userCollection.find({}).sort({createdAt:-1});
         // ...
 
         // Define successMessage and errorMessage based on query parameters

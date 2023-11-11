@@ -39,6 +39,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script src="your-script.js"></script>
 
 <script>
@@ -74,15 +75,15 @@
             $.ajax({
                 url: '/addtocart/' + productId,
                 method: 'POST',
-                success: function (response) {
+                    success: function (response) {
 
-                    Swal.fire({
-                    icon: 'success',
-                    title: 'Product added to cart',
-                    showConfirmButton: false,
-                    timer: 1500 // Close the alert after 1.5 seconds
-                });
-                },
+                        Swal.fire({
+                        icon: 'success',
+                        title: 'Product added to cart',
+                        showConfirmButton: false,
+                        timer: 1500 // Close the alert after 1.5 seconds
+                    });
+                    },
                 error: function (error) {
                     console.error('Error adding product to cart:', error);
                 }

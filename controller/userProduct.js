@@ -14,7 +14,6 @@ async function getProducDetails(req,res){
             let user = req.session.user
             res.render('userView/product-Details',{title:"product details",user,productData})
         }catch(error){
-            res.status(500).send('Internal server error')
             res.render("errorView/404");
         }
 }

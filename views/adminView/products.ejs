@@ -31,7 +31,7 @@
                     <th scope="col">Price</th>
                     <th scope="col">Image</th>
                     <th scope="col">Create Date</th>
-                    <th scope="col">Udated Date</th>
+                    <!-- <th scope="col">Udated Date</th> -->
                     <th scope="col">Status</th>
                     <th scope="col">Edit</th>
                     <th scope="col">Edit</th>
@@ -61,10 +61,10 @@
                             <%let date=new Date(productData[i].createdAt)%>
                             <%=date.getDate()%>/<%=date.getMonth()%>/<%=date.getFullYear()%>
                         </td>
-                        <td>
+                        <!-- <td>
                             <%let dateNew=new Date(productData[i].updatedAt)%>
                             <%=dateNew.getDate()%>/<%=dateNew.getMonth()%>/<%=dateNew.getFullYear()%>
-                        </td>
+                        </td> -->
                         <td>
                             <%if(productData[i].Status===true){%>
                                     <a href="/admin/productblock/<%- productData[i]._id %>" title="Active User"
