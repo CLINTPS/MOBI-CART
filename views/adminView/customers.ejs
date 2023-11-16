@@ -78,14 +78,45 @@
             </tbody>
         </table>
     </div>
+
+    <!-- pagination -->
+    <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3" id="pagination-navbar">
+        <ul class="pagination">
+            <li class="page-item <%= page <= 1 ? 'disabled' : '' %>">
+                <a class="page-link" href="<%= page <= 1 ? '#' : '/admin/userDetails?page=' + (page - 1) %>" style="color: black;" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+    
+            <% const displayPages = 4; %>
+            <% const startPage = Math.max(1, page - Math.floor(displayPages / 2)); %>
+            <% const endPage = Math.min(userDataCount, startPage + displayPages - 1); %>
+    
+            <% for (let i = startPage; i <= endPage; i++) { %>
+                <li class="page-item <%= i === page ? 'active' : '' %>">
+                    <a class="page-link" href="/admin/userDetails?page=<%= i %>" style="color: black"><%= i %></a>
+                </li>
+            <% } %>
+    
+            <li class="page-item <%= page >= userDataCount ? 'disabled' : '' %>">
+                <a class="page-link" href="<%= page >= userDataCount ? '#' : '/admin/userDetails?page=' + (page + 1) %>" style="color: black;" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-
-<script>
-    
-</script>
+<style>
+    #pagination-navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    }
+</style>
 
 
 <% if (successMessage) { %>

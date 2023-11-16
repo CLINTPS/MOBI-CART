@@ -38,14 +38,30 @@
                 </div>
                 <br>
                 <div class="border p-3 mb-3">
-                    <input type="file" name="main" accept="image/*" style="width: 188px; height:188px;" onchange="viewImage0(event)">
-                    <img src="/product-img/" alt="Image 0" width="88" height="88" id="imgView0">
-                    <input type="file" name="image1" accept="image/*" style="width: 188px; height:188px;" onchange="viewImage1(event)">
+                    <h2>Images</h2>
+                
+                    <!-- Image 0 -->
+                    <input type="file" name="main" accept="image/*" style="width: 188px; height:188px;" onchange="viewImage(0, event)" >
+                    <img src="/product-img/" alt="Image 0" width="88" height="88" id="imgView0" >
+                    <button class="btn btn-outline-danger" type="button" onclick="deleteImage(0)">Delete</button>
+                    <br>
+                
+                    <!-- Image 1 -->
+                    <input type="file" name="image1" accept="image/*" style="width: 188px; height:188px;" onchange="viewImage(1, event)" >
                     <img src="/product-img/" alt="Image 1" width="88" height="88" id="imgView1">
-                    <input type="file" name="image2" accept="image/*" style="width: 188px; height:188px;" onchange="viewImage2(event)">
+                    <button class="btn btn-outline-danger" type="button" onclick="deleteImage(1)">Delete</button>
+                    <br>
+                
+                    <!-- Image 2 -->
+                    <input type="file" name="image2" accept="image/*" style="width: 188px; height:188px;" onchange="viewImage(2, event)" >
                     <img src="/product-img/" alt="Image 2" width="88" height="88" id="imgView2">
-                    <input type="file" name="image3" accept="image/*" style="width: 188px; height:188px;" onchange="viewImage3(event)">
+                    <button class="btn btn-outline-danger" type="button" onclick="deleteImage(2)">Delete</button>
+                    <br>
+                
+                    <!-- Image 3 -->
+                    <input type="file" name="image3" accept="image/*" style="width: 188px; height:188px;" onchange="viewImage(3, event)" >
                     <img src="/product-img/" alt="Image 3" width="88" height="88" id="imgView3">
+                    <button class="btn btn-outline-danger" type="button" onclick="deleteImage(3)">Delete</button>
                 </div>
 
                 <div class="border p-3 mb-3">
@@ -53,13 +69,13 @@
                     <div class="form-group">
                         <label for="basePrice">Price:</label>
                         <input type="number" name="Price" class="form-control bg-light" id="basePrice"
-                            placeholder="Enter base price" required />
+                            placeholder="Enter base price" required min="0"/>
                     </div>
                     <br>
                     <div class="form-group">
                         <label for="discountAmount">Discount Amount:</label>
                         <input type="number" name="DiscountAmount" class="form-control bg-light"
-                            id="discountAmount" placeholder="Enter discount amount" required />
+                            id="discountAmount" placeholder="Enter discount amount" required min="0"/>
                     </div>
                 </div>
 
@@ -71,7 +87,7 @@
                     <div class="form-group">
                         <label for="quantity">Quantity:</label>
                         <input type="number" name="AvailableQuantity" class="form-control bg-light"
-                            id="quantity" placeholder="Enter quantity" required />
+                            id="quantity" placeholder="Enter quantity" required min="0"/>
                     </div>
                 </div>
         </div>
@@ -130,16 +146,42 @@
     //     document.getElementById("mySidenav").style.width = "0";
     // }
 
-    function viewImage0(event){
-        document.getElementById('imgView0').src=URL.createObjectURL(event.target.files[0])
+</script>
+
+<script>
+    function viewImage(index, event) {
+        var inputFile = event.target;
+        var imgView = document.getElementById('imgView' + index);
+
+        if (inputFile.files && inputFile.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                imgView.src = e.target.result;
+
+                if (!inputFile.files[0].type.startsWith('image/')) {
+                    alert("Please select a valid image file.");
+                    inputFile.value = "";
+                    imgView.src = "/product-img/";
+                }
+            };
+
+            reader.readAsDataURL(inputFile.files[0]);
+        }
     }
-    function viewImage1(event){
-        document.getElementById('imgView1').src=URL.createObjectURL(event.target.files[0])
-    }
-    function viewImage2(event){
-        document.getElementById('imgView2').src=URL.createObjectURL(event.target.files[0])
-    }
-    function viewImage3(event){
-        document.getElementById('imgView3').src=URL.createObjectURL(event.target.files[0])
+
+    function deleteImage(index) {
+        var inputFile;
+        if (index === 0) {
+            alert("Let's delete the image");
+            inputFile = document.querySelector('input[name="main"]');
+        } else {
+            alert("Let's delete the image");
+            inputFile = document.querySelector('input[name="image' + index + '"]');
+        }
+        inputFile.value = "";
+
+        var imgView = document.getElementById('imgView' + index);
+        imgView.src = "/product-img/";
     }
 </script>

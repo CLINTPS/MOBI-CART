@@ -12,6 +12,13 @@ body {
   font-family: "Poppins", "sans-serif";
 }
 
+#pagination-navbar {
+    /* position: absolute; */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
 
 .main_nav {
   height: 100%;

@@ -1,88 +1,172 @@
 <%- include('../userView/include/user_header') -%>
-<body>
-    <form id="orderForm" action="/placeOrder" method="post">
-        <div class="container p-3">
-            <div class="row">
-                <div class="col-md-6">
-                    <h3 class="mb-4">Delivery Addresses</h3>
-                    <% userAddressData.address.forEach((address) => { %>
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <div class="form-check">
-                                <input class="form-check-input address-radio" type="radio" name="selectedAddress" id="address_<%= address._id %>" value="<%= address._id %>"  />
-                                <h5 class="card-title"><%= address.nameuser %></h5>
-                                <p class="card-text"><%= address.addressLine %></p>
-                                <p class="card-text"><%= address.city %>, <%= address.state %> <%= address.pincode %></p>
-                                <p class="card-text"><%= address.mobile %></p>
+
+    <body>
+        <form id="orderForm">
+            <div class="container p-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="mb-4">Delivery Addresses</h3>
+                        <% userAddressData.address.forEach((address)=> { %>
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="form-check">
+                                        <input class="form-check-input address-radio" type="radio"
+                                            name="selectedAddress" id="address_<%= address._id %>"
+                                            value="<%= address._id %>" />
+                                        <h5 class="card-title">
+                                            <%= address.nameuser %>
+                                        </h5>
+                                        <p class="card-text">
+                                            <%= address.addressLine %>
+                                        </p>
+                                        <p class="card-text">
+                                            <%= address.city %>, <%= address.state %>
+                                                    <%= address.pincode %>
+                                        </p>
+                                        <p class="card-text">
+                                            <%= address.mobile %>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                            <% }); %>
+                                <% if (userAddressData.address.length===0) { %>
+                                    <p class="text-center">No saved addresses. Please add a new address.</p>
+                                    <% } %>
                     </div>
-                    <% }); %>
-                    <% if (userAddressData.address.length === 0) { %>
-                    <p class="text-center">No saved addresses. Please add a new address.</p>
-                    <% } %>
-                </div>
-                <div class="col-md-4 mt-5">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Payment Methods</h5>
-                            <div class="form-check">
-                                <input class="form-check-input payment-radio" type="radio" name="selectedPayment" id="payment_cod" value="cod" checked/>
-                                <label class="form-check-label" for="payment_cod">Cash on Delivery</label>
-                            </div>
-                            <div class="form-check mt-3">
-                                <input class="form-check-input payment-radio" type="radio" name="selectedPayment" id="payment_online" value="online" disabled/>
-                                <label class="form-check-label" for="payment_online" >Online Payment</label>
-                            </div>
-                            <div class="text-center mt-4">
-                                <button class="btn btn-warning mt-4" id="confirmOrderButton" type="button">Confirm Order</button>
-                                <a href="/user/home"><button class="btn btn-success mt-4" type="button">Back to Shop</button></a>
+                    <div class="col-md-4 mt-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Payment Methods</h5>
+                                <div class="form-check">
+                                    <input class="form-check-input payment-radio" type="radio" name="selectedPayment"
+                                        id="cod" value="cod" checked />
+                                    <label class="form-check-label" for="payment_cod">Cash on Delivery</label>
+                                </div>
+                                <div class="form-check mt-3">
+                                    <input class="form-check-input payment-radio" type="radio" name="selectedPayment"
+                                        id="online" value="online" />
+                                    <label class="form-check-label" for="payment_online">Online Payment</label>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <button class="btn btn-warning mt-4" id="confirmOrderButton" type="submit">Confirm
+                                        Order</button>
+                                    <a href="/user/home"><button class="btn btn-success mt-4" type="button">Back to
+                                            Shop</button></a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
-    <script>
-        // JavaScript to handle the radio button selections and form submission
-        const addressRadios = document.querySelectorAll('.address-radio');
-        const paymentRadios = document.querySelectorAll('.payment-radio');
-        const confirmOrderButton = document.getElementById('confirmOrderButton');
-        const orderForm = document.getElementById('orderForm');
-        
+        </form>
 
-        confirmOrderButton.addEventListener('click', () => {
-            const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
-            if (!selectedAddress) {
-                alert('Please select a delivery address before confirming your order.');
-            } else {
-                // Submit the form
-                orderForm.submit();
-            }
-        });
 
-        addressRadios.forEach(addressRadio => {
-            addressRadio.addEventListener('change', () => {
-                // Unselect other address radios
-                addressRadios.forEach(radio => {
-                    if (radio !== addressRadio) {
-                        radio.checked = false;
+
+        <!-- Your existing HTML code -->
+        <script>
+            $(document).ready(function () {
+                console.log("Document ready");
+
+                $("#orderForm").submit(function (e) {
+                    e.preventDefault(); // Prevent the default form submission
+
+                    console.log("Form submitted");
+
+                    const selectedAddress = $("input[name='selectedAddress']:checked").val();
+                    console.log("Selected address:", selectedAddress);
+
+                    if (!selectedAddress) {
+                        alert("Please add an address before confirming the order.")
+                        return;
                     }
-                });
-            });
-        });
 
-        paymentRadios.forEach(paymentRadio => {
-            paymentRadio.addEventListener('change', () => {
-                // Unselect other payment radios
-                paymentRadios.forEach(radio => {
-                    if (radio !== paymentRadio) {
-                        radio.checked = false;
-                    }
+                    $.ajax({
+                        url: '/placeOrder',
+                        method: 'post',
+                        data: $('#orderForm').serialize(),
+                        success: function (response) {
+                            console.log("AJAX Success:", response);
+
+                            if (response.codSuccess) {
+                                window.location = '/ordersuccess';
+                                console.log('Order success');
+                            } else {
+                                console.log(response.createdOrder);
+                                console.log(response.order);
+                                handlePayNowClick(response);
+                            }
+                        },
+                        error: function (error) {
+                            console.error("AJAX Error:", error);
+                        }
+                    });
                 });
+
+
+                function handlePayNowClick(order) {
+                    var options = {
+                        "key": "rzp_test_g5h7xaNCLS7O8d",
+                        "amount": order.createdOrder.amount,
+                        "currency": "INR",
+                        "name": "MoBI CART",
+                        "description": "Test Transaction",
+                        "image": "http://localhost:5000/images/Mobi Cart Logo.png",
+                        "order_id": order.createdOrder.id,
+                        "handler": function (response) {
+                            // alert(response.razorpay_payment_id);
+                            // alert(response.razorpay_order_id);
+                            // alert(response.razorpay_signature)
+                            console.log("Response---", response)
+                            console.log("order////", order);
+                            verifyPayment(response, order)
+                        },
+                        "prefill": {
+                            "user": order.order.UserId,
+                        },
+                        "notes": {
+                            "address": "Razorpay Corporate Office"
+                        },
+                        "theme": {
+                            "color": "#1818c4"
+                        }
+                    };
+                    var rzp1 = new Razorpay(options);
+                    rzp1.open();
+                }
+
+                function verifyPayment(payment, order) {
+                    console.log('now in verifyPayment', payment)
+                    console.log('now in order', order)
+                    $.ajax({
+                        url: '/VerifyOnlinePayment',
+                        data: {
+                            payment,
+                            order
+                        },
+                        method: 'post',
+                        success: (response) => {
+                            console.log("response.success", response.success);
+                            if (response.success) {
+                                console.log('response got')
+                                location.href = '/ordersuccess'
+                            } else {
+                                console.log('response not get');
+                                location.href = '*'
+                            }
+                        }
+                    })
+                }
+
             });
-        });
-    </script>
-</body>
-<%- include('../userView/include/user_footer') -%>
+        </script>
+
+        <!-- Your existing HTML code -->
+
+
+
+        <%- include('../userView/include/user_footer') -%>
+            <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script src="https://code.jquery.com/jquery-3.7.1.js"
+                integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>

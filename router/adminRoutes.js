@@ -23,6 +23,10 @@ router.get('/block/:id',adminAuth.verifyAdmin,adminControl.UserStatus)
 
 //Dash board
 router.get('/dashboard',adminAuth.verifyAdmin,adminControl.getDashboard)
+router.get('/latestOrders',adminAuth.verifyAdmin,adminControl.getlatestOrders)
+router.get('/Orders-By-day',adminAuth.verifyAdmin,adminControl.getSalesGraph)
+router.get('/Orders-By-month',adminAuth.verifyAdmin,adminControl.getSalesGraph)
+router.get('/Orders-By-year',adminAuth.verifyAdmin,adminControl.getSalesGraph)
 
 
 //product

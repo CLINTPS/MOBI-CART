@@ -160,11 +160,13 @@
                             <h4 class="mb-1 me-1">₹<%=data.DiscountAmount%></h4>
                             <s class="text-danger">₹<%=data.Price%></s>
                           </div>
-                          <% if (data.AvailableQuantity > 0) { %>
+                          <% if (data.AvailableQuantity > 5) { %>
                             <h6 class="text-success">In stock</h6>
-                          <% } else { %>
-                            <h6 class="text-danger">out of stock</h6>
-                          <% } %>
+                          <% } else if( data.AvailableQuantity > 0 && data.AvailableQuantity<=5 ){ %>
+                            <h6 class="text-danger">left stock <%=data.AvailableQuantity%></h6>
+                            <% }else{ %>
+                              <h6 class="text-danger">out of stock</h6>
+                            <%}%>
                           <div class="mt-4">
                             <% if (data.AvailableQuantity > 0) { %>
                               <button class="btn btn-dark shadow-0 add-to-cart-button" data-product-id="<%= data._id %>">Add to Cart</button>
@@ -180,16 +182,24 @@
                 </div>
               </div>
             <% }); %>
-            <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
+            <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3" id="pagination-navbar">
               <ul class="pagination">
                   <li class="page-item <%= page <= 1 ? 'disabled' : '' %>">
                       <a class="page-link" href="<%= page <= 1 ? '#' : '/allProducts?page=' + (page - 1) %>" style="color: black;" aria-label="Previous">
                           <span aria-hidden="true">&laquo;</span>
                       </a>
                   </li>
-                  <li class="page-item">
-                      <a class="page-link" href="/allProducts?page=<%= page %>" style="color: black"><%= page %></a>
-                  </li>
+          
+                  <% const displayPages = 4; %>
+                  <% const startPage = Math.max(1, page - Math.floor(displayPages / 2)); %>
+                  <% const endPage = Math.min(productDataCount, startPage + displayPages - 1); %>
+          
+                  <% for (let i = startPage; i <= endPage; i++) { %>
+                      <li class="page-item <%= i === page ? 'active' : '' %>">
+                          <a class="page-link" href="/allProducts?page=<%= i %>" style="color: black"><%= i %></a>
+                      </li>
+                  <% } %>
+          
                   <li class="page-item <%= page >= productDataCount ? 'disabled' : '' %>">
                       <a class="page-link" href="<%= page >= productDataCount ? '#' : '/allProducts?page=' + (page + 1) %>" style="color: black;" aria-label="Next">
                           <span aria-hidden="true">&raquo;</span>
@@ -197,6 +207,7 @@
                   </li>
               </ul>
           </nav>
+          
                 
           
           <% } else { %>

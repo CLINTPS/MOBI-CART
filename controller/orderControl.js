@@ -6,6 +6,8 @@ const productsCollections = require ('../model/product')
 const moment = require("moment")
 const mongoose = require('mongoose')
 const { generateInvoice } = require('../util/InvoiceGenarator')
+const razorpay = require("../util/razorpay");
+const crypto = require('crypto');
 
 //Get check out page
 async function getOrderpage(req,res){
@@ -24,17 +26,16 @@ async function getOrderpage(req,res){
 //post ckeck out page
 async function postplaceOrder(req, res) {
     const email = req.session.email;
-    console.log("cart 1=" + email);
     let datas = req.body;
-    console.log(datas);
     const Address = req.body.selectedAddress;
     const paymentMethod = req.body.selectedPayment;
     const amount = req.session.totalPrice;
-    console.log(amount);
+    // console.log("cart 1=" + email);
+    // console.log(datas);
+    // console.log(amount);
     
     try {
         const userData = await userCollection.findOne({ email: email });
-        console.log(userData);
         
         if (!userData) {
             console.log("cart data note available");
@@ -58,7 +59,7 @@ async function postplaceOrder(req, res) {
             _id:userID,
             address:{$elemMatch:{_id: new mongoose.Types.ObjectId(Address)}}
         })
-        console.log("address 0001:",addressNew); 
+        // console.log("address 0001:",addressNew); 
 
         if (addressNew) {
             var addressObjIndex = addressNew.address.findIndex(addr=>addr._id == Address)
@@ -73,12 +74,16 @@ async function postplaceOrder(req, res) {
             Mobile:  addressNew.address[addressObjIndex].mobile,
         }
 
+
+
         const newOrder = new orderCollection({
             UserId: userID,
             Items: cartData.products,
             PaymentMethod: paymentMethod,
-            OrderDate: new Date(),
-            ExpectedDeliveryDate: moment().add(4, "days").format("llll"),
+            OrderDate: new Date().toLocaleString("en-US",{timeZone:"Asia/Kolkata"}),
+            ExpectedDeliveryDate: new Date(
+                Date.now()+4*24*60*60*100
+            ).toLocaleString("en-US",{timeZone:"Asia/Kolkata"}),
             TotalPrice: amount,
             Address: add,
         });
@@ -106,11 +111,63 @@ async function postplaceOrder(req, res) {
         }
 
         if (paymentMethod === "cod") {
-            res.render('userView/placeOrder');
+            res.json({ codSuccess: true });
+        }else{
+            // console.log("req.session.orderID",req.session.orderID);
+            const order = {
+                amount: amount,
+                currency: "INR",
+                receipt: req.session.orderID,
+              };
+            //   console.log("order order",order);
+              await razorpay
+                .createRazorpayOrder(order)
+                .then((createdOrder) => {
+                //   console.log("payment response", createdOrder);
+                  res.json({ createdOrder, order });
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
         }
     } catch (error) {
         console.error("An error occurred:", error);
         console.log("cart data note available 01--");
+        res.render("errorView/404");
+    }
+}
+
+//user order success page
+function getOderSuccess (req,res){
+    res.render('userView/placeOrder'); 
+}
+
+//Verify online payment
+const postVerifyPayment =async(req,res)=>{
+    try{
+        let hmac = crypto.createHmac("sha256", process.env.KEY_SECRET);
+    console.log(req.body.payment.razorpay_order_id + "|" +req.body.payment.razorpay_payment_id);
+    hmac.update(req.body.payment.razorpay_order_id +"|" +req.body.payment.razorpay_payment_id);
+
+    hmac = hmac.digest("hex");
+    if (hmac === req.body.payment.razorpay_signature) {
+      const orderId = new mongoose.Types.ObjectId(
+        req.body.order.createdOrder.receipt
+      );
+      console.log("reciept", req.body.order.createdOrder.receipt);
+      const updateOrderDocument = await orderCollection.findByIdAndUpdate(orderId, {
+        PaymentStatus: "Paid",
+        PaymentMethod: "Online",
+      });
+    //   console.log("updateOrderDocument",updateOrderDocument);
+      // console.log("hmac success");
+      res.json({ success: true });
+    } else {
+      // console.log("hmac failed");
+      res.json({ failure: true });
+    }
+    }catch(error) {
+        console.error("failed to verify the payment",error);
         res.render("errorView/404");
     }
 }
@@ -155,9 +212,7 @@ async function getOrderProductViewPage(req,res){
             console.log("DATA NOT");
             res.render("errorView/404");
         }
-        // const productId = orderData.Items[0].productId;
-        // const productData = await productsCollections.findOne({_id:productId})
-        // console.log("33333333",productData);
+
         console.log("asdrtsd",orders);
         res.render('userView/userOrderProductView',{title:"Order product view",user,TotalPrice,orders})
     }catch (error) {
@@ -247,6 +302,8 @@ const getdownloadInvoice=async(req,res)=>{
 module.exports={
     getOrderpage,
     postplaceOrder,
+    getOderSuccess,
+    postVerifyPayment,
     getOrderPage,
     getOrderProductViewPage,
     getCancelOrder,

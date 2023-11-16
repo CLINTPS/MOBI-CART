@@ -88,9 +88,11 @@ userRout.get('/user/cart',userAuth.verifyUser,cartControl.getCartPage)
 userRout.post('/updatequantity',userAuth.verifyUser,cartControl.postQuantity)
 userRout.post('/romoveProduct',userAuth.verifyUser,cartControl.postRemoveProduct)
 
-//Check ou page
+//Check out page
 userRout.get('/checkOut',userAuth.verifyUser,orderControl.getOrderpage)
 userRout.post('/placeOrder',userAuth.verifyUser,orderControl.postplaceOrder)
+userRout.get('/ordersuccess',userAuth.verifyUser,orderControl.getOderSuccess)
+userRout.post('/VerifyOnlinePayment',userAuth.verifyUser,orderControl.postVerifyPayment)
 
 //User order details
 userRout.get('/user/orderDetails',userAuth.verifyUser,orderControl.getOrderPage)

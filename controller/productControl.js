@@ -2,7 +2,8 @@ const productsCollections = require ('../model/product')
 const categoriesCollection=require('../model/categories')
 const brandCollection = require('../model/brand');
 const { ObjectId } = require('mongodb');
-const moment = require('moment-timezone')
+const moment = require('moment-timezone');
+const sharp = require('sharp')
 
 //dashboard to product details
 async function getProductPage(req,res){
@@ -43,36 +44,39 @@ async function getProductdata(req,res){
 
 
 //add post product
-async function postProductdata(req,res) {
+async function postProductdata(req, res) {
     const productDetails = req.body;
+
     try {
         const files = req?.files;
+        const uploadedImages = [];
 
         if (files && files.main) {
-            const ret = [
-                files.main[0].filename,
-                files.image1[0].filename,
-                files.image2[0].filename,
-                files.image3[0].filename,
-            ];
+            uploadedImages.push(files.main[0].filename);
+        }
 
-            const uploaded = await productsCollections.create({
-                ...productDetails,
-                images: ret,
-            });
-
-            if (uploaded) {
-                console.log('Product added');
-                res.redirect('/admin/add-productPage');
+        // Check and add the other images
+        for (let i = 1; i < 4; i++) {
+            const imageName = `image${i}`;
+            if (files && files[imageName]) {
+                uploadedImages.push(files[imageName][0].filename);
             }
-        } else {
-            console.log('One or more files are missing.');
+        }
+
+        // Update productDetails with the images array
+        productDetails.images = uploadedImages;
+
+        const uploaded = await productsCollections.create(productDetails);
+
+        if (uploaded) {
+            console.log('Product added');
+            res.redirect('/admin/add-productPage');
         }
     } catch (error) {
         console.log('An error happened');
         throw error;
-  }
-};
+    }
+}
 
 //edit get product
 async function getProductedit(req,res){
@@ -192,6 +196,7 @@ async function getBlockProduct(req,res){
       }
 }
 
+//Serch product
 async function serchProduct(req,res){
     try{
         var i = 0;
@@ -199,25 +204,30 @@ async function serchProduct(req,res){
         console.log(data);
         const page = parseInt(req.query.page) || 1;
         const productDataCount = await productsCollections.find().count()
-        const pageSize = 3;
+        const pageSize = 4;
               const totalOrder = Math.ceil(productDataCount / pageSize);
               const skip = (page - 1) * pageSize;
         let productData = await productsCollections.find({
             ProductName: { $regex: "^" + data, $options: "i" },
-    }).skip(skip).limit(pageSize);;
+    }).sort({ createdAt: -1 }).skip(skip).limit(pageSize);
 
-    if(productDataCount.length===0){
-        const productData = await productsCollections.find({});
-        const successMessage = req.query.successMessage || '';
-        const errorMessage = req.query.errorMessage || '';
+    if(productData.length===0){
+        var i=0
+        const page = parseInt(req.query.page) || 1;
+        const pageSize = 4;
+
+        const productDataCount = await productsCollections.find().count()
+        const totalOrder = Math.ceil(productDataCount / pageSize);
+        
+        const skip = (page - 1) * pageSize;
+        const productData = await productsCollections.find().sort({ createdAt: -1 }).skip(skip).limit(pageSize);
+        console.log(productData);
         res.render('adminView/products',{title:"Product Details",
-            productData,
-            productDataCount:totalOrder,
-            i,
-            successMessage,
-            errorMessage,
-            page: page
-         });
+        i,
+        productData,
+        productDataCount:totalOrder,
+        page: page
+      })
     }else{
         console.log(`Search Data ${productDataCount} `);
         const successMessage = req.query.successMessage || '';

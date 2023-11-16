@@ -101,9 +101,17 @@
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li class="page-item">
-                    <a class="page-link" href="/admin/productPage?page=<%= page %>" style="color: black"><%= page %></a>
-                </li>
+        
+                <% const displayPages = 4; %>
+                <% const startPage = Math.max(1, page - Math.floor(displayPages / 2)); %>
+                <% const endPage = Math.min(productDataCount, startPage + displayPages - 1); %>
+        
+                <% for (let i = startPage; i <= endPage; i++) { %>
+                    <li class="page-item <%= i === page ? 'active' : '' %>">
+                        <a class="page-link" href="/admin/productPage?page=<%= i %>" style="color: black"><%= i %></a>
+                    </li>
+                <% } %>
+        
                 <li class="page-item <%= page >= productDataCount ? 'disabled' : '' %>">
                     <a class="page-link" href="<%= page >= productDataCount ? '#' : '/admin/productPage?page=' + (page + 1) %>" style="color: black;" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
@@ -111,6 +119,7 @@
                 </li>
             </ul>
         </nav>
+        
         <style>
             #pagination-navbar {
                 position: fixed;
