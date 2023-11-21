@@ -2,7 +2,7 @@
 <div class="bg-light">
     <div>
         <div class="text-center">
-            <div class="dashbrd"  style="width: 100%; background-color: rgb(181, 211, 174)">
+            <div class="dashbrd"  style="width: 100%; background-color: rgb(255, 255, 255)">
                 <!-- <a href="" class="btn btn-warning" style="position: absolute; margin-top: 35%; left:12%">Buy Now</a>
                 <a href="" class="btn btn-light" style="position: absolute; margin-top: 35%; left:20%">Add To Cart</a> -->
                 <!-- <img src="/images/first.webp" class="d-block w-100" alt=""> -->
@@ -12,15 +12,22 @@
                         <img src="/images/first.webp" class="d-block w-100" alt="">
                     <!-- <p>No banner image available</p> -->
                 <% } %>
-                <h1 class="text-black pt-4 ">Discover NEW Arrivals</h1>
+                <h1 class="text-black pt-4 ">Discover New Arrivals</h1>
                 <P>Recently added Mobiles!</P>
                          
-                <div class="row" style="margin:0%;">
+                <div class="row" style="margin:2%;">
                     <% if (Array.isArray(productData)) { %>
                     <% productData.forEach((product)=>{ %>
-                        <% if(product.AvailableQuantity > 0 && product.Status===true){%>
+                        <% if(product.AvailableQuantity >= 0 && product.Status===true){%>
                     <div class="col-md-3 p-4">
                         <div class="card" style="width: 18rem; margin-left: 20px;">
+                            <% if(product.AvailableQuantity > 5){%>
+                                <span class="bg-success text-white" style="position: absolute; border-radius: 5px;">In stock</span>
+                                <%}else if(product.AvailableQuantity <= 5 && product.AvailableQuantity > 0){%>
+                                <span class="bg-warning text-white" style="position: absolute; border-radius: 5px;">Stock left<%= product.AvailableQuantity%></span>
+                                    <%}else if(product.AvailableQuantity == 0){%>
+                                        <span class="bg-danger text-white" style="position: absolute; border-radius: 5px;">out of stock</span>
+                                        <%}%>
                             <img class="card-img-top" style="height: 290px; width: 250px; padding: 20px; margin-left: 20px;" src="/product-img/<%= product.images[0] %>" alt="Card image cap">
                             <div class="card-body">
                                 <h6 class="card-title"><%=product.ProductName%></h6>
@@ -37,7 +44,7 @@
                     <%}) %>
                     <% } %>
                 </div>
-                <a href="/allProducts">View All</a> 
+                <a href="/allProducts">View More</a> 
             </div>            
         </div>
     </div>

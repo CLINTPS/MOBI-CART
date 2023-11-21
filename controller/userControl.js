@@ -296,6 +296,7 @@ async function getUserprofile(req, res) {
     try {
         let user = req.session.user
         const UserData = await userCollection.findOne({ userName: user })
+        console.log("UserData..",UserData);
         res.render('userView/userProfile', { title: "Profile view", user, UserData})
     } catch (error) {
         console.log("can't profile details");
