@@ -77,7 +77,7 @@ body{
     color: #2643d3;
     background: #fff;
     border-radius: 5px;
-    border: 1px solid rgb(20, 15, 15);
+    /* border: 1px solid rgb(20, 15, 15); */
     transform: translateY(-50%);
   }
   form .content{

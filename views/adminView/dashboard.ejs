@@ -35,55 +35,58 @@
             }
         </style>
 
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Select Date Range</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Select Date Range</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="salesReport" method="post" action="/admin/SalesReport">
+            <label for="startDate">Start Date:</label>
+            <input type="date" name="startDate" id="startDate" required>
+            <label for="endDate">End Date:</label>
+            <input type="date" name="endDate" id="endDate" required>
+           
+            <div class="row mt-5">
+                <div class="col-sm-6"> 
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="downloadFormat" value="pdf" id="pdfCheckbox" checked>
+                        <label class="form-check-label" for="pdfCheckbox">
+                            PDF
+                        </label>
                     </div>
-                    <div class="modal-body">
-                        <form id="salesReport" method="post" action="#"></form>
-                        <label for="startDate">Start Date:</label>
-                        <input type="date" id="startDate">
-                        <label for="endDate">End Date:</label>
-                        <input type="date" id="endDate">
-
-                        <div class="row mt-5">
-                            <div class="col-sm-6">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="downloadFormat" value="pdf"
-                                        id="pdfCheckbox">
-                                    <label class="form-check-label" for="pdfCheckbox">
-                                        PDF
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="downloadFormat" value="excel"
-                                        id="excelCheckbox">
-                                    <label class="form-check-label" for="excelCheckbox">
-                                        Excel
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                </div>
+                <div class="col-sm-6"> 
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="downloadFormat" value="excel" id="excelCheckbox">
+                        <label class="form-check-label" for="excelCheckbox">
+                            Excel
+                        </label>
                     </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="generateReportBtn">Generate Report</button>
-                    </div>
-                </form>     
                 </div>
             </div>
+            
+            
+
         </div>
+        
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-dark" id="generateReportBtn">Generate Report</button>
+        </div>
+        
+    </form>
+
+      </div>
+    </div>
+  </div>
 
 
-        <div class="details">
-            <div class="recentOrders">
+
+        <div class="details"  style="margin-left: 275px;">
+            <div class="recentOrders" style="width: 1200px;">
                 <div class="container mt-4">
                     <div class="row">
                         <div class="col-lg-12">
@@ -181,7 +184,6 @@
 
 
         <script>
-
             updateSalesGraph("day");
             document.getElementById("byDayOption").addEventListener("click", function () {
                 document.getElementById("timeIntervalDropdown").textContent = "By Day";
@@ -355,6 +357,7 @@
 
             updateSalesGraph();
             updateLatestOrdersAndBestSellers();
+      
 
         </script>
 

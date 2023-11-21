@@ -6,14 +6,19 @@
                 <div class="col-lg-4">
                     <div class="card mb-4">
                         <div class="card-body text-center">
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
-                                alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                            <img src="/profile-img/cropProfile-img/<%= UserData.profilePhoto || 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp' %>"
+                            id="selectedProfile" alt="Profile" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+                            <div>
+                                <label class="btn btn-round",for="imageinput"><i class="fa-solid fa-edit" style="color: black;"></i>
+                                <input type="file" accept="image/*" id="imageinput" onchange="uploadProfilePicture(event)"  style="display: none;"/>
+                                </label>
+                            </div>
                             <h5 class="my-3">
-                                <%= UserData.userName%>
+                                <i><b><%= UserData.userName%></b></i>
                             </h5>
-                            <p class="text-muted mb-1"><%= UserData.email%></p>
+                            <p class="text-muted mb-1"><i><%= UserData.email%></i></p>
                             <%if(UserData.address[0]){%>
-                            <p class="text-muted mb-1"><%= UserData.address[0].mobile%></p>
+                            <p class="text-muted mb-1"><i><%= UserData.address[0].mobile%></i></p>
                             <%}else{%>
                             <p class="text-muted mb-1">Null</p>
                             <%}%>
@@ -130,43 +135,39 @@
                             </div>
                         </div>
                     </div>
-
-
-
-
-        <!-- <div class="row">
-            <div class="col-md-6">
-              <div class="card mb-4 mb-md-0">
-                <div class="card-body">
-                  <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status
-                  </p>
-                  <p class="mb-1" style="font-size: .77rem;">Web Design</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80"
-                      aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72"
-                      aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89"
-                      aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55"
-                      aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-            
                 </div>
             </div>
         </div>
     </section>
+
+
+<script>
+     function uploadProfilePicture(event) {
+  const fileInput = event.target;
+  const file = fileInput.files[0];
+
+  const formData = new FormData();
+  formData.append('profilePicture', file);
+
+  fetch('/UserProfilePicture', {
+    method: 'POST',
+    body: formData,
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      
+      const avatarImage = document.getElementById('selectedProfile'); 
+avatarImage.src = URL.createObjectURL(file);
+      alert('Profile picture updated successfully!');
+    } else {
+      alert('Failed to update profile picture.');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
+</script>
 
     <%-include('../userView/include/user_footer')-%>

@@ -109,9 +109,9 @@ async function postFilterProduct(req, res) {
 async function postSerchAllProduct(req,res){
     try{
         let SerchProduct=req.body.searchAllProduct
-        console.log("SerchProduct:",SerchProduct);
+        // console.log("SerchProduct:",SerchProduct);
         let user = req.session.user
-        console.log(user);
+        // console.log(user);
         const brandData = await brandCollection.find({})
         const categoryData = await categoriesCollection.find({})
 

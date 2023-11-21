@@ -1,4 +1,5 @@
 const userCollection = require('../model/user')
+const bannerCollection = require('../model/banner')
 const bcrypt = require('bcrypt')
 const sendOTP = require("./otpController");
 const { use } = require("../router/adminRoutes");
@@ -6,11 +7,15 @@ const productsCollections = require('../model/product')
 const { ObjectId } = require('mongodb')
 require("../util/otpindex")
 const OTP = require("../model/otp");
+const sharp = require('sharp')
+const fs = require('fs');
+const path = require('path');
 
 // to index
 async function gustView(req, res) {
     const productData = await productsCollections.find({});
-    res.render('userView/index', { title: 'Mobi cart', productData, err: false });
+    const bannerImg = await bannerCollection.find({}).sort({date:-1}).limit(1)
+    res.render('userView/index', { title: 'Mobi cart', productData,bannerImg,err: false });
 }
 
 //gust page to login page
@@ -39,7 +44,8 @@ async function getHomePage(req, res) {
         let user = req.session.user
 
         const productData = await productsCollections.find({});
-        res.render("userView/userhome", { title: "Home Page", productData, user, err: false })
+        const bannerImg = await bannerCollection.find({}).sort({date:-1}).limit(1)
+        res.render("userView/userhome", { title: "Home Page", productData,bannerImg, user, err: false })
     }
     else {
         res.redirect('/')
@@ -285,18 +291,71 @@ const password_reset = async (req, res) => {
     }
 }
 
-//User profile
+//User profile side
 async function getUserprofile(req, res) {
     try {
         let user = req.session.user
         const UserData = await userCollection.findOne({ userName: user })
-        res.render('userView/userProfile', { title: "Profile view", user, UserData })
+        res.render('userView/userProfile', { title: "Profile view", user, UserData})
     } catch (error) {
         console.log("can't profile details");
         res.render("errorView/404");
     }
 }
 
+//User profile picture
+const postUserProfile = async (req, res) => {
+    try {
+      const userEmail = req.session.email;
+      console.log("1",userEmail);
+      const username = await userCollection.findOne({ email: userEmail });
+      console.log("2",username);
+      const userId = username._id;
+      console.log("3",userId);
+  
+      if (!req.file) {
+        console.error("No file uploaded");
+        return res
+          .status(400)
+          .json({ success: false, error: "No file uploaded" });
+      }
+  
+      const uploadedImage= req.file;
+  
+      const imageBuffer = fs.readFileSync(uploadedImage.path);
+  
+      const croppedImageBuffer = await sharp(imageBuffer)
+      .resize({ width: 180, height: 180, fit: sharp.fit.cover })
+      .toBuffer();
+  
+      const savePath = path.join(__dirname, '../public/profile-img/cropProfile-img');
+      const fileName = uploadedImage.originalname;
+    
+      fs.writeFileSync(path.join(savePath, fileName), croppedImageBuffer);
+  
+      const updateUser = await userCollection.findOneAndUpdate(
+        { _id: userId },
+        { profilePhoto: fileName },
+        { new: true }
+      );
+  
+      if (updateUser) {
+        return res
+          .status(200)
+          .json({
+            success: true,
+            message: "Profile picture uploaded successfully",
+          });
+      } else {
+        return res.status(404).json({ success: false, error: "User not found" });
+      }
+    } catch (error) {
+      console.error("Error while uploading profile picture:", error);
+      return res
+        .status(500)
+        .json({ success: false, error: "Internal server error" });
+    }
+  };
 //user Address book
 async function getAddressBook(req, res) {
     try {
@@ -462,6 +521,7 @@ module.exports = {
     get_password_reset,
     password_reset,
     getUserprofile,
+    postUserProfile,
     getAddressBook,
     postAddress,
     postEditAddress,

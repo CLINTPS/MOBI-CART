@@ -10,6 +10,7 @@ const UsersSchema = new Schema({
   phone: { type: String },
   status: { type: Boolean,
             default:true},
+  profilePhoto:{type:String},
   address: [{
      nameuser: { type:String},
      addressLine: { type: String },

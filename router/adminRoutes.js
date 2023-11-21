@@ -1,11 +1,13 @@
 const router=require('express').Router();
 const uplode = require('../middleware/multer')
+const bannerUplode = require('../middleware/bannerMulter')
 const adminAuth = require('../middleware/adminAuth')
 const adminControl = require('../controller/adminControl')
 const categoryControl = require('../controller/categoryControl')
 const productControl = require('../controller/productControl')
 const brandControl = require('../controller/brandControl')
 const adminOrderControl = require('../controller/adminOrderControl')
+const bannerControl = require('../controller/bannerControl')
 // const errorHandlerMiddleware = require('../middleware/errorMiddleware')
 
 
@@ -27,6 +29,8 @@ router.get('/latestOrders',adminAuth.verifyAdmin,adminControl.getlatestOrders)
 router.get('/Orders-By-day',adminAuth.verifyAdmin,adminControl.getSalesGraph)
 router.get('/Orders-By-month',adminAuth.verifyAdmin,adminControl.getSalesGraph)
 router.get('/Orders-By-year',adminAuth.verifyAdmin,adminControl.getSalesGraph)
+//Sales report
+router.post('/SalesReport',adminAuth.verifyAdmin,adminControl.postSalesReport)
 
 
 //product
@@ -69,5 +73,8 @@ router.get('/OrderControl',adminAuth.verifyAdmin,adminOrderControl.getOrderDetai
 router.put('/updateOrderStatus/:orderId',adminAuth.verifyAdmin,adminOrderControl.putUpdateStatus)
 router.get('/orders/details/:orderId',adminAuth.verifyAdmin,adminOrderControl.getViewOrder)
 
+//Banner
+router.get('/Banner',adminAuth.verifyAdmin,bannerControl.getBanner)
+router.post('/bannerUpdation',adminAuth.verifyAdmin,bannerUplode.single('image'),bannerControl.postNewBanner)
 
 module.exports  = router;

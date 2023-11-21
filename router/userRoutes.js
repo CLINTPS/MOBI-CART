@@ -15,6 +15,7 @@ const userAuth = require('../middleware/userAuth')
 const userBlock = require('../middleware/userBlock')
 const cartControl = require('../controller/cartControl')
 const orderControl = require('../controller/orderControl')
+const userProfile = require('../middleware/profileMulter')
 // const errorHandler = require('../middleware/errorMiddleware')
 
 
@@ -71,6 +72,8 @@ userRout.post('/serchAllPorductsShop',userAuth.verifyUser,userProduct.postSerchA
 
 //User profile side
 userRout.get('/user/profile',userAuth.verifyUser,userControl.getUserprofile)
+//User profile picture
+userRout.post('/UserProfilePicture',userAuth.verifyUser,userProfile.single('profilePicture'),userControl.postUserProfile)
 
 //User addresses
 userRout.get('/user/AddressBook',userAuth.verifyUser,userControl.getAddressBook)

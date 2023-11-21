@@ -1,6 +1,8 @@
 const userCollection=require('../model/user')
 const orderCollection = require('../model/order')
 const moment = require('moment')
+const {format}= require('date-fns')
+const pdf = require('../util/salesReport')
 
 
 
@@ -95,7 +97,7 @@ async function getSalesGraph(req,res){
             $nin:["returned","Cancelled","Rejected"]
           }
         });
-        console.log("001",orders);
+        // console.log("001",orders);
         const orderCountsByDay = {};
         const totalAmountByDay = {};
         const orderCountsByMonthYear = {};
@@ -108,14 +110,14 @@ async function getSalesGraph(req,res){
         orders.forEach((order) => {
     
           const orderDate = moment(order.OrderDate, "M/D/YYYY, h:mm:ss A");
-          console.log("002",orderDate);
+          // console.log("002",orderDate);
           const dayMonthYear = orderDate.format("YYYY-MM-DD");
-          console.log("003",dayMonthYear);
+          // console.log("003",dayMonthYear);
           const monthYear = orderDate.format("YYYY-MM");
-          console.log("004",monthYear);
+          // console.log("004",monthYear);
           const year = orderDate.format("YYYY");
-          console.log("005",year);
-          console.log("total amonunt--------",order.TotalPrice);
+          // console.log("005",year);
+          // console.log("total amonunt--------",order.TotalPrice);
           if (req.url === "/Orders-By-day") {
            
             if (!orderCountsByDay[dayMonthYear]) {
@@ -134,7 +136,7 @@ async function getSalesGraph(req,res){
                 count: orderCountsByDay[dayMonthYear],
               })
             );
-              console.log("005",ordersByDay);
+              // console.log("005",ordersByDay);
     
             const amountsByDay = Object.keys(totalAmountByDay).map(
               (dayMonthYear) => ({
@@ -143,7 +145,7 @@ async function getSalesGraph(req,res){
               })
             );
     
-            console.log("006",amountsByDay);
+            // console.log("006",amountsByDay);
     
             amountsByDay.sort((a,b)=> (a._id < b._id ? -1 : 1));
             ordersByDay.sort((a, b) => (a._id < b._id ? -1 : 1));
@@ -153,17 +155,17 @@ async function getSalesGraph(req,res){
             labelsByCount = ordersByDay.map((entry) =>
               moment(entry._id, "YYYY-MM-DD").format("DD MMM YYYY")
             );
-              console.log('007',labelsByCount);
+              // console.log('007',labelsByCount);
 
             labelsByAmount = amountsByDay.map((entry) =>
               moment(entry._id, "YYYY-MM-DD").format("DD MMM YYYY")
             );
-              console.log('008',labelsByAmount);
+              // console.log('008',labelsByAmount);
 
             dataByCount = ordersByDay.map((entry) => entry.count);
             dataByAmount = amountsByDay.map((entry) => entry.total);
-              console.log("009",dataByCount);
-              console.log("010",dataByAmount);
+              // console.log("009",dataByCount);
+              // console.log("010",dataByAmount);
            
     
           } else if (req.url === "/Orders-By-month") {
@@ -187,8 +189,8 @@ async function getSalesGraph(req,res){
                 total: totalAmountByMonthYear[monthYear],
               })
             );
-            console.log("011",ordersByMonth);
-            console.log("012",amountsByMonth);
+            // console.log("011",ordersByMonth);
+            // console.log("012",amountsByMonth);
           
             ordersByMonth.sort((a, b) => (a._id < b._id ? -1 : 1));
             amountsByMonth.sort((a, b) => (a._id < b._id ? -1 : 1));
@@ -200,12 +202,12 @@ async function getSalesGraph(req,res){
             labelsByAmount = amountsByMonth.map((entry) =>
               moment(entry._id, "YYYY-MM").format("MMM YYYY")
             );
-            console.log("013",labelsByCount);
-            console.log("014",labelsByAmount);
+            // console.log("013",labelsByCount);
+            // console.log("014",labelsByAmount);
             dataByCount = ordersByMonth.map((entry) => entry.count);
             dataByAmount = amountsByMonth.map((entry) => entry.total);
-            console.log("015",dataByCount);
-              console.log("016",dataByAmount);
+            // console.log("015",dataByCount);
+              // console.log("016",dataByAmount);
           } else if (req.url === "/Orders-By-year") {
             // Count orders by year
             if (!orderCountsByYear[year]) {
@@ -239,6 +241,42 @@ async function getSalesGraph(req,res){
         res.json({ labelsByCount,labelsByAmount, dataByCount, dataByAmount });
         
 
+    }catch(error){
+        console.log("Error.......:",error);
+        res.render("errorView/404admin");
+    }
+}
+
+//Sales report
+const postSalesReport = async(req,res)=>{
+    try{
+        console.log(req.body);
+        const startDate = moment(req.body.startDate, 'YYYY-MM-DD').format('MM/DD/YYYY, h:mm:ss A');
+        console.log("startDate...", startDate);
+        const format = req.body.downloadFormat;
+        console.log("format...", format);
+        const endDate = moment(req.body.endDate, 'YYYY-MM-DD').endOf('day').format('MM/DD/YYYY, h:mm:ss A');
+        console.log("endDate...", endDate);
+        const orders = await orderCollection.find({
+            PaymentStatus:"Paid",
+            OrderDate:{$gte:startDate,$lte:endDate}
+        }).populate("Items.productId");
+        console.log("orders........",orders);
+        let totalSales = 0;
+        orders.forEach((order) => {
+            totalSales += order.TotalPrice || 0;
+          });
+          console.log("Total sales.......",totalSales);
+          pdf.downloadReport(
+            req,
+            res,
+            orders,
+            startDate,
+            endDate,
+            totalSales.toFixed(2),
+            format
+          );
+          
     }catch(error){
         console.log("Error.......:",error);
         res.render("errorView/404admin");
@@ -378,5 +416,6 @@ module.exports={
     userSerch,
     getDashboard,
     getlatestOrders,
-    getSalesGraph
+    getSalesGraph,
+    postSalesReport
 }

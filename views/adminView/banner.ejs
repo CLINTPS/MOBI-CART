@@ -1,0 +1,40 @@
+<%-include('../adminView/include/ad_header')-%>
+<%-include('../adminView/include/_sidebar')-%>
+
+<div>
+    <h1 class="text-center">
+        Banner 
+    </h1>
+    <div class="d-flex justify-content-center">
+        <% if (CurrentBanner&& CurrentBanner[0].image) { %>
+            <img id="selectedImage" src="/banner-img/croppedImage/<%= CurrentBanner[0].image %>" class="d-block w-100"
+                alt="example placeholder" style="height: 500px; object-fit: cover;" />
+        <% } else { %>
+            <p>No banner image available</p>
+        <% } %>
+    </div>
+    <div class="d-flex justify-content-center">
+        <form id="bannerForm" action="/admin/bannerUpdation" method="POST" enctype="multipart/form-data">
+            <div class="btn btn-round">
+                <label class="btn btn-round mt-2" for="customFile1">
+                    <i class="fa-solid fa-edit" style="font-size: 36px; color: black;"></i>
+                    <input type="file" class="form-control d-none" id="customFile1" name="image" accept="image/*" onchange="previewImage(this)" />
+                </label>
+            </div>
+            <button type="submit" class="btn btn-outline-success mt-2">Upload and Save</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function previewImage(input) {
+        var file = input.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('selectedImage').src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
