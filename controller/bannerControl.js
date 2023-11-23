@@ -5,7 +5,7 @@ const path = require('path');
 
 
 //Get banneer page
-async function getBanner(req,res){
+async function getBanner(req,res,next){
     try{
         const CurrentBanner = await bannerCollection.find({}).limit(1).sort({date:-1})
         // console.log("CurrentBanner.......",CurrentBanner);

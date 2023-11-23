@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Placed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            /* background-color: #ffffff; */
+            background-image: linear-gradient(rgb(255, 255, 255), rgb(26, 83, 24));
+            text-align: center;
+            justify-content: center;
+            margin-top: 120px;
+            height: 82.5vh;
+            
+        }
+
+        .container {
+            background-color: #a3f5b7;
+            border: 0px solid #0e45ea;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+            border-radius: 50px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 500px;
+            /* max-height: 100vh; */
+        }
+
+        h3 {
+            color: #000000;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 20px;
+            margin: 10px;
+        }
+
+        .btn-success {
+            background-color: #268c26;
+        }
+
+        .btn-primary {
+            background-color: #007BFF;
+        }
+
+      h1 {
+        color: #88B04B;
+        font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+        font-weight: 900;
+        font-size: 40px;
+        margin-bottom: 10px;
+      }
+      p {
+        color: #404F5E;
+        font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+        font-size:20px;
+        margin: 0;
+      }
+
+    
+    .box{
+  margin-top:0px;
+  display:flex;
+  justify-content:space-around;
+  flex-wrap:wrap;
+}
+
+.alert{
+  margin-top:25px;
+  /* background-color:#b9ff99; */
+  font-size:35px;
+  font-family:sans-serif;
+  text-align:center;
+  width:300px;
+  height:100px;
+  padding-top: 150px;
+  position:relative;
+  border-radius: 5%;
+}
+
+.alert::before{
+  width:100px;
+  height:100px;
+  position:absolute;
+  border-radius: 100%;
+  inset: 20px 0px 0px 100px;
+  font-size: 60px;
+  line-height: 100px;
+  animation-name: reveal;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-in-out;
+}
+
+.alert>.alert-body{
+  opacity:0;
+  animation-name: reveal-message;
+  animation-duration:1s;
+  animation-timing-function: ease-out;
+  animation-delay:1.5s;
+  animation-fill-mode:forwards;
+}
+
+@keyframes reveal-message{
+  from{
+    opacity:0;
+  }
+  to{
+    opacity:1;
+  }
+}
+
+.success{
+  color:green;
+}
+
+.success::before{
+  content: '✓';
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 0px 12px 7px rgba(200,255,150,0.8) inset;
+  border : 5px solid green;
+}
+@keyframes reveal {
+  0%{
+    border: 5px solid transparent;
+    color: transparent;
+    box-shadow: 0px 0px 12px 7px rgba(255,250,250,0.8) inset;
+    transform: rotate(1000deg);
+  }
+  25% {
+    border-top:5px solid gray;
+    color: transparent;
+    box-shadow: 0px 0px 17px 10px rgba(255,250,250,0.8) inset;
+    }
+  50%{
+    border-right: 5px solid gray;
+    border-left : 5px solid gray;
+    color:transparent;
+    box-shadow: 0px 0px 17px 10px rgba(200,200,200,0.8) inset;
+  }
+  75% {
+    border-bottom: 5px solid gray;
+    color:gray;
+    box-shadow: 0px 0px 12px 7px rgba(200,200,200,0.8) inset;
+    }
+  100%{
+    border: 5px solid gray;
+    box-shadow: 0px 0px 12px 7px rgba(200,200,200,0.8) inset;
+  }
+}
+  </style>
+  <body>
+      <div class="container">
+        <div class="box"> 
+            <div class="success alert">
+              <div class="alert-body">
+                Success !
+              </div>
+            </div>
+          </div>
+          <h3>Your order has been placed successfully!</h3>
+          <!-- <p>Your order ID: 000000</p> -->
+          <a class="btn btn-success" href="/user/home">Go to Home</a>
+        <a class="btn btn-primary" href="/user/orderDetails">Track Order</a>
+        </div>
+    </div>
+</body>
+</html>

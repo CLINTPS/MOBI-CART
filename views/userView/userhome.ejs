@@ -2,7 +2,7 @@
 <div class="bg-light">
     <div>
         <div class="text-center">
-            <div class="dashbrd"  style="width: 100%; background-color: rgb(255, 255, 255)">
+            <div class="dashbrd"  style="width: 100%; background-color: rgb(252, 252, 252)">
                 <!-- <a href="" class="btn btn-warning" style="position: absolute; margin-top: 35%; left:12%">Buy Now</a>
                 <a href="" class="btn btn-light" style="position: absolute; margin-top: 35%; left:20%">Add To Cart</a> -->
                 <!-- <img src="/images/first.webp" class="d-block w-100" alt=""> -->
@@ -32,8 +32,9 @@
                             <div class="card-body">
                                 <h6 class="card-title"><%=product.ProductName%></h6>
                                 <p class="card-title"><%=product.BrandName%></p>
-                                <s class="card-text" style="font-weight: 500; color: red;">₹<%=product.Price%>/-</s>
-                                <p class="card-text" style="font-weight: 700;">₹<%=product.DiscountAmount%>/-</p>
+                                
+                                <p class="card-text" style="font-weight: 700;"> ₹<%=product.DiscountAmount%>/-   
+                                <s class="card-text" style="font-weight: 500; font-size: 12px; color: red;">  ₹<%=product.Price%>/-</s></p>
                                 <button class="btn btn-warning add-to-cart-button"
                                     data-product-id="<%= product._id %>">Add To Cart</button>
                                 <a href="/productDetails/<%=product._id%>" class="btn btn-primary">view Details</a>

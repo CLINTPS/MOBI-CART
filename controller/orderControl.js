@@ -3,6 +3,7 @@ const orderCollection = require('../model/order')
 const userCollection = require('../model/user')
 const cartCollection=require('../model/cart')
 const productsCollections = require ('../model/product')
+const couponCollection = require('../model/coupon')
 const moment = require("moment")
 const mongoose = require('mongoose')
 const { generateInvoice } = require('../util/InvoiceGenarator')
@@ -13,9 +14,11 @@ const crypto = require('crypto');
 async function getOrderpage(req,res){
     try{
         let user=req.session.user
-        // req.session.totalPrice=total
+        let TotalPrice=req.session.totalPrice
+        const grandTotal=req.session.grandTotal
+        const coupon = req.session.coupon
         const userAddressData = await userCollection.findOne({ userName: user })
-        res.render('userView/userCheckout',{title:"Checkout page",user,userAddressData})
+        res.render('userView/userCheckout',{title:"Checkout page",user,userAddressData,TotalPrice,grandTotal,coupon})
     }catch (error) {
         console.error("An error occurred:", error);
         console.log("cart data note available");
@@ -27,9 +30,19 @@ async function getOrderpage(req,res){
 async function postplaceOrder(req, res) {
     const email = req.session.email;
     let datas = req.body;
+    // console.log("datas----------",datas);
+    let couponCode=req.body.couponCode
     const Address = req.body.selectedAddress;
     const paymentMethod = req.body.selectedPayment;
-    const amount = req.session.totalPrice;
+    const grandTotal=req.body.grandTotal
+    let amount=null
+    if(grandTotal==null){
+         amount = req.session.totalPrice;
+        // console.log("amount11111111",amount);
+    }else{
+         amount = req.session.grandTotal;
+        // console.log("amount22222222",amount);
+    }
     // console.log("cart 1=" + email);
     // console.log(datas);
     // console.log(amount);
@@ -109,6 +122,14 @@ async function postplaceOrder(req, res) {
                 }
             }
         }
+        // const coupon = await couponCollection.findOne({ CoupenCode: couponCode });
+        userData.usedCoupons.push({
+                    couponCode: couponCode,
+                    // discountedAmount: discountedAmount,
+                    usedDate: new Date(),
+                  });
+                  await userData.save();
+              console.log("userData:::",userData);
 
         if (paymentMethod === "cod") {
             res.json({ codSuccess: true });
@@ -172,8 +193,61 @@ const postVerifyPayment =async(req,res)=>{
     }
 }
 
-//User order details page
+//User apply coupon
+const postUserApplyCoupon=async(req,res)=>{
+    try{
+        const {couponCode} = req.body;
+        let email=req.session.email 
+        // console.log("Apply coupon code:",couponCode);
+        const userData=await userCollection.findOne({email:email})
+        // console.log("userData::::",userData);
+        const purchaseAmount=req.session.totalPrice
+        // console.log("purchaseAmount:::",purchaseAmount);
+        const coupon = await couponCollection.findOne({ CoupenCode: couponCode });
+        // console.log("coupon:::",coupon);
+        if (!coupon) {
+            return res.json({ success: false, message: 'Coupon not found' });
+          }
+        const isCouponUsed = userData.usedCoupons.some(usedCoupon => usedCoupon.couponCode === couponCode);
+        // console.log("isCouponUsed:::",isCouponUsed);
+        if (isCouponUsed) {
+          return res.json({ success: false, message: 'Coupon already used' });
+        }
+        if (purchaseAmount < coupon.MinAmount) {
+          return res.json({ success: false, message: 'Purchase amount does not meet the minimum requirement for the coupon' });
+        }
+        const currentDate = new Date();
+        const endDate = new Date(coupon.EndDate);
+        if (currentDate > endDate) {
+            return res.json({ success: false, message: 'Coupon has expired' });
+        }
+        // console.log("curentDate and EndDate::",currentDate,endDate);
+        const discountedAmount = Math.min(purchaseAmount, coupon.DiscountAmount);
+        const totalAfterDiscount = purchaseAmount - discountedAmount;
+        // console.log("totalAfterDiscount::",totalAfterDiscount);
+        req.session.grandTotal=totalAfterDiscount
+    //     userData.usedCoupons.push({
+    //         couponCode: couponCode,
+    //         discountedAmount: discountedAmount,
+    //         usedDate: new Date(),
+    //       });
+    //       await userData.save();
+    //   console.log("userData:::",userData);
+        
+      return res.json({
+        success: true,
+        message: 'Coupon apply successfully',
+        coupon:discountedAmount,
+        discountedAmount: discountedAmount,
+        grandTotal:totalAfterDiscount
+      });
+    }catch(error) {
+        console.error("Apply coupon based error",error);
+        res.render("errorView/404");
+    }
+}
 
+//User order details page
 async function getOrderPage(req,res){
     try{        
         let user=req.session.user
@@ -196,14 +270,14 @@ async function getOrderPage(req,res){
 async function getOrderProductViewPage(req,res){
     try{
         let orderID=req.params.id
-        console.log("Received order ID:", orderID);
+        // console.log("Received order ID:", orderID);
         if (!mongoose.Types.ObjectId.isValid(orderID)) {
             // Handle invalid order ID here, e.g., render an error page
             // console.error("Invalid order ID");
             res.render("errorView/404");
             return;
         }
-        console.log(orderID);
+        // console.log(orderID);
         let user=req.session.user
         const orders = await orderCollection.findOne({_id:orderID}).populate('Items.productId')
         // console.log("222222",orders);
@@ -213,7 +287,7 @@ async function getOrderProductViewPage(req,res){
             res.render("errorView/404");
         }
 
-        console.log("asdrtsd",orders);
+        console.log("ORDER::::::::",orders);
         res.render('userView/userOrderProductView',{title:"Order product view",user,TotalPrice,orders})
     }catch (error) {
         console.error("An error occurred:", error);
@@ -254,6 +328,29 @@ async function getCancelOrder(req,res){
 
     }catch (error) {
         console.log("cart data note available 03--");
+        res.render("errorView/404");
+    }
+}
+
+//Single product cancelation
+const postSignleCancel=async(req,res)=>{
+    try{
+        console.log("req.body::",req.body);
+        const { productId, orderId } = req.body;
+
+    // Implement your cancellation logic here
+
+    // Example: Update the product status in the order
+    const order = await orderCollection.findById(orderId);
+    const item = order.Items.find((item) => item._id.toString() === productId);
+
+    if (item) {
+      item.productStatus = 'Cancelled';
+      await order.save();
+    }
+
+    res.json({ success: true, message: 'Product canceled successfully' }); 
+    }catch (error) {
         res.render("errorView/404");
     }
 }
@@ -304,9 +401,11 @@ module.exports={
     postplaceOrder,
     getOderSuccess,
     postVerifyPayment,
+    postUserApplyCoupon,
     getOrderPage,
     getOrderProductViewPage,
     getCancelOrder,
+    postSignleCancel,
     postGenarateInvoice,
     getdownloadInvoice
 }

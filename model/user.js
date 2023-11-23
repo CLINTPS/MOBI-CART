@@ -11,6 +11,11 @@ const UsersSchema = new Schema({
   status: { type: Boolean,
             default:true},
   profilePhoto:{type:String},
+  usedCoupons:[{ 
+      couponCode: { type: String },
+      discountedAmount: { type: Number },
+      usedDate: { type: Date } 
+   }],
   address: [{
      nameuser: { type:String},
      addressLine: { type: String },

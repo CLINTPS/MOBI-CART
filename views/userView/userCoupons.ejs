@@ -1,0 +1,71 @@
+<%-include('../userView/include/user_header')-%>
+<section class="" style="background: linear-gradient(135deg, #817f7f, #ffffff);">
+    <div class="container py-5 ">
+        <h3>Special coupons</h3>
+        <hr>
+        <div class="row d-flex justify-content-center align-items-center ">
+        <div class="col">
+            <div class="row p-3">
+                <% if(couponData && couponData.length >0){%>
+                <% couponData.forEach((couponData,index)=>{ %>
+                    <% if (couponData.couponType === 'public') { %>
+                  <div class="col-md-4">
+                    <div class="card mb-4 shadow">
+                      <div class="card-body text-center bg-light">
+                        <h5 class="card-title">
+                          <%=couponData.CoupenName%>
+                        </h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><b>
+                            <%=couponData.CoupenCode%>
+                          </b></h6>
+                        <p class="card-text">Min Amount : <%=couponData.MinAmount%>
+                        </p>
+                        <p class="card-text">Discount Amount: <%=couponData.DiscountAmount%>
+                        </p>
+                        <p class="card-text">End Date :   <%let date=new Date(couponData.EndDate)%>
+                            <%=date.getDate()%>-<%=date.getMonth()%>-<%=date.getFullYear()%>      
+                        </p>
+                        <button type="button" class="btn btn-outline-success copy-button" data-coupon-code="<%=couponData.CoupenCode%>" id="copyButton<%= index %>">
+                            Copy Coupon
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <% } %>
+                  <% }) %>
+                  <%}else{%>
+                    <h1>No coupon available</h1>
+                    <%}%>
+              </div>    
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const copyButtons = document.querySelectorAll('.copy-button');
+        copyButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                const couponCode = this.getAttribute('data-coupon-code');
+                const tempInput = document.createElement('input');
+                tempInput.value = couponCode;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Coupon Code Copied!',
+                    text: 'The coupon code has been copied to the clipboard.',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            });
+        });
+    });
+</script>
+<%-include('../userView/include/user_footer')-%>

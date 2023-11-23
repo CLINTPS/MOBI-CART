@@ -17,6 +17,7 @@ const OrdersSchema = new Schema({
   Items: [{
      productId: { type: Schema.Types.ObjectId , ref: "Products" },
      quantity: { type: Number },
+     productStatus:{ type: String, default:"Pending"}
   }],
   PaymentMethod: {type: String},
   OrderDate: { type: String },

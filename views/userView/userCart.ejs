@@ -67,34 +67,28 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <!-- <div class="col-md-4">
             <div class="card border shadow mt-5">
                 <div class="card-body">
-                    <h5 class="card-title">Have a Coupon?</h5>
-                    <div class="input-group mb-3">
-                        <input type="email" class="form-control border" placeholder="Coupon Code" aria-label="Email"
-                               aria-describedby="button-addon2" />
-                        <button class="btn btn-primary" type="button" id="button-addon2">
-                            Apply
-                        </button>
-                    </div>
+                    <h5 class="card-title">Payment</h5>
+                    
                 </div>
-            </div>
-            <!-- <div class="col-md-4"> -->
+            </div> -->
+            <div class="col-md-4 mt-4">
             <div class="card shadow border mt-3">
                 <div class="card-body">
                     <div id="subtotal" class="d-flex justify-content-between">
                         <p class="mb-2">Subtotal :</p>
                         <b><p>Rs. <span id="subtotalAmount"><%= subtotal.toFixed(2) %></span></p></b>
                     </div>
-                    <div class="d-flex justify-content-between">
+                    <!-- <div class="d-flex justify-content-between">
                         <p class="mb-2">Coupon :</p>
                         <% if (coupon) { %>
                             <%= coupon %>
                         <% } else { %>
                             <b><p class="mb-2">No Coupon</p></b>
                         <% } %>
-                    </div>
+                    </div> -->
                     <div class="d-flex justify-content-between">
                         <p class="mb-2">GST (12%) :</p>
                         <b><p><span id="gstAmount">Rs. <%= gstAmount %></span></p></b>

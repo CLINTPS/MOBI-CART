@@ -1,75 +1,139 @@
 <%-include('../userView/include/user_header')-%>
-<section class="h-100 gradient-custom">
+  <section class="h-100 gradient-custom">
     <div class="container py-5 h-100">
-                  <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-lg-10 col-xl-8">
-                      <div class="card" style="border-radius: 10px;">
-                        <div class="card-header px-4 py-5">
-                          <h5 class="text-muted mb-0">Thanks for your Order, <span style="color: rgb(0, 0, 0);"><%= user%></span>!</h5>
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-10 col-xl-8">
+          <div class="card" style="border-radius: 10px;">
+            <div class="card-header px-4 py-5">
+              <h5 class="text-muted mb-0">Thanks for your Order, <span style="color: rgb(0, 0, 0);">
+                  <%= user%>
+                </span>!</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <p class="lead fw-normal mb-0" style="color: #923d7b;">Receipt</p>
+                <!-- <p class="small text-muted mb-0">Receipt Voucher : 1KAU9-84UIL</p> -->
+              </div>
+              <div>
+                <hr>
+                <h5>Order Address :</h5>
+                <p>Name : <%=orders.Address.Name%>
+                </p>
+                <p>Address : <%=orders.Address.Address%> , <%=orders.Address.City%> , <%=orders.Address.State%> ,
+                        <%=orders.Address.Pincode%>
+                </p>
+              </div>
+              <br>
+              <div class="card shadow-0 border mb-4">
+                <div class="card-body">
+                  <% if (orders){%>
+                    <% orders.Items.forEach((data)=> { %>
+                      <div class="row">
+                        <div class="col-md-2">
+                          <img src="/product-img/<%= data.productId.images[0]%>" class="img-fluid" alt="Phone">
                         </div>
-                        <div class="card-body">
-                          <div class="d-flex justify-content-between align-items-center mb-4">
-                            <p class="lead fw-normal mb-0" style="color: #923d7b;">Receipt</p>
-                            <!-- <p class="small text-muted mb-0">Receipt Voucher : 1KAU9-84UIL</p> -->
-                          </div>
-                          <div>
-                            <hr>
-                              <h5>Order Address :</h5>
-                              <p>Name : <%=orders.Address.Name%></p>
-                              <p>Address : <%=orders.Address.Address%> , <%=orders.Address.City%> , <%=orders.Address.State%> , <%=orders.Address.Pincode%></p>                            
-                          </div>
-                              <br>
-                              <div class="card shadow-0 border mb-4">                              
-                                <div class="card-body">
-                                  <% if (orders){%>
-                                    <% orders.Items.forEach((data) => { %>
-                                  <div class="row">
-                                <div class="col-md-2">
-                                  <img src="/product-img/<%= data.productId.images[0]%>"
-                                    class="img-fluid" alt="Phone">
-                                </div>
-                                <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                  <p class="text-muted mb-0"><%=data.productId.ProductName%></p>
-                                </div>
-                                <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                  <p class="text-muted mb-0 small"> <%=data.productId.Specification1%> </p>
-                                </div>
-                                <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                  <p class="text-muted mb-0 small">Category: <%=data.productId.Category%></p>
-                                </div>
-                                <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                  <p class="text-muted mb-0 small">Qty: <%=data.quantity%></p>
-                                </div>
-                                <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                  <p class="text-muted mb-0 small">$<%=data.productId.DiscountAmount%></p>
-                                  <s class="text-danger" style="font-size: 10px;">₹<%=data.productId.Price%></s>
-                                </div>
-                              </div>
-                              <br>
-                              <a href="#">
-                                <button class="btn btn-outline-danger" type="button">Cancel</button>
-                            </a>
-                              <hr>
-                              
-                              <% }); %>
-                              <% }else{%>
-                                <h3>No data available</h3>
-                            <% } %>
-                            </div>
-                          </div>
-
-                          
-                        <div class="card-footer border-0 px-4 py-5"
-                          style="background-color: #72a887; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
-                          <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">Total
-                            Price: <span class="h2 mb-0 ms-2">$ <%= TotalPrice %></span></h5>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0">
+                            <%=data.productId.ProductName%>
+                          </p>
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0 small">
+                            <%=data.productId.Specification1%>
+                          </p>
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0 small">Category: <%=data.productId.Category%>
+                          </p>
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0 small">Qty: <%=data.quantity%>
+                          </p>
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0 small">$<%=data.productId.DiscountAmount%>
+                          </p>
+                          <s class="text-danger" style="font-size: 10px;">₹<%=data.productId.Price%></s>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                      <br>
+                      <!-- <a href="#" onclick="return confirm('Do you want to Cancel this Product')"> -->
+                      <!-- <button class="btn btn-outline-danger" type="button">Cancel</button> -->
+                      <%if(orders.Status == 'Delivered'){%>
+                        <button class="btn btn-outline-success" type="button">Return</button>
+                        <%}else if(orders.Status == "Cancelled"){%>
+                          <p class="text-danger">Cancelled</p>
+                          <%}else{%>
+                          <%if(data.productStatus == 'Pending'){%>
+                            <button class="btn btn-outline-danger" type="button"
+                              onclick="cancelProduct('<%= data._id %>','<%=orders._id%>')">Cancel</button>
+                            <%}else{%>
+                              <p class="text-danger">Cancelled</p>
+                              <%}%>
+                          <%}%>
+                      <!-- </a> -->
+                      <hr>
+
+                      <% }); %>
+                        <% }else{%>
+                          <h3>No data available</h3>
+                          <% } %>
                 </div>
-              </section>
+              </div>
 
 
+              <div class="card-footer border-0 px-4 py-5"
+                style="background-color: #72a887; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">Total
+                  Price: <span class="h2 mb-0 ms-2">$ <%= TotalPrice %></span></h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </section>
+<script>
+  function cancelProduct(productId, orderId) {
+    console.log("productId:", productId);
+    console.log("orderId:", orderId);
+  
+    if (confirm('Do you want to Cancel this Product?')) {
+      fetch('/cancel-product', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ productId: productId, orderId: orderId }),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Handle the success response
+          console.log(data);
+  
+          // Display a success message (you can customize this part based on your UI)
+          alert('Product canceled successfully');
+  
+          // Reload the page to reflect the changes
+          location.reload();
+        })
+        .catch(error => {
+          // Handle the error
+          console.error('Error:', error);
+  
+          // Display an error message (you can customize this part based on your UI)
+          alert('Error canceling product');
+        });
+    }
+  }
+</script>
+  
 
-<%-include('../userView/include/user_footer')-%>
+  </script>
+
+
+  <%-include('../userView/include/user_footer')-%>

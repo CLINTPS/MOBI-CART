@@ -44,13 +44,16 @@
                                 <button class="btn btn-outline-success" type="button">Product details</button>
                             </a>
                             <% if(order.Status == "Delivered"){%>
-                            <button type="button" class="btn btn-outline-warning m-2" onclick="generateAndDownloadInvoice('<%= order._id %>')">
-                              Download Invoice
-                          </button>
+                              <button type="button" class="btn btn-outline-primary m-2">
+                                Return Product
+                              </button>
+                              <button type="button" class="btn btn-outline-warning m-2" onclick="generateAndDownloadInvoice('<%= order._id %>')">
+                                Download Invoice
+                              </button>
                               <%}else if(order.Status == "Cancelled" || order.Status == "Rejected"){%>
 
                                 <%}else{%>
-                                  <a href="/cancelOrderData/<%= order._id%>" onclick="return confirm('Do you want to Cancel this product')">
+                                  <a href="/cancelOrderData/<%= order._id%>" onclick="return confirm('Do you want to Cancel this order')">
                                     <button class="btn btn-outline-danger" type="button">Cancel Order</button>
                                 </a>
                                   <%}%>

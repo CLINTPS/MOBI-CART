@@ -8,6 +8,7 @@ const productControl = require('../controller/productControl')
 const brandControl = require('../controller/brandControl')
 const adminOrderControl = require('../controller/adminOrderControl')
 const bannerControl = require('../controller/bannerControl')
+const couponsControl = require('../controller/couponsControl')
 // const errorHandlerMiddleware = require('../middleware/errorMiddleware')
 
 
@@ -76,5 +77,10 @@ router.get('/orders/details/:orderId',adminAuth.verifyAdmin,adminOrderControl.ge
 //Banner
 router.get('/Banner',adminAuth.verifyAdmin,bannerControl.getBanner)
 router.post('/bannerUpdation',adminAuth.verifyAdmin,bannerUplode.single('image'),bannerControl.postNewBanner)
+
+//Coupons
+router.get('/Coupons',adminAuth.verifyAdmin,couponsControl.getCouponView)
+router.post('/CreateCoupon',adminAuth.verifyAdmin,couponsControl.postCreateCoupon)
+router.get('/deleteCoupon/:id',adminAuth.verifyAdmin,couponsControl.getDeleteCoupon)
 
 module.exports  = router;

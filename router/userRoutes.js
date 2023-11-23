@@ -81,6 +81,9 @@ userRout.post('/user/addAddress',userAuth.verifyUser,userControl.postAddress)
 userRout.post('/user/editUserAddress/:id', userAuth.verifyUser, userControl.postEditAddress);
 userRout.get('/deleteAddress/:id',userAuth.verifyUser,userControl.getDeleteAddress)
 
+//user coupons
+userRout.get('/user/offerCoupons',userAuth.verifyUser,userControl.getUserCoupons)
+
 //user change password
 userRout.get('/user/changepass',userAuth.verifyUser,userControl.getChangepass)
 userRout.post('/changePasswordData',userAuth.verifyUser,userControl.postChangepass)
@@ -96,6 +99,8 @@ userRout.get('/checkOut',userAuth.verifyUser,orderControl.getOrderpage)
 userRout.post('/placeOrder',userAuth.verifyUser,orderControl.postplaceOrder)
 userRout.get('/ordersuccess',userAuth.verifyUser,orderControl.getOderSuccess)
 userRout.post('/VerifyOnlinePayment',userAuth.verifyUser,orderControl.postVerifyPayment)
+// check out page coupon apply post
+userRout.post('/applyCoupon',userAuth.verifyUser,orderControl.postUserApplyCoupon)
 
 //User order details
 userRout.get('/user/orderDetails',userAuth.verifyUser,orderControl.getOrderPage)
@@ -103,6 +108,8 @@ userRout.get('/orderProductView/:id',userAuth.verifyUser,orderControl.getOrderPr
 userRout.get('/cancelOrderData/:id',userAuth.verifyUser,orderControl.getCancelOrder)
 userRout.post('/downloadinvoice',userAuth.verifyUser,orderControl.postGenarateInvoice)
 userRout.get('/downloadinvoice/:orderId',userAuth.verifyUser,orderControl.getdownloadInvoice)
+//single product cancel
+userRout.post('/cancel-product',userAuth.verifyUser,orderControl.postSignleCancel)
 
 
 

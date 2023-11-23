@@ -90,7 +90,7 @@ async function getlatestOrders(req,res){
 
 //Order sales report
 async function getSalesGraph(req,res){
-    console.log("getSalesGraph function start");
+    // console.log("getSalesGraph function start");
     try {
         const orders = await orderCollection.find({
           Status: {

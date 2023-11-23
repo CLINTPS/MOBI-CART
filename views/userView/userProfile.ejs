@@ -6,8 +6,13 @@
                 <div class="col-lg-4">
                     <div class="card mb-4">
                         <div class="card-body text-center">
-                            <img src="/profile-img/cropProfile-img/<%= UserData.profilePhoto %>"
-                            id="selectedProfile" alt="Profile" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+                            <%if(UserData.profilePhoto){%>
+                                <img src="/profile-img/cropProfile-img/<%= UserData.profilePhoto %>"
+                                id="selectedProfile" alt="Profile" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+                                <%}else{%>
+                                    <img src="/images/unblock.svg"
+                                id="selectedProfile" alt="Profile" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+                                <%}%>
                             <div>
                                 <label class="btn btn-round",for="imageinput"><i class="fa-solid fa-edit" style="color: black;"></i>
                                 <input type="file" accept="image/*" id="imageinput" onchange="uploadProfilePicture(event)"  style="display: none;"/>
@@ -35,6 +40,9 @@
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                     <a href="/user/cart" style="color: black;">My Cart</a>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                    <a href="/user/offerCoupons" style="color: black;">My Coupons</a>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                     <a href="/user/changepass" style="color: black;">Change Password</a>

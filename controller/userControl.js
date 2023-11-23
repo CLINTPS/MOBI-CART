@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const sendOTP = require("./otpController");
 const { use } = require("../router/adminRoutes");
 const productsCollections = require('../model/product')
+const couponCollection = require('../model/coupon')
 const { ObjectId } = require('mongodb')
 require("../util/otpindex")
 const OTP = require("../model/otp");
@@ -296,7 +297,7 @@ async function getUserprofile(req, res) {
     try {
         let user = req.session.user
         const UserData = await userCollection.findOne({ userName: user })
-        console.log("UserData..",UserData);
+        // console.log("UserData..",UserData);
         res.render('userView/userProfile', { title: "Profile view", user, UserData})
     } catch (error) {
         console.log("can't profile details");
@@ -446,6 +447,17 @@ async function getDeleteAddress(req, res) {
     }
 }
 
+//User coupons
+async function getUserCoupons(req,res){
+    try{
+        let user=req.session.user
+        const couponData = await couponCollection.find().sort()
+        res.render('userView/userCoupons',{title:"Coupons",user,couponData})
+    }catch(error){
+        console.log("coupon cahnge:"+error);
+        res.render("errorView/404");
+    }
+}
 //User change password
 async function getChangepass(req,res){
     try{
@@ -528,6 +540,7 @@ module.exports = {
     postEditAddress,
     // getEditAddress,
     getDeleteAddress,
+    getUserCoupons,
     getChangepass,
     postChangepass,
     logout

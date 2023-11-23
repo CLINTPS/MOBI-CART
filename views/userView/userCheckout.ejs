@@ -33,9 +33,59 @@
                                 <% if (userAddressData.address.length===0) { %>
                                     <p class="text-center">No saved addresses. Please add a new address.</p>
                                     <% } %>
+                                    
                     </div>
-                    <div class="col-md-4 mt-5">
-                        <div class="card">
+
+                   <!-- coupon  -->
+                    
+                    <div class="col-md-4 mt-2">
+                        <div class="card mb-3 border shadow mt-5">
+                            <div class="card-body">
+                              <fieldset>
+                                <div id="couponFormContainer">
+                                    <div class="form-group">
+                                        <label class="form-label">Have coupon?</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control border" name="couponCode"
+                                                id="couponCode" placeholder="Coupon code" />
+                                            <button type="button" class="btn btn-primary border" onclick="applyCoupon()">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            </div>
+                        </div>
+
+                        <!-- total price  -->
+                        <div class="card shadow border">
+                            <div class="card-body">
+                              <div class="d-flex justify-content-between">
+                                <p class="mb-2">Total price:</p>
+                                <p class="mb-2 fw-bold">₹<%= TotalPrice %></p>
+                              </div>
+                              <% if(coupon){%>
+                              <div class="d-flex justify-content-between">
+                                <p class="mb-2">Discount:₹<%=coupon %></p>
+                               <% }else{%>
+                                <div class="d-flex justify-content-between">
+                                  <p class="mb-2">Discount:</p>
+                                  <p id="discount" class="mb-2 fw-bold">No Coupon</p>
+                                  <% }%>
+                              </div>
+                              <hr />
+                              <div class="d-flex justify-content-between">
+                                <p class="mb-2">Total price:</p>
+                                <% if(grandTotal===undefined){%>
+                                <p id="grandTotal" class="mb-2 fw-bold">₹<%= TotalPrice %></p>
+                                <% } else { %>
+                                  <p id="grandTotal" class="mb-2 fw-bold">₹<%= grandTotal %></p>
+                                  <% } %>
+                              </div>
+                              </div>
+                            </div>
+
+                        <!-- payment methode -->
+                        <div class="card mt-4">
                             <div class="card-body">
                                 <h5 class="card-title">Payment Methods</h5>
                                 <div class="form-check">
@@ -51,8 +101,8 @@
                                 <div class="text-center mt-4">
                                     <button class="btn btn-warning mt-4" id="confirmOrderButton" type="submit">Confirm
                                         Order</button>
-                                    <a href="/user/home"><button class="btn btn-success mt-4" type="button">Back to
-                                            Shop</button></a>
+                                    <a href="/user/cart"><button class="btn btn-success mt-4" type="button">Back to
+                                            Cart</button></a>
                                 </div>
                             </div>
                         </div>
@@ -63,8 +113,46 @@
 
 
 
-        <!-- Your existing HTML code -->
         <script>
+            function showAlert(message, type) {
+        Swal.fire({
+            icon: type,
+            text: message,
+        });
+    }
+            function applyCoupon() {
+        const couponCode = document.getElementById('couponCode').value;
+                console.log("^^^^^^^^^^^");
+        fetch('/applyCoupon', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    couponCode: couponCode,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+              
+              if (data.success) {
+                 
+                  showAlert('Coupon applied successfully', 'success');
+                 console.log('Coupon applied successfully');
+                 $('#grandTotal').text(data.grandTotal);
+                 $('#discount').text(data.coupon);
+                } else {
+                  showAlert(` ${data.message}`, 'error');
+                   console.error('Coupon application failed:', data.message);
+                }
+            })
+            .catch(error => {
+              console.error('Fetch error:', error);
+              showAlert('An error occurred while applying the coupon', 'error');
+            });
+    }
+
+
             $(document).ready(function () {
                 console.log("Document ready");
 
