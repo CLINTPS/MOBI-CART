@@ -33,7 +33,9 @@
                                   <p class="text-danger">Rejected</p>
                                   <%}else if(order.Status == "Cancelled"){%>
                                   <p class="text-danger">Cancelled</p>
-                                    <%}else{%>
+                                    <%}else if(order.Status == "Return Pending"){%>
+                                      <p class="text-danger">Product returned verification pending</p>
+                                        <%}else{%>
                                     <span class="text-muted small">Expected by :<%= order.ExpectedDeliveryDate %></span>
                                     <%}%>
                                     <hr>
@@ -41,20 +43,24 @@
                           </div>
                           <div>
                             <a href="/orderProductView/<%= order._id%>">
-                                <button class="btn btn-outline-success" type="button">Product details</button>
+                                <button class="btn btn-success" type="button">Product details</button>
                             </a>
                             <% if(order.Status == "Delivered"){%>
-                              <button type="button" class="btn btn-outline-primary m-2">
-                                Return Product
+                              <button type="button" class="btn btn-danger m-2" onclick="return confirm('Are you sure you want to return this order?');" 
+                              data-bs-toggle="modal" data-bs-target="#returnOrderModal<%= order._id %>">
+                                Return Order
                               </button>
-                              <button type="button" class="btn btn-outline-warning m-2" onclick="generateAndDownloadInvoice('<%= order._id %>')">
-                                Download Invoice
-                              </button>
-                              <%}else if(order.Status == "Cancelled" || order.Status == "Rejected"){%>
+
+                              
+
+                            <button type="button" class="btn btn-warning m-2" onclick="generateAndDownloadInvoice('<%= order._id %>')">
+                              Download Invoice
+                          </button>
+                              <%}else if(order.Status == "Cancelled" || order.Status == "Rejected" || order.Status == "Return Pending" || order.Status== "Return Accepted"){%>
 
                                 <%}else{%>
-                                  <a href="/cancelOrderData/<%= order._id%>" onclick="return confirm('Do you want to Cancel this order')">
-                                    <button class="btn btn-outline-danger" type="button">Cancel Order</button>
+                                  <a href="/cancelOrderData/<%= order._id%>" onclick="return confirm('Do you want to Cancel this product')">
+                                    <button class="btn btn-danger" type="button">Cancel Order</button>
                                 </a>
                                   <%}%>
                           </div>
@@ -115,7 +121,26 @@
             
                       </div>
                     </div>
+                    <div class="modal fade" id="returnOrderModal<%= order._id %>"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="returnOrderModalLabel" aria-hidden="true">
+                      <div class="modal-dialog ">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="returnOrderModalLabel">Return Order</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <label for="returnReason">Reason for Return:</label>
+                            <textarea id="returnReason<%= order._id %>" class="form-control" rows="3"></textarea>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="submitReturn('<%= order._id %>')">Submit Return</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <% }); %>
+
           <%}else{%>
             <h1 style="text-align: center;">Orders Data is Empty</h1>
             <%}%>
@@ -124,7 +149,52 @@
     </div>
   </section>
 
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
   <script>
+    function submitReturn(orderIdParam) {
+    const returnReason = document.getElementById(`returnReason${orderIdParam}`).value;
+    const orderId = orderIdParam; 
+console.log(returnReason);
+    fetch('/submitreturn', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        orderId: orderId,
+        returnReason: returnReason,
+      }),
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        
+        Swal.fire({
+            icon: 'success',
+            title: 'Return Reason Submitted Successfully',
+            showConfirmButton: false,
+            timer: 10000,
+        });
+
+
+        location.reload();
+      })
+      .catch((error) => {
+        console.error('Error submitting return reason:', error);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred while submitting the return reason.',
+        });
+
+      });
+
+    $('#returnOrderModal').modal('hide');
+  }
+
+
     async function generateAndDownloadInvoice(orderId) {
         try {
             const response = await fetch('/downloadinvoice', {

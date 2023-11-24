@@ -111,6 +111,9 @@ userRout.get('/downloadinvoice/:orderId',userAuth.verifyUser,orderControl.getdow
 //single product cancel
 userRout.post('/cancel-product',userAuth.verifyUser,orderControl.postSignleCancel)
 
+//Product return 
+userRout.post('/submitreturn',userAuth.verifyUser,orderControl.postReturnProduct)
+
 
 
 

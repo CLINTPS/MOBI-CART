@@ -9,6 +9,7 @@ const brandControl = require('../controller/brandControl')
 const adminOrderControl = require('../controller/adminOrderControl')
 const bannerControl = require('../controller/bannerControl')
 const couponsControl = require('../controller/couponsControl')
+const returnOrder = require('../controller/returnOrder')
 // const errorHandlerMiddleware = require('../middleware/errorMiddleware')
 
 
@@ -73,6 +74,8 @@ router.get('/delete-brand/:id',adminAuth.verifyAdmin,brandControl.getBrandDelete
 router.get('/OrderControl',adminAuth.verifyAdmin,adminOrderControl.getOrderDetails)
 router.put('/updateOrderStatus/:orderId',adminAuth.verifyAdmin,adminOrderControl.putUpdateStatus)
 router.get('/orders/details/:orderId',adminAuth.verifyAdmin,adminOrderControl.getViewOrder)
+router.put('/acceptReturn/:orderId',adminAuth.verifyAdmin,adminOrderControl.putAcceptReturn)
+router.put('/cancelReturn/:orderId',adminAuth.verifyAdmin,adminOrderControl.putCancelReturn)
 
 //Banner
 router.get('/Banner',adminAuth.verifyAdmin,bannerControl.getBanner)
@@ -82,5 +85,8 @@ router.post('/bannerUpdation',adminAuth.verifyAdmin,bannerUplode.single('image')
 router.get('/Coupons',adminAuth.verifyAdmin,couponsControl.getCouponView)
 router.post('/CreateCoupon',adminAuth.verifyAdmin,couponsControl.postCreateCoupon)
 router.get('/deleteCoupon/:id',adminAuth.verifyAdmin,couponsControl.getDeleteCoupon)
+
+//Return Orders
+router.get('/ReturnOrder',adminAuth.verifyAdmin,returnOrder.getReturnOrder)
 
 module.exports  = router;

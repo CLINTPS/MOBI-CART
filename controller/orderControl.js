@@ -287,7 +287,7 @@ async function getOrderProductViewPage(req,res){
             res.render("errorView/404");
         }
 
-        console.log("ORDER::::::::",orders);
+        // console.log("ORDER::::::::",orders);
         res.render('userView/userOrderProductView',{title:"Order product view",user,TotalPrice,orders})
     }catch (error) {
         console.error("An error occurred:", error);
@@ -338,17 +338,21 @@ const postSignleCancel=async(req,res)=>{
         console.log("req.body::",req.body);
         const { productId, orderId } = req.body;
 
-    // Implement your cancellation logic here
-
-    // Example: Update the product status in the order
     const order = await orderCollection.findById(orderId);
+    console.log("order::::::::",order);
     const item = order.Items.find((item) => item._id.toString() === productId);
 
     if (item) {
       item.productStatus = 'Cancelled';
       await order.save();
     }
-
+    const productCount = item.productId
+    const productData = await productsCollections.findById(productCount)
+    if(productData){
+        productData.AvailableQuantity += item.quantity
+        await productData.save();
+    }
+    
     res.json({ success: true, message: 'Product canceled successfully' }); 
     }catch (error) {
         res.render("errorView/404");
@@ -394,7 +398,43 @@ const getdownloadInvoice=async(req,res)=>{
   console.error('Error in downloading the invoice:', error);
   res.status(500).json({ success: false, message: 'Error in downloading the invoice' });
 }
-}   
+}
+
+//Product group return
+async function postReturnProduct(req,res){
+    try {
+        const { orderId, returnReason } = req.body;
+        const Email = req.session.email;
+        console.log("email......",Email);
+        const User = await userCollection.findOne({ email: Email });
+        console.log("User......",User);
+        const userId = User._id;
+        console.log("userId......",userId);
+    
+        const order = await orderCollection.findOne({ _id: orderId, UserId: userId });
+        console.log("order......",order);
+        order.ReturnRequest = {
+          reason: returnReason,
+          status: "Pending",
+          createdAt: new Date(),
+        };
+    
+        await order.save();
+    
+        const Return = await orderCollection.findByIdAndUpdate(orderId, {
+          Status: "Return Pending",
+        });
+        console.log("Return......",Return);
+    
+        res.json({
+          success: true,
+          message: "Return request submitted successfully",
+        });
+      } catch (error) {
+        console.error("error while submiting the return request:", error);
+        res.status(500).json({ success: false, message: "Internal server error" });
+      }
+}
 
 module.exports={
     getOrderpage,
@@ -407,5 +447,6 @@ module.exports={
     getCancelOrder,
     postSignleCancel,
     postGenarateInvoice,
-    getdownloadInvoice
+    getdownloadInvoice,
+    postReturnProduct
 }
