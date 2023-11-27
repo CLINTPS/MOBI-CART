@@ -36,7 +36,7 @@
                                     <%}else if(order.Status == "Return Pending"){%>
                                       <p class="text-danger">Product returned verification pending</p>
                                         <%}else{%>
-                                    <span class="text-muted small">Expected by :<%= order.ExpectedDeliveryDate %></span>
+                                    <!-- <span class="text-muted small">Expected by :<%= order.ExpectedDeliveryDate %></span> -->
                                     <%}%>
                                     <hr>
                                     <h6>Order ID : <%= order._id%></h6>
@@ -46,7 +46,7 @@
                                 <button class="btn btn-success" type="button">Product details</button>
                             </a>
                             <% if(order.Status == "Delivered"){%>
-                              <button type="button" class="btn btn-danger m-2" onclick="return confirm('Are you sure you want to return this order?');" 
+                              <button type="button" class="btn btn-danger m-2" 
                               data-bs-toggle="modal" data-bs-target="#returnOrderModal<%= order._id %>">
                                 Return Order
                               </button>

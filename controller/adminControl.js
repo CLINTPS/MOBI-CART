@@ -258,7 +258,7 @@ const postSalesReport = async(req,res)=>{
         const endDate = moment(req.body.endDate, 'YYYY-MM-DD').endOf('day').format('MM/DD/YYYY, h:mm:ss A');
         console.log("endDate...", endDate);
         const orders = await orderCollection.find({
-            PaymentStatus:"Paid",
+          PaymentStatus: { $in: ["Paid", "Pending"] },
             OrderDate:{$gte:startDate,$lte:endDate}
         }).populate("Items.productId");
         console.log("orders........",orders);

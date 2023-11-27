@@ -5,6 +5,7 @@ const sendOTP = require("./otpController");
 const { use } = require("../router/adminRoutes");
 const productsCollections = require('../model/product')
 const couponCollection = require('../model/coupon')
+const wishlistCollection = require('../model/wishlist')
 const { ObjectId } = require('mongodb')
 require("../util/otpindex")
 const OTP = require("../model/otp");
@@ -43,10 +44,14 @@ const getOtpPage = (req, res) => {
 async function getHomePage(req, res) {
     if (req.session.logged || req.user) {
         let user = req.session.user
-
+        let email = req.session.email
+        const userData = await userCollection.findOne({email:email})
+        const userId = userData._id
         const productData = await productsCollections.find({});
         const bannerImg = await bannerCollection.find({}).sort({date:-1}).limit(1)
-        res.render("userView/userhome", { title: "Home Page", productData,bannerImg, user, err: false })
+        const userWishlist = await wishlistCollection.findOne({user:userId})
+        const wishlist = userWishlist ? userWishlist.products : [];
+        res.render("userView/userhome", { title: "Home Page", productData,bannerImg,wishlist,user, err: false })
     }
     else {
         res.redirect('/')

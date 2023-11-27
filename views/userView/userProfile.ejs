@@ -8,25 +8,35 @@
                         <div class="card-body text-center">
                             <%if(UserData.profilePhoto){%>
                                 <img src="/profile-img/cropProfile-img/<%= UserData.profilePhoto %>"
-                                id="selectedProfile" alt="Profile" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+                                    id="selectedProfile" alt="Profile" class="rounded-circle img-fluid"
+                                    style="width: 150px; height: 150px; object-fit: cover;">
                                 <%}else{%>
-                                    <img src="/images/unblock.svg"
-                                id="selectedProfile" alt="Profile" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
-                                <%}%>
-                            <div>
-                                <label class="btn btn-round",for="imageinput"><i class="fa-solid fa-edit" style="color: black;"></i>
-                                <input type="file" accept="image/*" id="imageinput" onchange="uploadProfilePicture(event)"  style="display: none;"/>
-                                </label>
-                            </div>
-                            <h5 class="my-3">
-                                <i><b><%= UserData.userName%></b></i>
-                            </h5>
-                            <p class="text-muted mb-1"><i><%= UserData.email%></i></p>
-                            <%if(UserData.address[0]){%>
-                            <p class="text-muted mb-1"><i><%= UserData.address[0].mobile%></i></p>
-                            <%}else{%>
-                            <p class="text-muted mb-1">Null</p>
-                            <%}%>
+                                    <img src="/images/unblock.svg" id="selectedProfile" alt="Profile"
+                                        class="rounded-circle img-fluid"
+                                        style="width: 150px; height: 150px; object-fit: cover;">
+                                    <%}%>
+                                        <div>
+                                            <label class="btn btn-round" ,for="imageinput"><i class="fa-solid fa-edit"
+                                                    style="color: black;"></i>
+                                                <input type="file" accept="image/*" id="imageinput"
+                                                    onchange="uploadProfilePicture(event)" style="display: none;" />
+                                            </label>
+                                        </div>
+                                        <h5 class="my-3">
+                                            <i><b>
+                                                    <%= UserData.userName%>
+                                                </b></i>
+                                        </h5>
+                                        <p class="text-muted mb-1"><i>
+                                                <%= UserData.email%>
+                                            </i></p>
+                                        <%if(UserData.address[0]){%>
+                                            <p class="text-muted mb-1"><i>
+                                                    <%= UserData.address[0].mobile%>
+                                                </i></p>
+                                            <%}else{%>
+                                                <p class="text-muted mb-1">Null</p>
+                                                <%}%>
                         </div>
                     </div>
                     <div class="card mb-4 mb-lg-0">
@@ -53,7 +63,7 @@
                 </div>
                 <div class="col-lg-8">
                     <div class="card mb-4">
-                        <div class="card-body" style="height: 560px;">
+                        <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-3">
                                     <p class="mb-0">Full Name</p>
@@ -83,10 +93,12 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <%if(UserData.address[0]){%>
-                                        <p class="text-muted mb-0"><%= UserData.address[0].mobile%></p>
+                                        <p class="text-muted mb-0">
+                                            <%= UserData.address[0].mobile%>
+                                        </p>
                                         <%}else{%>
-                                        <p class="text-muted mb-0">-----</p>
-                                        <%}%>
+                                            <p class="text-muted mb-0">-----</p>
+                                            <%}%>
                                 </div>
                             </div>
                             <hr>
@@ -96,10 +108,12 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <%if(UserData.address[0]){%>
-                                        <p class="text-muted mb-0"><%= UserData.address[0].addressLine%></p>
+                                        <p class="text-muted mb-0">
+                                            <%= UserData.address[0].addressLine%>
+                                        </p>
                                         <%}else{%>
-                                        <p class="text-muted mb-0">-----</p>
-                                        <%}%>
+                                            <p class="text-muted mb-0">-----</p>
+                                            <%}%>
                                 </div>
                             </div>
                             <hr>
@@ -109,10 +123,12 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <%if(UserData.address[0]){%>
-                                        <p class="text-muted mb-0"><%= UserData.address[0].city %></p>
+                                        <p class="text-muted mb-0">
+                                            <%= UserData.address[0].city %>
+                                        </p>
                                         <%}else{%>
-                                        <p class="text-muted mb-0">-----</p>
-                                        <%}%>
+                                            <p class="text-muted mb-0">-----</p>
+                                            <%}%>
                                 </div>
                             </div>
                             <hr>
@@ -122,10 +138,12 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <%if(UserData.address[0]){%>
-                                        <p class="text-muted mb-0"><%= UserData.address[0].state %></p>
+                                        <p class="text-muted mb-0">
+                                            <%= UserData.address[0].state %>
+                                        </p>
                                         <%}else{%>
-                                        <p class="text-muted mb-0">-----</p>
-                                        <%}%>
+                                            <p class="text-muted mb-0">-----</p>
+                                            <%}%>
                                 </div>
                             </div>
                             <hr>
@@ -135,12 +153,18 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <%if(UserData.address[0]){%>
-                                        <p class="text-muted mb-0"><%= UserData.address[0].pincode %></p>
+                                        <p class="text-muted mb-0">
+                                            <%= UserData.address[0].pincode %>
+                                        </p>
                                         <%}else{%>
-                                        <p class="text-muted mb-0">-----</p>
-                                        <%}%>
+                                            <p class="text-muted mb-0">-----</p>
+                                            <%}%>
                                 </div>
                             </div>
+                        </div>
+                        <div class="m-3"
+                            style="background-color: rgb(133, 255, 214); border-radius: 10px; padding-left: 10px; display: inline-block; width: max-content;">
+                            <h6 class="mt-2 m-2">WALLET AMOUNT :₹ <%= UserData.wallet.amount%></h1>
                         </div>
                     </div>
                 </div>
@@ -149,33 +173,33 @@
     </section>
 
 
-<script>
-     function uploadProfilePicture(event) {
-  const fileInput = event.target;
-  const file = fileInput.files[0];
+    <script>
+        function uploadProfilePicture(event) {
+            const fileInput = event.target;
+            const file = fileInput.files[0];
 
-  const formData = new FormData();
-  formData.append('profilePicture', file);
+            const formData = new FormData();
+            formData.append('profilePicture', file);
 
-  fetch('/UserProfilePicture', {
-    method: 'POST',
-    body: formData,
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      
-      const avatarImage = document.getElementById('selectedProfile'); 
-avatarImage.src = URL.createObjectURL(file);
-      alert('Profile picture updated successfully!');
-    } else {
-      alert('Failed to update profile picture.');
-    }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-}
-</script>
+            fetch('/UserProfilePicture', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+
+                        const avatarImage = document.getElementById('selectedProfile');
+                        avatarImage.src = URL.createObjectURL(file);
+                        alert('Profile picture updated successfully!');
+                    } else {
+                        alert('Failed to update profile picture.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
 
     <%-include('../userView/include/user_footer')-%>

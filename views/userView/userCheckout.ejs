@@ -4,15 +4,15 @@
         <form id="orderForm">
             <div class="container p-3">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 ">
                         <h3 class="mb-4">Delivery Addresses</h3>
                         <% userAddressData.address.forEach((address)=> { %>
                             <div class="card mb-3">
                                 <div class="card-body">
                                     <div class="form-check">
                                         <input class="form-check-input address-radio" type="radio"
-                                            name="selectedAddress" id="address_<%= address._id %>"
-                                            value="<%= address._id %>" />
+                                        name="selectedAddress" id="address_<%= address._id %>"
+                                        value="<%= address._id %>" />
                                         <h5 class="card-title">
                                             <%= address.nameuser %>
                                         </h5>
@@ -30,9 +30,14 @@
                                 </div>
                             </div>
                             <% }); %>
-                                <% if (userAddressData.address.length===0) { %>
-                                    <p class="text-center">No saved addresses. Please add a new address.</p>
-                                    <% } %>
+                            <% if (userAddressData.address.length===0) { %>
+                                <p class="text-center">No saved addresses. Please add a new address.</p>
+                                <% } %>
+                                <a href="/user/AddressBook">
+                                    <button class="btn btn-success" type="button">
+                                        <img width="25" height="25" src="https://img.icons8.com/ios-glyphs/30/plus.png" alt="plus"/>
+                                        Add New</button>
+                                </a>
                                     
                     </div>
 

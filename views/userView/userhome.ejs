@@ -1,4 +1,5 @@
 <%-include('../userView/include/user_header')-%>
+
 <div class="bg-light">
     <div>
         <div class="text-center">
@@ -22,11 +23,11 @@
                     <div class="col-md-3 p-4">
                         <div class="card" style="width: 18rem; margin-left: 20px;">
                             <% if(product.AvailableQuantity > 5){%>
-                                <span class="bg-success text-white" style="position: absolute; border-radius: 5px;">In stock</span>
+                                <span class="bg-success text-white m-2" style="position: absolute; border-radius: 5px;">In stock</span>
                                 <%}else if(product.AvailableQuantity <= 5 && product.AvailableQuantity > 0){%>
-                                <span class="bg-warning text-white" style="position: absolute; border-radius: 5px;">Stock left<%= product.AvailableQuantity%></span>
+                                <span class="bg-warning text-white m-2" style="position: absolute; border-radius: 5px;">Stock left<%= product.AvailableQuantity%></span>
                                     <%}else if(product.AvailableQuantity == 0){%>
-                                        <span class="bg-danger text-white" style="position: absolute; border-radius: 5px;">out of stock</span>
+                                        <span class="bg-danger text-white m-2" style="position: absolute; border-radius: 5px;">out of stock</span>
                                         <%}%>
                             <img class="card-img-top" style="height: 290px; width: 250px; padding: 20px; margin-left: 20px;" src="/product-img/<%= product.images[0] %>" alt="Card image cap">
                             <div class="card-body">
@@ -35,9 +36,19 @@
                                 
                                 <p class="card-text" style="font-weight: 700;"> ₹<%=product.DiscountAmount%>/-   
                                 <s class="card-text" style="font-weight: 500; font-size: 12px; color: red;">  ₹<%=product.Price%>/-</s></p>
-                                <button class="btn btn-warning add-to-cart-button"
-                                    data-product-id="<%= product._id %>">Add To Cart</button>
-                                <a href="/productDetails/<%=product._id%>" class="btn btn-primary">view Details</a>
+                               
+                                    <button class="btn btn-outline-warning rounded-3 btn-sm add-to-cart-button"
+                                        data-product-id="<%= product._id %>"
+                                        data-available-quantity="<%= product.AvailableQuantity %>">
+                                        Add To Cart
+                                    </button>
+                                    <botton class="btn btn1 rounded-3 add-to-wishlist-button"
+                                                        data-product-id="<%= product._id %>">
+                                                        <i
+                                                        class="fa fa-heart <% if (wishlist.includes(product._id)) { %>text-danger<% } %>"></i>
+                                                    </botton>
+                                    
+                                    <a href="/productDetails/<%=product._id%>" class="btn btn-outline-primary rounded-3 btn-sm">view Details</a>
                             </div>
                         </div>     
                     </div>
@@ -45,7 +56,9 @@
                     <%}) %>
                     <% } %>
                 </div>
-                <a href="/allProducts">View More</a> 
+                <a href="/allProducts" class="btn btn-outline-success m-2 btn-sm">View More
+                    <img width="20" height="20" src="https://img.icons8.com/ios/50/circled-right-2.png" alt="circled-right-2"/>
+                </a> 
             </div>            
         </div>
     </div>
@@ -54,6 +67,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
 
 <script src="your-script.js"></script>
 
@@ -85,60 +101,94 @@
             event.preventDefault();
 
             const productId = this.getAttribute('data-product-id');
-            console.log(productId);
+            const availableQuantity = this.getAttribute('data-available-quantity');
 
-            $.ajax({
-                url: '/addtocart/' + productId,
-                method: 'POST',
+            if (parseInt(availableQuantity) > 0) {
+                $.ajax({
+                    url: '/addtocart/' + productId,
+                    method: 'POST',
                     success: function (response) {
-
                         Swal.fire({
-                        icon: 'success',
-                        title: 'Product added to cart',
-                        showConfirmButton: false,
-                        timer: 1500 // Close the alert after 1.5 seconds
-                    });
+                            icon: 'success',
+                            title: 'Product added to cart',
+                            showConfirmButton: false,
+                            timer: 1500 // Close the alert after 1.5 seconds
+                        });
+                        updateCartQuantity();
                     },
-                error: function (error) {
-                    console.error('Error adding product to cart:', error);
-                }
-            });
+                    error: function (error) {
+                        console.error('Error adding product to cart:', error);
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Out of Stock',
+                    text: 'This product is currently out of stock.',
+                });
+            }
         });
     });
 
 
     document.querySelectorAll('.add-to-wishlist-button').forEach(button => {
-        button.addEventListener('click', function (event) {
-            event.preventDefault();
+    button.addEventListener('click', function (event) {
+        event.preventDefault();
 
+        const productId = this.getAttribute('data-product-id');
+        console.log(">>>>>>>>>>>", productId);
+        const icon = this.querySelector('.fa-heart');
+        console.log("Wishlist reached");
 
-            const productId = this.getAttribute('data-product-id');
-            const icon = this.querySelector('.fa-heart');
+        $.ajax({
+            url: '/wishlist/',
+            method: 'POST',
+            data: {
+                productId: productId,
+            },
+            success: function (response) {
+                console.log(icon.style.color);
+                if (response.added) {
+                    toastr.success('Added to Wishlist', '', {
+                        toastClass: 'custom-toast-success', // Custom class for success background color
+                        positionClass: 'toast-bottom-center', // Move alert window to the bottom
+                        progressBar: true,
+                        timeOut: 1500,
+                    });
 
-            $.ajax({
-                url: '/wishlist/',
-                method: 'POST',
-                data: {
-                    productId: productId,
-                },
-                success: function (response) {
-                    console.log(icon.style.color)
-                    if (response.added) {
-                        // icon.style.color = 'red';
-                        icon.classList.add('text-danger')
-                        //   location.reload()
-                    } else {
+                    icon.classList.add('text-danger');
 
-                        // icon.style.color = '';
-                        icon.classList.remove('text-danger')
-                        //   location.reload()
-                    }
-                },
-                error: function (error) {
-                    console.error('Error updating wishlist:', error);
+                    console.log(">>> reached");
+
+                } else {
+                    toastr.info('Removed from Wishlist', '', {
+                        toastClass: 'custom-toast-info', // Custom class for info background color
+                        positionClass: 'toast-bottom-center', // Move alert window to the bottom
+                        progressBar: true,
+                        timeOut: 1500,
+                    });
+
+                    icon.classList.remove('text-danger');
                 }
-            });
+            },
+            error: function (error) {
+                console.error('Error updating wishlist:', error);
+            }
         });
     });
+});
+
 
 </script>
+
+<style>
+    .custom-toast-success {
+      background-color: #03c133 !important; 
+      color: rgb(255, 255, 255) !important;
+    }
+    
+    .custom-toast-info {
+      background-color: #f33d21 !important; 
+      color: white !important;
+    }
+</style>

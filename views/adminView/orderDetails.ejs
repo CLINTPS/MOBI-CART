@@ -35,7 +35,7 @@
                 </td>
                 <td>
                   <% if (ordersData[i].Status === "Return Pending") { %>
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#returnModal<%= i %>">Return </button>
+                    <p class="text-success">Return Pending</p>
                   <% } else if (ordersData[i].Status === 'Cancelled') { %>
                     <p class="text-danger">Cancelled</p>
                     <% } else if (ordersData[i].Status === 'Return Canceled') { %>
@@ -117,29 +117,7 @@
   </div>
   </div>
 
-  <% for (let i = 0; i < ordersData.length; i++) { %>
-    <div class="modal fade" id="returnModal<%= i %>" tabindex="-1"  aria-labelledby="returnModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="returnModalLabel">Return Request Confirmation</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p>Are you sure you want to accept the return request?</p>
-          </div>
-          <div class="modal-body">
-            <p>Reson :<%= ordersData[i].PaymentMethod %> </p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-danger" onclick="cancelReturn('<%= ordersData[i]._id %>')">Cancel Return Request</button>
-            <button type="button" class="btn btn-success" onclick="acceptReturn('<%= ordersData[i]._id %>')">Accept Return</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  <% } %>
+  
 
 
   

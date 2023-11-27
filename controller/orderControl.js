@@ -93,10 +93,10 @@ async function postplaceOrder(req, res) {
             UserId: userID,
             Items: cartData.products,
             PaymentMethod: paymentMethod,
-            OrderDate: new Date().toLocaleString("en-US",{timeZone:"Asia/Kolkata"}),
+            OrderDate: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
             ExpectedDeliveryDate: new Date(
-                Date.now()+4*24*60*60*100
-            ).toLocaleString("en-US",{timeZone:"Asia/Kolkata"}),
+                Date.now() + 6 * 24 * 60 * 60 * 100
+            ).toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
             TotalPrice: amount,
             Address: add,
         });
@@ -123,13 +123,15 @@ async function postplaceOrder(req, res) {
             }
         }
         // const coupon = await couponCollection.findOne({ CoupenCode: couponCode });
-        userData.usedCoupons.push({
-                    couponCode: couponCode,
-                    // discountedAmount: discountedAmount,
-                    usedDate: new Date(),
-                  });
-                  await userData.save();
-              console.log("userData:::",userData);
+        if(couponCode){
+          userData.usedCoupons.push({
+                      couponCode: couponCode,
+                      // discountedAmount: discountedAmount,
+                      usedDate: new Date(),
+                    });
+                    await userData.save();
+                console.log("userData:::",userData);
+        }
 
         if (paymentMethod === "cod") {
             res.json({ codSuccess: true });
@@ -319,8 +321,24 @@ async function getCancelOrder(req,res){
                     await cancelProduct.save();
                 }
             }
+
+            if(orderData.PaymentMethod == "Online"){
+              const userId = orderData.UserId;
+              const refundAmount = orderData.TotalPrice;
+              await userCollection.findByIdAndUpdate(userId, { $inc: { 'wallet.amount': refundAmount },
+              $push:{
+                'wallet.transactions':{
+                  amount:refundAmount,
+                  transactionType:'credit',
+                  timestamp: new Date(),
+                  description:"Cancel order refund amount"
+                }
+              }
+          },{new : true});
+            }
             orderData.Status = "Cancelled";
             await orderData.save();
+
             res.redirect('/user/orderDetails')
         }else{
             console.log("Order canot be cancelled");
@@ -353,6 +371,7 @@ const postSignleCancel=async(req,res)=>{
         await productData.save();
     }
     
+    
     res.json({ success: true, message: 'Product canceled successfully' }); 
     }catch (error) {
         res.render("errorView/404");
@@ -372,7 +391,7 @@ const postGenarateInvoice=async(req,res)=>{
         console.log(ordersId);
     
         if (orderDetails) {
-          console.log("uSer MaIl....:",email);
+          // console.log("uSer MaIl....:",email);
           const invoicePath = await generateInvoice(orderDetails,email); 
           res.json({ success: true, message: 'Invoice generated successfully', invoicePath });
         } else {
@@ -405,14 +424,14 @@ async function postReturnProduct(req,res){
     try {
         const { orderId, returnReason } = req.body;
         const Email = req.session.email;
-        console.log("email......",Email);
+        // console.log("email......",Email);
         const User = await userCollection.findOne({ email: Email });
-        console.log("User......",User);
+        // console.log("User......",User);
         const userId = User._id;
-        console.log("userId......",userId);
+        // console.log("userId......",userId);
     
         const order = await orderCollection.findOne({ _id: orderId, UserId: userId });
-        console.log("order......",order);
+        // console.log("order......",order);
         order.ReturnRequest = {
           reason: returnReason,
           status: "Pending",
@@ -424,7 +443,7 @@ async function postReturnProduct(req,res){
         const Return = await orderCollection.findByIdAndUpdate(orderId, {
           Status: "Return Pending",
         });
-        console.log("Return......",Return);
+        // console.log("Return......",Return);
     
         res.json({
           success: true,

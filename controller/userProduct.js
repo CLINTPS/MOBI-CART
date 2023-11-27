@@ -143,9 +143,10 @@ async function postSerchAllProduct(req,res){
 
 }
 
+
 module.exports={
     getProducDetails,
     getAllProducts,
     postFilterProduct,
-    postSerchAllProduct
+    postSerchAllProduct,
 }

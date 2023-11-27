@@ -97,8 +97,8 @@
                                     class="btn btn-outline-success ml-auto"><b><i>Download Sales Report</i></b></button>
                             </div>
 
-                            <div class="card mb-4 shadow" style="background-color: #b1f4ab;">
-                                <h2 class="card-header" style="background-color: rgb(134, 242, 109); border-radius: 10px;">Sales Analysis</h2>
+                            <div class="card mb-4 shadow" style="background-color: #ddf0da;">
+                                <h2 class="card-header" style="background-color: rgb(175, 251, 158); border-radius: 10px;">Sales Analysis</h2>
                                 <div class="card-body">
                                     <div class="row">
 
@@ -251,30 +251,14 @@
                 const Amount = document.getElementById("salesGraphAmount").getContext("2d");
                 const Count = document.getElementById("salesGraphCount").getContext("2d");
 
-                // if (window.myChart1) {
-                //     window.myChart1.destroy();
-                // }
+                
                 if (window.myChart2) {
                     window.myChart2.destroy();
                 }
 
-                // window.myChart1 = new Chart(Amount, {
-                //     type: "line",
-                //     data: {
-                //         labels: salesData.labelsByCount,
-                //         datasets: [{
-                //             label: "Sales by orders",
-                //             data: salesData.dataByCount,
-                //             borderColor: "red",
-                //             fill: false
-                //         }]
-                //     },
-                //     options: {
-                //         legend: { display: false },
-                //     }
-                // });
+                
 
-                const barColors = ["red", "green", "blue", "orange", "brown"];
+                const barColors = ["green", "green", "green", "green", "green"];
                 window.myChart2 = new Chart(Count, {
                     type: "bar",
                     data: {

@@ -3,6 +3,13 @@ const connection=require("../config/connection")
 
 const { Schema, ObjectId } = mongoose;
 
+const TransactionSchema = new Schema({
+   amount: { type: Number },
+   transactionType: { type: String, enum: ['debit', 'credit'] },
+   timestamp: { type: Date, default: Date.now },
+   description: { type: String },
+ });
+
 const UsersSchema = new Schema({
   userName: { type: String, required: true,  },
   password: { type: String, required: true },
@@ -11,6 +18,10 @@ const UsersSchema = new Schema({
   status: { type: Boolean,
             default:true},
   profilePhoto:{type:String},
+  wallet: {
+   amount: { type: Number, default: 0 },
+   transactions: [TransactionSchema],
+  },
   usedCoupons:[{ 
       couponCode: { type: String },
       discountedAmount: { type: Number },
@@ -27,8 +38,7 @@ const UsersSchema = new Schema({
   orders: [{
      orderId: { type: Schema.Types.ObjectId },
   }],
-  dob: { type: Date },
-  gender: { type: String },
+
 },{timestamps:true});
 
 const Users = mongoose.model('Users', UsersSchema);

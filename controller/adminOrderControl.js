@@ -59,61 +59,10 @@ async function getViewOrder(req,res){
   }
 }
 
-//accept return request
-const putAcceptReturn=async(req,res)=>{
-    try {
-      const orderId = req.params.orderId; 
-  
-      const updatedOrder = await Order.findByIdAndUpdate(
-        orderId,
-        { $set: { Status: 'Return Accepted' } },
-        { new: true }
-      );
-      const userId = updatedOrder.UserId;
-      const refundAmount = updatedOrder.TotalPrice;
-  
-      await User.findByIdAndUpdate(userId, { $inc: { wallet: refundAmount } });
-  
-      const walletTransaction = new WalletTransaction({
-        user: userId,
-        amount: refundAmount,
-        description: 'Product returned',
-        transactionType: 'credit',
-      });
-      
-      await walletTransaction.save();
-  
-      res.json({ success: true, order: updatedOrder });
-  
-    } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
-    }
-  }
-  
-  
-  //cancel return
-  const putCancelReturn=async(req,res)=>{
-    try {
-      const orderId = req.params.orderId;
-  
-      const updatedOrder = await orderCollection.findByIdAndUpdate(
-        orderId,
-        { $set: { Status: 'Return Canceled' } },
-        { new: true }
-      );
-      res.json({ success: true, order: updatedOrder });
-  
-    } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
-    }
-  }
+
 
 module.exports={
     getOrderDetails,
     putUpdateStatus,
     getViewOrder,
-    putAcceptReturn,
-    putCancelReturn
 }

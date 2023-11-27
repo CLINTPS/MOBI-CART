@@ -16,6 +16,7 @@ const userBlock = require('../middleware/userBlock')
 const cartControl = require('../controller/cartControl')
 const orderControl = require('../controller/orderControl')
 const userProfile = require('../middleware/profileMulter')
+const userWishlist = require('../controller/userWishlistControl')
 // const errorHandler = require('../middleware/errorMiddleware')
 
 
@@ -50,6 +51,7 @@ userRout.get("/user/home",userBlock,userControl.getHomePage)
 //login to forgot page and forgot password
 userRout.get('/user/forgot-pass', userControl.forgot_password_page)
 userRout.post('/user/forgot-PassWord', userControl.forgotPass)
+
 //Reset password
 userRout.get('/user/conformPass', userControl.get_password_reset)
 userRout.post('/user/conformPass', userControl.password_reset)
@@ -66,14 +68,22 @@ userRout.get('/productDetails/:id',userAuth.verifyUser,userProduct.getProducDeta
 
 //product full details
 userRout.get('/allProducts',userAuth.verifyUser,userProduct.getAllProducts)
+
+//Filter product
 userRout.post('/filterProduct',userAuth.verifyUser,userProduct.postFilterProduct)
+
 // Serch product in all page
 userRout.post('/serchAllPorductsShop',userAuth.verifyUser,userProduct.postSerchAllProduct)
 
 //User profile side
 userRout.get('/user/profile',userAuth.verifyUser,userControl.getUserprofile)
+
 //User profile picture
 userRout.post('/UserProfilePicture',userAuth.verifyUser,userProfile.single('profilePicture'),userControl.postUserProfile)
+
+//User wishlist
+userRout.get('/userWhislist',userAuth.verifyUser,userWishlist.getWhislist)
+userRout.post('/wishlist',userAuth.verifyUser,userWishlist.postWishlist)
 
 //User addresses
 userRout.get('/user/AddressBook',userAuth.verifyUser,userControl.getAddressBook)
@@ -99,6 +109,7 @@ userRout.get('/checkOut',userAuth.verifyUser,orderControl.getOrderpage)
 userRout.post('/placeOrder',userAuth.verifyUser,orderControl.postplaceOrder)
 userRout.get('/ordersuccess',userAuth.verifyUser,orderControl.getOderSuccess)
 userRout.post('/VerifyOnlinePayment',userAuth.verifyUser,orderControl.postVerifyPayment)
+
 // check out page coupon apply post
 userRout.post('/applyCoupon',userAuth.verifyUser,orderControl.postUserApplyCoupon)
 
@@ -108,6 +119,7 @@ userRout.get('/orderProductView/:id',userAuth.verifyUser,orderControl.getOrderPr
 userRout.get('/cancelOrderData/:id',userAuth.verifyUser,orderControl.getCancelOrder)
 userRout.post('/downloadinvoice',userAuth.verifyUser,orderControl.postGenarateInvoice)
 userRout.get('/downloadinvoice/:orderId',userAuth.verifyUser,orderControl.getdownloadInvoice)
+
 //single product cancel
 userRout.post('/cancel-product',userAuth.verifyUser,orderControl.postSignleCancel)
 
