@@ -13,6 +13,7 @@ const flash=require("connect-flash")
 const nocache = require("nocache");
 // const morgan=require("morgan")
 const errorMiddleware = require('./middleware/errorMiddleware');
+const cronjob=require('./util/cronJob')
 
 
 //Set Template Engin

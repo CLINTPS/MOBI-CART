@@ -84,6 +84,7 @@ userRout.post('/UserProfilePicture',userAuth.verifyUser,userProfile.single('prof
 //User wishlist
 userRout.get('/userWhislist',userAuth.verifyUser,userWishlist.getWhislist)
 userRout.post('/wishlist',userAuth.verifyUser,userWishlist.postWishlist)
+userRout.post('/wishlistdelete/',userAuth.verifyUser,userWishlist.postDeleteWishlist)
 
 //User addresses
 userRout.get('/user/AddressBook',userAuth.verifyUser,userControl.getAddressBook)

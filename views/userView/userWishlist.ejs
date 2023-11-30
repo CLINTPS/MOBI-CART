@@ -1,3 +1,154 @@
-<%-include('../userView/include/user_header')-%>
-Wishlist is emplty
-<%-include('../userView/include/user_footer')-%>
+<%- include('../userView/include/user_header') -%>
+
+<div class="container mt-5">
+    <% if (!wishlist || !wishlist.products || wishlist.products.length === 0) { %>
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card border-rounded shadow p-5 m-4" style="height: 37vh;">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">Your Wishlist</h3>
+                        <p class="card-text text-center">Explore and save your favorite products.</p>
+                    </div>
+                    <a href="/user/home" class="btn btn-success m-2 btn-sm">Back to home
+                        <img width="25" height="25" src="https://img.icons8.com/ios-glyphs/30/circled-left-2.png" alt="circled-left-2"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+    <% } else { %>
+        <div class="row">
+            <% const products = wishlist.products; %>
+            <% products.forEach((product) => { %>
+                <div class="col-md-12 mb-4">
+                    <div class="card border-rounded shadow p-3">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <a href="/productDetails/<%=product._id%>">
+                                    <img src="/product-img/<%= product.images[0] %>" alt="<%= product.ProductName %>" class="img-fluid" style="object-fit: cover; height: 200px;">
+                                </a>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <a href="/productDetails/<%=product._id%>" style="text-decoration: none; color: black;">
+                                        <h5 class="card-title"><%= product.ProductName %></h5>
+                                    </a>
+                                    <p class="card-text mb-3">
+                                        <span class="text-success">₹<%= product.DiscountAmount %></span>
+                                        <s class="text-danger">₹<%= product.Price %></s>
+                                    </p>
+                                    <% if(product.AvailableQuantity > 5){%>
+                                        <span class="badge bg-success">In stock</span>
+                                    <%}else if(product.AvailableQuantity <= 5 && product.AvailableQuantity > 0){%>
+                                        <span class="badge bg-warning text-dark">Stock left: <%= product.AvailableQuantity %></span>
+                                    <%}else if(product.AvailableQuantity == 0){%>
+                                        <span class="badge bg-danger">Out of stock</span>
+                                    <%}%>
+                                </div>
+                                <div class="card-footer" style="width: fit-content;">
+                                    <button class="btn btn-warning btn-sm me-2 add-to-cart-button" data-product-id="<%= product._id %>">Add to Cart</button>
+                                    <button class="btn btn-danger btn-sm remove-from-wishlist-button" data-product-id="<%= product._id %>">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M1.5 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2V3h2a1 1 0 0 1 0 2h-1v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5H2a1 1 0 0 1 0-2h2V2zM2 4v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4H2z"/>
+                                            <path fill-rule="evenodd" d="M4.5 0a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm7 0a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
+                                        </svg>
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } %>
+</div>
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/toastr@2"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script>
+
+document.querySelectorAll('.add-to-cart-button').forEach(button => {
+    button.addEventListener('click', function (event) {
+        // Code for adding to cart
+        event.preventDefault();
+
+const productId = this.getAttribute('data-product-id');
+console.log(productId);
+
+fetch('/addtocart/' + productId, {
+    method: 'POST',
+})
+    .then(response => response.json())
+    .then(data => {
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-center",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+            "toastClass": "black-toast"
+        };
+        toastr.success('Product added to cart');
+        updateCartQuantity();
+        location.reload();
+    })
+    .catch(error => {
+        console.error('Error adding product to cart:', error);
+    });
+    });
+});
+
+
+document.querySelectorAll('.remove-from-wishlist-button').forEach(button => {
+    button.addEventListener('click', function (event) {
+        // Code for removing from wishlist
+        event.preventDefault();
+
+        const productId = this.getAttribute('data-product-id');
+        console.log('Removing from wishlist, Product ID:', productId);
+
+        fetch('/wishlistdelete/', {
+            method: 'POST',
+            body: JSON.stringify({ productId: productId }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => {
+            console.log('Server Response:', response);
+            return response.json();
+        })
+        .then(data => {
+    console.log('Data from Server:', data);
+    if (data.success) {
+        alert('Product removed from wishlist');
+        location.reload();
+    } else {
+        console.error('Error updating wishlist:', data.error);
+    }
+})
+        .catch(error => {
+            console.error('Error updating wishlist:', error);
+        });
+    });
+});
+
+    </script>
+<%- include('../userView/include/user_footer') -%>

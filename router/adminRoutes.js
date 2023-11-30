@@ -10,6 +10,7 @@ const adminOrderControl = require('../controller/adminOrderControl')
 const bannerControl = require('../controller/bannerControl')
 const couponsControl = require('../controller/couponsControl')
 const returnOrder = require('../controller/returnOrderControl')
+const offerControl = require('../controller/offerControl')
 // const errorHandlerMiddleware = require('../middleware/errorMiddleware')
 
 
@@ -89,5 +90,11 @@ router.get('/Coupons',adminAuth.verifyAdmin,couponsControl.getCouponView)
 router.post('/CreateCoupon',adminAuth.verifyAdmin,couponsControl.postCreateCoupon)
 router.get('/deleteCoupon/:id',adminAuth.verifyAdmin,couponsControl.getDeleteCoupon)
 
+//Offers
+router.get('/categoryOffer',adminAuth.verifyAdmin,offerControl.getOfferPage)
+router.post('/addCategoryOffer',adminAuth.verifyAdmin,offerControl.postaddCategoryOffer)
+router.delete('/deleteOffer/:offerId',adminAuth.verifyAdmin,offerControl.deleteOffer)
+router.get('/editCategoryOffer/:id',adminAuth.verifyAdmin,offerControl.editOffer)
+router.post('/edit-offer',adminAuth.verifyAdmin,offerControl.postEditOffer)
 
 module.exports  = router;

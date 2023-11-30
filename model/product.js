@@ -19,6 +19,13 @@ const productSchema = new Schema({
       Specification2: {type: String},
       Specification3: {type: String},
       Specification4: {type: String},
+      IsInCategoryOffer :{
+            type:Boolean, default: false
+          },
+          categoryOffer: {
+            offerPercentage: { type: Number }
+          },  
+          beforeOffer:{ type: Number },
 },{timestamps:true})
 
 const productUpdate =mongoose.model('Products',productSchema);

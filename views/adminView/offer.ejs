@@ -1,0 +1,224 @@
+<%-include('../adminView/include/ad_header')-%>
+  <%-include('../adminView/include/_sidebar')-%>
+    <h3>Add New Offers</h3>
+    <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"
+      data-bs-whatever="@getbootstrap">
+      <img width="25" height="25" src="https://img.icons8.com/ios/50/add--v1.png" alt="add--v1" /> Add Coupon</button>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Coupons</h1>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">Select Category</label>
+              <select class="form-control" id="categorySelect" name="category" required>
+                <option value="" selected disabled>Select a Category</option>
+                <% categoryData.forEach(category=> { %>
+                  <option value="<%= category.name %>">
+                    <%= category.name %>
+                  </option>
+                  <% }); %>
+              </select>
+              <span class="error" id="categoryError" style="color: red;"></span>
+            </div>
+
+            <div class="mb-3">
+              <label for="percentage" class="col-form-label">Percentage</label>
+              <input type="number" class="form-control" id="percentage" name="percentage">
+              <span class="error" id="percentageError" style="color: red;"></span>
+            </div>
+
+            <div class="mb-3">
+              <label for="startDate" class="col-form-label">Start Date:</label>
+              <input type="date" class="form-control" id="startDate" name="startDate" required>
+              <span class="error" id="startDateError" style="color: red;"></span>
+            </div>
+
+            <div class="mb-3">
+              <label for="endDate" class="col-form-label">End Date:</label>
+              <input type="date" class="form-control" id="endDate" name="endDate" required>
+              <span class="error" id="endDateError" style="color: red;"></span>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="addOffer()">Save Offer</button>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+    <br>
+
+
+    <div class="row p-3">
+      <% if(offerData && offerData.length>0){%>
+        <% offerData.forEach((data)=>{ %>
+          <div class="col-md-4">
+            <div class="card mb-4 shadow">
+              <div class="card-body text-center bg-light">
+                <img src="/Offer-img/special-offer-3.jpg" alt="Special offer" style="height: 130px; width: 130px;">
+                <h5 class="card-title">
+                  <br>
+                  <%=data.categoryName%>
+                </h5>
+                <p class="card-text">Offer Presentage : <%=data.offerPercentage %>%
+                </p>
+                <p class="card-text">Start Date : <%let Sdate=new Date(data.startDate)%>
+                    <%=Sdate.getDate()%>-<%=Sdate.getMonth()+1%>-<%=Sdate.getFullYear()%>
+                </p>
+                <p class="card-text">End Date : <%let date=new Date(data.expiryDate)%>
+                    <%=date.getDate()%>-<%=date.getMonth() + 1%>-<%=date.getFullYear()%>
+                </p>
+
+                <a class="btn btn-sm" href="/admin/editCategoryOffer/<%= data._id %>">
+                  <i class="fa-solid fa-edit fa-2x" style="color: #000000"></i>
+                </a>
+                
+                <button class="btn btn-sm" onclick="deleteOffer('<%= data._id %>')">
+                  <i class="fa-solid fa-trash <%= date > data.expiryDate ? 'fa-bounce' : '' %> fa-2x"
+                    style="color: #000000"></i>
+                </button>
+
+               
+
+              </div>
+            </div>
+          </div>
+          <% }) %>
+            <%}else{%>
+              <h1>No Offers available</h1>
+              <%}%>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+      async function addOffer() {
+        const categorySelect = document.getElementById('categorySelect');
+        const percentage = document.getElementById('percentage');
+        const startDate = document.getElementById('startDate');
+        const endDate = document.getElementById('endDate');
+
+        const currentDate = new Date().toISOString().split('T')[0];
+
+        document.getElementById('categoryError').innerText = '';
+        document.getElementById('percentageError').innerText = '';
+        document.getElementById('startDateError').innerText = '';
+        document.getElementById('endDateError').innerText = '';
+
+        let isValid = true;
+
+        if (!categorySelect.value) {
+          document.getElementById('categoryError').innerText = 'Category is required';
+          isValid = false;
+        }
+
+        if (isNaN(percentage.value) || percentage.value < 1 || percentage.value > 99) {
+          document.getElementById('percentageError').innerText = 'Percentage must be a number between 1 and 99';
+          isValid = false;
+        }
+
+        if (startDate.value < currentDate) {
+          document.getElementById('startDateError').innerText = 'Start date must be greater than the current date';
+          isValid = false;
+        }
+
+        if (endDate.value <= startDate.value) {
+          document.getElementById('endDateError').innerText = 'End date must be greater than the start date';
+          isValid = false;
+        }
+
+        if (isValid) {
+          const data = {
+            categoryName: categorySelect.value,
+            offerPercentage: percentage.value,
+            startDate: startDate.value,
+            expiryDate: endDate.value
+          };
+          console.log(data)
+          try {
+            const response = await fetch('/admin/addCategoryOffer', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data),
+            });
+
+            const responseData = await response.json();
+
+            console.log("Response from server:", responseData);
+
+            if (responseData.error) {
+              Swal.fire({
+                title: 'Error!',
+                text: responseData.error,
+                icon: 'error'
+              });
+
+            } else {
+
+              Swal.fire({
+                title: 'Success!',
+                text: 'Category offer added successfully',
+                icon: 'success',
+                timer: 3000,
+                showConfirmButton: false
+              }).then(() => {
+                $('#exampleModal').modal('hide');
+                location.reload();
+              });
+            }
+          } catch (error) {
+            console.error('Form submission error:', error);
+          }
+        }
+      }
+
+
+      function deleteOffer(offerId) {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'You won\'t be able to revert this!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            console.log("offerId..", offerId);
+            fetch(`/admin/deleteOffer/${offerId}`, {
+              method: "DELETE",
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                Swal.fire({
+                  title: 'Deleted!',
+                  text: 'Your offer has been deleted.',
+                  icon: 'success'
+                }).then(() => {
+                  location.reload();
+                });
+              })
+              .catch((error) => {
+                Swal.fire({
+                  title: 'Error!',
+                  text: 'An error occurred while deleting the offer.',
+                  icon: 'error'
+                });
+                console.error("Error:", error);
+              });
+          }
+        });
+      }
+
+    </script>

@@ -1,0 +1,132 @@
+<%-include('../adminView/include/ad_header')-%>
+<%-include('../adminView/include/_sidebar')-%>
+<div class="details">
+    <div class="recentOrders">
+        <h2>Edit Category Offer</h2>
+        <div class="row g-3 p-5">
+            <div class="col-md-12">
+                <label for="categoryName" class="form-label">Category Name</label>
+                <input class="form-control" id="categorySelect" disabled type="text" value="<%= offerData.categoryName %>"
+                    required>
+                <div id="categoryError" class="error"></div>
+                <span class="error" id="categorySpanError" style="color: red;"></span>
+            </div>
+            <div class="col-md-12">
+                <label for="offerPercentage" class="form-label">Offer Percentage</label>
+                <input class="form-control" id="percentage" type="number" min="0" max="75"
+                    value="<%= offerData.offerPercentage %>" required>
+                <div id="percentageError" class="error"></div>
+                <span class="error" id="percentageSpanError" style="color: red;"></span>
+            </div>
+            <div class="col-md-12">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input class="form-control" id="startDate" type="date" value="<%= offerData.startDate %>" required>
+                <div id="startDateError" class="error"></div>
+                <span class="error" id="startDateSpanError" style="color: red;"></span>
+            </div>
+            <div class="col-md-12">
+                <label for="expiryDate" class="form-label">Expiry Date</label>
+                <input class="form-control" id="endDate" type="date" value="<%= offerData.expiryDate %>" required>
+                <div id="endDateError" class="error"></div>
+                <span class="error" id="endDateSpanError" style="color: red;"></span>
+            </div>
+            <br>
+            <div class="d-flex mb-3 m-2">
+                <div class="cardHeader d-flex">
+                    <button type="button" class="btn btn-primary" onclick="editOffer('<%= offerData._id %>')">Save Offer</button>
+                    <button class="btn btn-danger btn-sm">
+                        <a href="/admin/categoryOffer" style="color: white;"
+                            onclick="return confirm('Are you sure you want to leave this page?')">Cancel</a>
+                    </button>
+                </div>
+                <div class="cardHeader d-flex">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    async function editOffer(offerId) {
+        const categorySelect = document.getElementById('categorySelect');
+        const percentage = document.getElementById('percentage');
+        const startDate = document.getElementById('startDate');
+        const endDate = document.getElementById('endDate');
+
+        const currentDate = new Date().toISOString().split('T')[0];
+
+        document.getElementById('categoryError').innerText = '';
+        document.getElementById('percentageError').innerText = '';
+        document.getElementById('startDateError').innerText = '';
+        document.getElementById('endDateError').innerText = '';
+
+        let isValid = true;
+
+        if (!categorySelect.value) {
+            document.getElementById('categoryError').innerText = 'Category is required';
+            isValid = false;
+        }
+
+        if (isNaN(percentage.value) || percentage.value < 1 || percentage.value > 99) {
+            document.getElementById('percentageError').innerText = 'Percentage must be a number between 1 and 99';
+            isValid = false;
+        }
+
+        if (startDate.value < currentDate) {
+            document.getElementById('startDateError').innerText = 'Start date must be greater than the current date';
+            isValid = false;
+        }
+
+        if (endDate.value <= startDate.value) {
+            document.getElementById('endDateError').innerText = 'End date must be greater than the start date';
+            isValid = false;
+        }
+
+        if (isValid) {
+            const data = {
+                categoryName: categorySelect.value,
+                offerPercentage: percentage.value,
+                startDate: startDate.value,
+                expiryDate: endDate.value
+            };
+
+            console.log(data);
+
+            try {
+                const response = await fetch(`/admin/edit-offer`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const responseData = await response.json();
+
+                console.log("Response from server:", responseData);
+
+                if (responseData.error) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: responseData.error,
+                        icon: 'error'
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Category offer updated successfully',
+                        icon: 'success'
+                    }).then(() => {
+                        window.location.href = '/admin/categoryOffer';
+                    });
+                }
+            } catch (error) {
+                console.error('Form submission error:', error);
+            }
+        }
+    }
+</script>

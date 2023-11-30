@@ -1,18 +1,27 @@
 const productsCollections = require('../model/product')
 const categoriesCollection = require('../model/categories')
 const brandCollection = require('../model/brand')
+const wishlistCollection = require('../model/wishlist')
+const userCollection = require('../model/user')
+
+
 
 
 //get product details page
 async function getProducDetails(req,res){
         try{
-            console.log("product details reached");
+            // console.log("product details reached");
             const ProductID = req.params.id;
-            console.log(ProductID);
+            // console.log(ProductID);
             const productData = await productsCollections.findById(ProductID);
-            console.log('product view reached');
+            // console.log('product view reached');
             let user = req.session.user
-            res.render('userView/product-Details',{title:"product details",user,productData})
+            let email = req.session.email
+            const userData = await userCollection.findOne({email:email})
+            const userId = userData._id
+            const userWishlist = await wishlistCollection.findOne({user:userId})
+            const wishlist = userWishlist ? userWishlist.products : [];
+            res.render('userView/product-Details',{title:"product details",user,wishlist,productData})
         }catch(error){
             res.render("errorView/404");
         }
@@ -21,8 +30,9 @@ async function getProducDetails(req,res){
 //get all product
 async function getAllProducts(req,res){
     try{
-        // console.log("all product");
         let user = req.session.user
+        let email=req.session.email
+        // console.log("all product");
         // console.log(user);
         const brandData = await brandCollection.find({})
         const categoryData = await categoriesCollection.find({})
@@ -31,17 +41,22 @@ async function getAllProducts(req,res){
         const pageSize = 4;
         const totalProducts = Math.ceil(productDataCount / pageSize);
         const skip = (page - 1) * pageSize;
-        const productData = await productsCollections.find().skip(skip).limit(pageSize); 
+        const productData = await productsCollections.find().skip(skip).limit(pageSize);
+        const userData = await userCollection.findOne({email:email})
+        const userId = userData._id
+        const userWishlist = await wishlistCollection.findOne({user:userId})
+        const wishlist = userWishlist ? userWishlist.products : []; 
         res.render('userView/product-Full-Details',{title:"All product",
                 user,
                 brandData,
                 categoryData,
                 productData,
+                wishlist,
                 productDataCount : totalProducts,
                 page: page
             })
     }catch(error){
-        res.status(500).send('Internal server error')
+        // res.status(500).send('Internal server error')
         res.render("errorView/404");
     }
 }
@@ -51,6 +66,7 @@ async function postFilterProduct(req, res) {
     try {
         const { selectedBrands, selectedCategory, selectedPrice } = req.body;
         let user = req.session.user;
+        let email=req.session.email
         const brandData = await brandCollection.find({});
         const categoryData = await categoriesCollection.find({});
         const page = parseInt(req.query.page) || 1;
@@ -88,19 +104,25 @@ async function postFilterProduct(req, res) {
         const productDataCount = await productsCollections.countDocuments(filter);
 
         const totalProducts = Math.ceil(productDataCount / pageSize);
-        console.log("productData ::",productData);
+
+        const userData = await userCollection.findOne({email:email})
+        const userId = userData._id
+        const userWishlist = await wishlistCollection.findOne({user:userId})
+        const wishlist = userWishlist ? userWishlist.products : []; 
+
         res.render('userView/product-Full-Details', {
             title: "All product",
             user,
             brandData,
             categoryData,
             productData,
+            wishlist,
             productDataCount: totalProducts,
             page: page
         });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal server error');
+        // res.status(500).send('Internal server error');
         res.render("errorView/404");
     }
 }
@@ -111,6 +133,7 @@ async function postSerchAllProduct(req,res){
         let SerchProduct=req.body.searchAllProduct
         // console.log("SerchProduct:",SerchProduct);
         let user = req.session.user
+        let email=req.session.email
         // console.log(user);
         const brandData = await brandCollection.find({})
         const categoryData = await categoriesCollection.find({})
@@ -126,18 +149,24 @@ async function postSerchAllProduct(req,res){
 
         const productData = await productsCollections.find({
             ProductName: { $regex: "^" + SerchProduct, $options: "i" },
-        }).skip(skip).limit(pageSize); 
+        }).skip(skip).limit(pageSize);
+        
+        const userData = await userCollection.findOne({email:email})
+        const userId = userData._id
+        const userWishlist = await wishlistCollection.findOne({user:userId})
+        const wishlist = userWishlist ? userWishlist.products : []; 
 
         res.render('userView/product-Full-Details',{title:"All product",
                 user,
                 brandData,
                 categoryData,
                 productData,
+                wishlist,
                 productDataCount : totalProducts,
                 page: page
             })
     }catch(error){
-        res.status(500).send('Internal server error')
+        // res.status(500).send('Internal server error')
         res.render("errorView/404");
     }
 

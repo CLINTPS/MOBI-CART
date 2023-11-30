@@ -31,14 +31,27 @@
                 <%=productData.ProductName%>
             </h4>     
         </p>
-        <p class="para"><i class="fa-solid fa-circle fa-2xs">
-        </i> ₹<%=productData.DiscountAmount%>/- <s class="text-danger">₹<%=productData.Price%></s></p>
-        
-        <% if (productData.AvailableQuantity > 0) { %>
-            <h6 class="text-success">In stock</h6>
-          <% } else { %>
-            <h6 class="text-danger">out of stock</h6>
-          <% } %>
+        <%if(productData.IsInCategoryOffer){%>
+            <p class="para"><i class="fa-solid fa-circle fa-2xs">
+            </i> ₹<%=productData.DiscountAmount%>/- <s class="text-success">₹<%=productData.beforeOffer%></s></p>
+            <%}else{%>
+                <p class="para"><i class="fa-solid fa-circle fa-2xs">
+                </i> ₹<%=productData.DiscountAmount%>/- <s class="text-danger">₹<%=productData.Price%></s></p>
+            <%}%>
+            <% if(productData.IsInCategoryOffer){ %>
+                <span class="bg-info text-black" style="border-radius: 4px;" >Special Offer:₹<%= productData.categoryOffer.offerPercentage %>%</span>
+                <br>
+            <% } %>
+                <br>
+            <% if(productData.AvailableQuantity > 5){%>
+                <h6 class="text-success">In stock</h6>
+            <%}else if(productData.AvailableQuantity <= 5 && productData.AvailableQuantity > 0){%>
+                <h6 class="text-warning">Left stock</h6>
+            <%}else if(productData.AvailableQuantity == 0){%>
+                <h6 class="text-danger">Out of stock</h6>
+            <% } %>
+
+
         <br>
         <p class="paraCapz">SPECIFICATION</p>
         <p class="para"><i class="fa-solid fa-circle fa-2xs"></i>
@@ -59,6 +72,12 @@
         </p>
         <br>
         <div class="d-flex" style="width: 301px;">
+
+            <botton class="btn btn-primary rounded-3 add-to-wishlist-button"
+                data-product-id="<%= productData._id %>">
+                <i class="fa fa-heart <% if (wishlist.includes(productData._id)) { %>text-danger<% } %>"></i>
+            </botton>
+
             <div class="col-6 d-flex justify-content-center">
                 <% if (productData.AvailableQuantity > 0) { %>                    
                     <button class="btn btn-warning add-to-cart-button" data-product-id="<%= productData._id %>" onclick="addEventListener">Add to Cart</button>
@@ -66,9 +85,9 @@
                     <button class="btn btn-danger shadow-0 add-to-cart-button">Add to Cart</button>
                   <% } %>
             </div>
-            <div class="col-6 d-flex justify-content-center">
+            <!-- <div class="col-6 d-flex justify-content-center">
                 <a href="#" class="btn btn-primary">Buy now</a>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -146,6 +165,54 @@
             });
         });
     });
+
+    document.querySelectorAll('.add-to-wishlist-button').forEach(button => {
+    button.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        const productId = this.getAttribute('data-product-id');
+        console.log(">>>>>>>>>>>", productId);
+        const icon = this.querySelector('.fa-heart');
+        console.log("Wishlist reached");
+
+        $.ajax({
+            url: '/wishlist/',
+            method: 'POST',
+            data: {
+                productId: productId,
+            },
+            success: function (response) {
+                console.log(icon.style.color);
+                if (response.added) {
+                    toastr.success('Added to Wishlist', '', {
+                        toastClass: 'custom-toast-success', 
+                        positionClass: 'toast-bottom-center',
+                        progressBar: true,
+                        timeOut: 1500,
+                    });
+
+                    icon.classList.add('text-danger');
+
+                    console.log(">>> reached");
+
+                } else {
+                    toastr.info('Removed from Wishlist', '', {
+                        toastClass: 'custom-toast-info',
+                        positionClass: 'toast-bottom-center', 
+                        progressBar: true,
+                        timeOut: 1500,
+                    });
+
+                    icon.classList.remove('text-danger');
+                }
+            },
+            error: function (error) {
+                console.error('Error updating wishlist:', error);
+            }
+        });
+    });
+});
+
 </script>
 
 <%-include('../userView/include/user_footer')-%>

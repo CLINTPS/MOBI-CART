@@ -35,62 +35,65 @@
             }
         </style>
 
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Select Date Range</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form id="salesReport" method="post" action="/admin/SalesReport">
-            <label for="startDate">Start Date:</label>
-            <input type="date" name="startDate" id="startDate" required>
-            <label for="endDate">End Date:</label>
-            <input type="date" name="endDate" id="endDate" required>
-           
-            <div class="row mt-5">
-                <div class="col-sm-6"> 
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="downloadFormat" value="pdf" id="pdfCheckbox" checked>
-                        <label class="form-check-label" for="pdfCheckbox">
-                            PDF
-                        </label>
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Select Date Range</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-                <div class="col-sm-6"> 
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="downloadFormat" value="excel" id="excelCheckbox">
-                        <label class="form-check-label" for="excelCheckbox">
-                            Excel
-                        </label>
+                    <div class="modal-body">
+                        <form id="salesReport" method="post" action="/admin/SalesReport">
+                            <label for="startDate">Start Date:</label>
+                            <input type="date" name="startDate" id="startDate" required>
+                            <label for="endDate">End Date:</label>
+                            <input type="date" name="endDate" id="endDate" required>
+
+                            <div class="row mt-5">
+                                <div class="col-sm-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="downloadFormat" value="pdf"
+                                            id="pdfCheckbox" checked>
+                                        <label class="form-check-label" for="pdfCheckbox">
+                                            PDF
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="downloadFormat" value="excel"
+                                            id="excelCheckbox">
+                                        <label class="form-check-label" for="excelCheckbox">
+                                            Excel
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
                     </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-dark" id="generateReportBtn">Generate Report</button>
+                    </div>
+
+                    </form>
+
                 </div>
             </div>
-            
-            
-
         </div>
-        
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-dark" id="generateReportBtn">Generate Report</button>
-        </div>
-        
-    </form>
-
-      </div>
-    </div>
-  </div>
 
 
 
-        <div class="details"  style="margin-left: 275px;">
+        <div class="details" style="margin-left: 275px;">
             <div class="recentOrders" style="width: 1200px;">
                 <div class="container mt-4">
                     <div class="row">
                         <div class="col-lg-12">
-                            
+
                             <div class="cardHeader d-flex justify-content-between align-items-center">
                                 <h1><i>Dashboard</i></h1>
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
@@ -98,14 +101,16 @@
                             </div>
 
                             <div class="card mb-4 shadow" style="background-color: #ddf0da;">
-                                <h2 class="card-header" style="background-color: rgb(175, 251, 158); border-radius: 10px;">Sales Analysis</h2>
+                                <h2 class="card-header"
+                                    style="background-color: rgb(175, 251, 158); border-radius: 10px;">Sales Analysis
+                                </h2>
                                 <div class="card-body">
                                     <div class="row">
 
-                                        <div class="dropdown">   
+                                        <div class="dropdown">
                                             <button class="btn btn-outline-primary dropdown-toggle" type="button"
                                                 id="timeIntervalDropdown" data-toggle="dropdown" aria-expanded="false">
-                                               <i>Filter</i> 
+                                                <i>Filter</i>
                                             </button>
                                             <ul class="dropdown-menu bg-primary" aria-labelledby="timeIntervalDropdown">
                                                 <li><a class="dropdown-item" id="byDayOption">By Day</a></li>
@@ -114,13 +119,17 @@
                                             </ul>
                                         </div>
 
-                                        <div class="col-lg-12">
-                                            <canvas id="salesGraphAmount"></canvas>
+                                        <div class="col-lg-6">
+                                            <canvas id="salesGraphAmount" width="400" height="400"></canvas>
                                         </div>
-                                        <div class="col-lg-12">
-                                            <canvas id="salesGraphCount"></canvas>
+                                        <!-- <div class="col-lg-6">
+                                            <canvas id="polarChart" width="400" height="400"></canvas>
+                                        </div> -->
+                                        <div class="col-lg-6">
+                                            <canvas id="salesGraphCount" width="400" height="400"></canvas>
 
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -129,7 +138,9 @@
 
                         <div class="col-lg-12">
                             <div class="card mb-4 shadow" style="background-color: rgb(190, 239, 232)">
-                                <h2 class="card-header" style="background-color: rgb(123, 242, 240); border-radius: 10px;">Latest Orders</h2>
+                                <h2 class="card-header"
+                                    style="background-color: rgb(123, 242, 240); border-radius: 10px;">Latest Orders
+                                </h2>
                                 <div class="card-body ">
                                     <div class="table-responsive">
                                         <table class="table table-borderless">
@@ -152,7 +163,8 @@
 
                         <div class="col-lg-12">
                             <div class="card shadow" style="background-color: #ebcfcf;">
-                                <h2 class="card-header" style="background-color:#efadad; border-radius: 10px;">Best Sellers</h2>
+                                <h2 class="card-header" style="background-color:#efadad; border-radius: 10px;">Best
+                                    Sellers</h2>
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table class="table table-borderless">
@@ -246,17 +258,128 @@
 
 
 
-            async function updateSalesGraph(timeInterval) {
+                async function updateSalesGraph(timeInterval) {
                 const salesData = await fetchSalesData(timeInterval);
                 const Amount = document.getElementById("salesGraphAmount").getContext("2d");
                 const Count = document.getElementById("salesGraphCount").getContext("2d");
 
-                
+                if (window.myChart1) {
+                    window.myChart1.destroy();
+                }
+
                 if (window.myChart2) {
                     window.myChart2.destroy();
                 }
 
-                
+                window.myChart1 = new Chart(Amount, {
+    type: "doughnut", // Change to Doughnut type
+    data: {
+        labels: salesData.labelsByCount,
+        datasets: [{
+            data: salesData.dataByCount,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.7)',
+                'rgba(54, 162, 235, 0.7)',
+                'rgba(255, 206, 86, 0.7)',
+                'rgba(75, 192, 192, 0.7)',
+                'rgba(153, 102, 255, 0.7)',
+                'rgba(255, 159, 64, 0.7)'
+                // Add more colors as needed
+            ],
+            hoverBackgroundColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+                // Add more colors as needed
+            ],
+        }]
+    },
+    options: {
+        title: {
+            display: true,
+            text: 'Sales Overview',
+            fontSize: 16,
+        },
+        legend: {
+            display: true,
+            position: 'top',
+        },
+        tooltips: {
+            callbacks: {
+                label: function (tooltipItem, data) {
+                    var dataset = data.datasets[tooltipItem.datasetIndex];
+                    var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+                        return previousValue + currentValue;
+                    });
+                    var currentValue = dataset.data[tooltipItem.index];
+                    var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                    return '$' + currentValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' (' + percentage + '%)';
+                }
+            }
+        }
+    }
+});
+
+// window.myChart1 = new Chart(Amount, {
+//     type: "line",
+//     data: {
+//         labels: salesData.labelsByCount,
+//         datasets: [{
+//             label: "Sales by orders",
+//             data: salesData.dataByCount,
+//             borderColor: "rgba(255, 99, 132, 1)",
+//             backgroundColor: "rgba(255, 99, 132, 0.2)",
+//             pointBackgroundColor: "rgba(255, 99, 132, 1)",
+//             pointRadius: 5,
+//             pointHoverRadius: 8,
+//             fill: true,
+//             cubicInterpolationMode: 'monotone', // Use 'monotone' for smoother curves
+//         }]
+//     },
+//     options: {
+//         title: {
+//             display: true,
+//             text: 'Sales Overview',
+//             fontSize: 16,
+//         },
+//         legend: {
+//             display: true,
+//             position: 'top',
+//         },
+//         scales: {
+//             xAxes: [{
+//                 display: true,
+//                 scaleLabel: {
+//                     display: true,
+//                     labelString: 'Date'
+//                 }
+//             }],
+//             yAxes: [{
+//                 display: true,
+//                 scaleLabel: {
+//                     display: true,
+//                     labelString: 'Sales Amount'
+//                 },
+//                 ticks: {
+//                     beginAtZero: true,
+//                     callback: function (value) {
+//                         return '$' + value;
+//                     }
+//                 }
+//             }]
+//         },
+//         tooltips: {
+//             mode: 'index',
+//             intersect: false,
+//         }
+//     }
+// });
+
+
+
 
                 const barColors = ["green", "green", "green", "green", "green"];
                 window.myChart2 = new Chart(Count, {
@@ -290,6 +413,39 @@
 
             }
 
+        //     const polarData = {
+        //     labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4', 'Label 5'],
+        //     datasets: [{
+        //         data: [12, 19, 3, 5, 2],
+        //         backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(255, 206, 86, 0.5)', 'rgba(75, 192, 192, 0.5)', 'rgba(153, 102, 255, 0.5)'],
+        //         borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)'],
+        //         borderWidth: 1
+        //     }]
+        // };
+
+        // const polarOptions = {
+        //     legend: {
+        //         display: true,
+        //         position: 'bottom',
+        //     },
+        //     title: {
+        //         display: true,
+        //         text: 'Polar Area Chart',
+        //         fontSize: 16
+        //     },
+        //     scale: {
+        //         ticks: {
+        //             beginAtZero: true
+        //         }
+        //     }
+        // };
+
+        // const ctx = document.getElementById('polarChart').getContext('2d');
+        // const polarChart = new Chart(ctx, {
+        //     type: 'polarArea',
+        //     data: polarData,
+        //     options: polarOptions
+        // });
 
 
             async function updateLatestOrdersAndBestSellers() {
@@ -341,7 +497,7 @@
 
             updateSalesGraph();
             updateLatestOrdersAndBestSellers();
-      
+
 
         </script>
 

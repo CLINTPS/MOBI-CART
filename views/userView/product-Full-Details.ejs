@@ -131,6 +131,7 @@
                       <div class="row g-0">
                         <div class="col-xl-3 col-md-4 d-flex justify-content-center" >
                           <div class="bg-image hover-zoom ripple rounded ripple-surface me-md-3 mb-3 mb-md-0">
+                            
                             <a href="/productDetails/<%=data._id%>">
                                 <img src="/product-img/<%= data.images[0]%>" alt="Products img.." class="w-75" />
                             </a>
@@ -138,7 +139,12 @@
                         </div>
                         <div class="col-xl-6 col-md-5 col-sm-7">
                           <a href="/productDetails/<%=data._id%>" style="text-decoration: none;"> <h5><%=data.ProductName%></h5></a>
-                          <br>
+                          
+                          <botton class="btn btn1 rounded-3 add-to-wishlist-button"
+                                                        data-product-id="<%= data._id %>">
+                                                        <i
+                                                        class="fa fa-heart <% if (wishlist.includes(data._id)) { %>text-danger<% } %>"></i>
+                                                    </botton>
                           <p class="para"><i class="fa-solid fa-circle fa-2xs"></i>
                             <%=data.Specification1%>
                         </p>
@@ -273,4 +279,53 @@
             });
         });
     });
+
+
+    document.querySelectorAll('.add-to-wishlist-button').forEach(button => {
+    button.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        const productId = this.getAttribute('data-product-id');
+        console.log(">>>>>>>>>>>", productId);
+        const icon = this.querySelector('.fa-heart');
+        console.log("Wishlist reached");
+
+        $.ajax({
+            url: '/wishlist/',
+            method: 'POST',
+            data: {
+                productId: productId,
+            },
+            success: function (response) {
+                console.log(icon.style.color);
+                if (response.added) {
+                    toastr.success('Added to Wishlist', '', {
+                        toastClass: 'custom-toast-success', 
+                        positionClass: 'toast-bottom-center',
+                        progressBar: true,
+                        timeOut: 1500,
+                    });
+
+                    icon.classList.add('text-danger');
+
+                    console.log(">>> reached");
+
+                } else {
+                    toastr.info('Removed from Wishlist', '', {
+                        toastClass: 'custom-toast-info',
+                        positionClass: 'toast-bottom-center', 
+                        progressBar: true,
+                        timeOut: 1500,
+                    });
+
+                    icon.classList.remove('text-danger');
+                }
+            },
+            error: function (error) {
+                console.error('Error updating wishlist:', error);
+            }
+        });
+    });
+});
+
 </script>

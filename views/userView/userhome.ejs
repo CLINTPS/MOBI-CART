@@ -21,23 +21,33 @@
                     <% productData.forEach((product)=>{ %>
                         <% if(product.AvailableQuantity >= 0 && product.Status===true){%>
                     <div class="col-md-3 p-4">
-                        <div class="card" style="width: 18rem; margin-left: 20px;">
+                        <div class="card" style="width: 18rem; margin-left: 20px; position: relative;">
+                            
                             <% if(product.AvailableQuantity > 5){%>
-                                <span class="bg-success text-white m-2" style="position: absolute; border-radius: 5px;">In stock</span>
+                                <span class="bg-success text-white m-2" style="width: 67px; position: absolute; border-radius: 5px;">In stock</span>
                                 <%}else if(product.AvailableQuantity <= 5 && product.AvailableQuantity > 0){%>
-                                <span class="bg-warning text-white m-2" style="position: absolute; border-radius: 5px;">Stock left<%= product.AvailableQuantity%></span>
+                                    <span class="bg-warning text-white m-2" style="position: absolute; border-radius: 5px;">Stock left<%= product.AvailableQuantity%></span>
                                     <%}else if(product.AvailableQuantity == 0){%>
                                         <span class="bg-danger text-white m-2" style="position: absolute; border-radius: 5px;">out of stock</span>
                                         <%}%>
-                            <img class="card-img-top" style="height: 290px; width: 250px; padding: 20px; margin-left: 20px;" src="/product-img/<%= product.images[0] %>" alt="Card image cap">
+                                        
+                                        <% if(product.IsInCategoryOffer){ %>
+                                            <span class="bg-info text-white m-2" style="position: absolute; top: 0px; right: 0px; z-index: 1; border-radius: 5px;">₹<%= product.categoryOffer.offerPercentage %>% off</span>
+                                        <% } %>
+                                        <a href="/productDetails/<%=product._id%>">
+                                            <img class="card-img-top" style="height: 290px; width: 250px; padding: 20px; margin-left: 20px;" src="/product-img/<%= product.images[0] %>" alt="Card image cap">
+                                        </a>
                             <div class="card-body">
                                 <h6 class="card-title"><%=product.ProductName%></h6>
                                 <p class="card-title"><%=product.BrandName%></p>
-                                
                                 <p class="card-text" style="font-weight: 700;"> ₹<%=product.DiscountAmount%>/-   
-                                <s class="card-text" style="font-weight: 500; font-size: 12px; color: red;">  ₹<%=product.Price%>/-</s></p>
+                                    <% if(product.IsInCategoryOffer ){%>
+                                        <s class="card-text" style="font-weight: 500; font-size: 12px; color: rgb(10, 112, 9);">  ₹<%=product.beforeOffer %>/-</s></p>
+                                        <%}else{%>
+                                            <s class="card-text" style="font-weight: 500; font-size: 12px; color: red;">  ₹<%=product.Price%>/-</s></p>
+                                            <%}%>
                                
-                                    <button class="btn btn-outline-warning rounded-3 btn-sm add-to-cart-button"
+                                    <button class="btn btn-warning rounded-3 btn-sm add-to-cart-button"
                                         data-product-id="<%= product._id %>"
                                         data-available-quantity="<%= product.AvailableQuantity %>">
                                         Add To Cart
@@ -48,7 +58,7 @@
                                                         class="fa fa-heart <% if (wishlist.includes(product._id)) { %>text-danger<% } %>"></i>
                                                     </botton>
                                     
-                                    <a href="/productDetails/<%=product._id%>" class="btn btn-outline-primary rounded-3 btn-sm">view Details</a>
+                                    <a href="/productDetails/<%=product._id%>" class="btn btn-primary rounded-3 btn-sm">view Details</a>
                             </div>
                         </div>     
                     </div>
@@ -150,8 +160,8 @@
                 console.log(icon.style.color);
                 if (response.added) {
                     toastr.success('Added to Wishlist', '', {
-                        toastClass: 'custom-toast-success', // Custom class for success background color
-                        positionClass: 'toast-bottom-center', // Move alert window to the bottom
+                        toastClass: 'custom-toast-success', 
+                        positionClass: 'toast-bottom-center',
                         progressBar: true,
                         timeOut: 1500,
                     });
@@ -162,8 +172,8 @@
 
                 } else {
                     toastr.info('Removed from Wishlist', '', {
-                        toastClass: 'custom-toast-info', // Custom class for info background color
-                        positionClass: 'toast-bottom-center', // Move alert window to the bottom
+                        toastClass: 'custom-toast-info',
+                        positionClass: 'toast-bottom-center', 
                         progressBar: true,
                         timeOut: 1500,
                     });
