@@ -2,6 +2,21 @@
 <%-include('../adminView/include/_sidebar')-%>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script>
+    function validateForm() {
+        var categoryNameInput = document.forms["addCategoryForm"]["categoryName"].value;
+        var errorContainer = document.getElementById("errorContainer");
+
+        if (categoryNameInput.trim() === "") {
+            errorContainer.innerText = 'Category Name cannot be empty or contain only spaces.';
+            errorContainer.style.color = 'red';
+            return false;
+        }
+
+        return confirm('Do you want to add a new Category?');
+    }
+</script>
+
 <div class="text-center center-div d-flex align-items-center justify-content-center py-5">
     <div class="container w-25 rounded border py-4 bg-muted">
         <div class="title pb-1">
@@ -24,14 +39,14 @@
                 });
             </script>
         <% } %>
-        <form action="/admin/add-category" method="POST" >  
+        <form name="addCategoryForm" action="/admin/add-category" method="POST" onsubmit="return validateForm()">  
             <div class="form-group">
                 <small class="form-text text-white text-left">Categories Name</small>
                 <input class="form-control" name="categoryName" required placeholder="Category Name">
+                <div id="errorContainer"></div>
             </div>
             
-            <button type="submit" onclick="return confirm('Do you want new Categories')" class="btn btn-success rounded pi">Add</button>
+            <button type="submit" class="btn btn-success rounded pi">Add</button>
         </form>
     </div>
 </div>
-

@@ -1,0 +1,61 @@
+<%-include('../userView/include/user_header')-%>
+<section class="h-100 gradient-custom shadow">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-lg-10 col-xl-8">
+                <div class="card shadow" style="border-radius: 10px;">
+                    <div class="card-header px-4 py-5 bg-success text-white">
+                        <div>
+                            <h3 class="card-subtitle mb-2 text-center"><b>Wallet History</b></h3>
+                            <br>
+                            <h5 class="mb-0 text-center"><b>Available Balance: $<%= userData.wallet.amount.toFixed(2) %></b></h5>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <a href="/user/profile">
+                                <button class="btn btn-dark">Back</button>
+                            </a>
+                        </div>
+                    </div>
+                
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <h5 class="card-subtitle mb-2">Reason</h5>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <h5 class="card-subtitle mb-2">Debit/Credit</h5>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <h5 class="card-subtitle mb-2">Time</h5>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <% userData.wallet.transactions.forEach(transaction => { %>
+                            <div class="row mb-2">
+                                <div class="col-md-4">
+                                    <p class="mb-0"><%= transaction.description %></p>
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <p class="mb-0" style="color: <%= transaction.transactionType === 'credit' ? 'green' : 'red'; %> !important; font-weight: bold; font-size: 1.2em;">
+                                        <% if (transaction.transactionType === 'credit') { %>
+                                            +<%= transaction.amount %>
+                                        <% } else if (transaction.transactionType === 'debit') { %>
+                                            -<%= transaction.amount %>
+                                        <% } %>
+                                    </p>
+                                </div>
+                                <div class="col-md-4 text-muted text-end">
+                                    <p class="mb-0"><%= new Date(transaction.timestamp).toLocaleString() %></p>
+                                </div>
+                            </div>
+                            <hr>
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%-include('../userView/include/user_footer')-%>

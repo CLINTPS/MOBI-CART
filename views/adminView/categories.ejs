@@ -26,7 +26,7 @@
                         </td>
                         <td>
                             <%let date=new Date(x.timeStamp)%>
-                                <%=date.getDate()%>/<%=date.getMonth()%>/<%=date.getFullYear()%>
+                                <%=date.getDate()%>/<%=date.getMonth()+1%>/<%=date.getFullYear()%>
                         </td>
                         <td>
                             <a href="/admin/edit-category/<%-x._id%>" class="text-white">

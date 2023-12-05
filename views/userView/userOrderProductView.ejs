@@ -2,6 +2,7 @@
 <%-include('../userView/include/user_header')-%>
 
 
+
   <section class="h-100 gradient-custom">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
@@ -64,9 +65,19 @@
                       <%if(orders.Status=='Return Pending' ){%>
                         <p class="text-danger">Product returned</p>
                         <%}else if(orders.Status=='Delivered' ){%>
-                          <p class="text-success">Product Delivered</p>
+                          <p class="text-success">Product Delivered
+
+                            
+                            <a href="/editReviewAndRating?productId=<%= data.productId._id %>&orderId=<%= orders._id%>"><button class="btn btn-outline-primary" style="margin-left: 430px;">Rate & Review Product</button></a>
+                          </p>
+                          <!-- return -->
                           <!-- <button class="btn small btn-success"  style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
                          id="returnOrderBtn" data-item-id="<%= data._id %> " data-order-id="<%=orders._id%>">Return</button> -->
+                            
+
+                         <!-- review and rating -->
+                         <!-- <button type="button" class="btn text-primary" data-toggle="modal" data-target="#exampleModal<%= data.productId._id %>" data-whatever="@mdo">Rate & Review Product</button> -->
+                         
                           <%}else if(orders.Status=="Cancelled" ){%>
                             <p class="text-danger">Order Cancelled</p>
                             <%}else if(orders.Status=="Rejected" ){%>
@@ -78,6 +89,7 @@
                                   <p class="text-danger">Cancelled</p>
                                   <%}%>
                                     <hr>
+                                    
                                     <% }); %>
                                       <% }else{%>
                                         <h3>No data available</h3>
@@ -96,7 +108,7 @@
   </section>
 
   <!-- modal -->
-  <div class="modal fade" id="returnOrderModal" tabindex="-1" role="dialog" aria-labelledby="returnOrderModalLabel" aria-hidden="true">
+  <!-- <div class="modal fade" id="returnOrderModal" tabindex="-1" role="dialog" aria-labelledby="returnOrderModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -107,7 +119,7 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label for="returnReason">Reason:</label>
+          <label for="returnReason">Review:</label>
           <input type="text" class="form-control" id="returnReason" placeholder="Enter reason" required>
         </div>
         <div class="form-group">
@@ -121,14 +133,14 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-  <script>
+  <!-- <script>
     document.addEventListener('DOMContentLoaded', function () {
       // const returnOrderButtons = document.querySelectorAll('#returnOrderBtn');
       const returnOrderButtons = document.querySelectorAll('#returnOrderBtn');
@@ -175,7 +187,7 @@
         });
       });
     });
-    </script>
+    </script> -->
 
   <script>
     function cancelProduct(productId, orderId) {
@@ -226,5 +238,76 @@
 
       }
     }
+
+    //rating and review
+    function submitReview(productID) {
+    console.log("submitReview function reached");
+    const rating = document.getElementById('rating').value;
+    console.log("Rating:", rating);
+
+    const review = document.getElementById(`review${productID}`).value;
+    console.log("Review:", review);
+    const producId = productID;
+    console.log("producId..", producId);
+
+    if (!rating || !review) {
+        alert('Please provide both rating and review.');
+        return;
+    }
+
+    const data = {
+        rating: rating,
+        review: review,
+        producId: producId
+    };
+    console.log("data.....", data);
+
+    fetch('/userReviewAndRating', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => response.json())
+        .then(responseData => {
+            console.log(responseData);
+
+            if (responseData.success) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: responseData.message,
+                    icon: 'success',
+                    timer: 2000, 
+                    showConfirmButton: false,
+                });
+                $('#exampleModal').modal('hide');
+
+                setTimeout(() => {
+            location.reload();
+        }, 2000);
+            } else {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'An error occurred while adding the review.',
+                    icon: 'error',
+                    timer: 3000,
+                    showConfirmButton: false,
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+
+            Swal.fire({
+                title: 'Error!',
+                text: 'An error occurred while adding the review.',
+                icon: 'error',
+                timer: 3000,
+                showConfirmButton: false,
+            });
+        });
+}
+
   </script>
         <%-include('../userView/include/user_footer')-%>

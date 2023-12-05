@@ -262,7 +262,7 @@ const postSalesReport = async(req,res)=>{
           PaymentStatus: { $in: ["Paid", "Pending"] },
             OrderDate:{$gte:startDate,$lte:endDate}
         }).populate("Items.productId");
-        console.log("orders........",orders);
+        // console.log("orders........",orders);
         let totalSales = 0;
         orders.forEach((order) => {
             totalSales += order.TotalPrice || 0;
@@ -371,7 +371,7 @@ async function userSerch(req,res){
 //user block unblock
 const UserStatus = async (req, res) => {
     const id = req.params.id;
-    console.log("Receive request " + id);
+    // console.log("Receive request " + id);
 
     // Find the user by ID
     const user = await userCollection.findOne({ _id: id });

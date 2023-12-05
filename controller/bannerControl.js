@@ -21,7 +21,7 @@ const postNewBanner = async (req, res) => {
     // console.log("......",req.body);
         try {
             const uploadedImage = req.file;
-            console.log("uploadedImage..",uploadedImage);
+            // console.log("uploadedImage..",uploadedImage);
     
             if (!uploadedImage) {
                 console.log('Image is not found');

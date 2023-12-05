@@ -11,8 +11,8 @@
                                 <div class="card-body">
                                     <div class="form-check">
                                         <input class="form-check-input address-radio" type="radio"
-                                        name="selectedAddress" id="address_<%= address._id %>"
-                                        value="<%= address._id %>" />
+                                            name="selectedAddress" id="address_<%= address._id %>"
+                                            value="<%= address._id %>" />
                                         <h5 class="card-title">
                                             <%= address.nameuser %>
                                         </h5>
@@ -30,139 +30,166 @@
                                 </div>
                             </div>
                             <% }); %>
-                            <% if (userAddressData.address.length===0) { %>
-                                <p class="text-center">No saved addresses. Please add a new address.</p>
-                                <% } %>
-                                <a href="/user/AddressBook">
-                                    <button class="btn btn-success" type="button">
-                                        <img width="25" height="25" src="https://img.icons8.com/ios-glyphs/30/plus.png" alt="plus"/>
-                                        Add New</button>
-                                </a>
-                                    
+                                <% if (userAddressData.address.length===0) { %>
+                                    <p class="text-center">No saved addresses. Please add a new address.</p>
+                                    <% } %>
+                                        <a href="/user/AddressBook">
+                                            <button class="btn btn-success" type="button">
+                                                <img width="25" height="25"
+                                                    src="https://img.icons8.com/ios-glyphs/30/plus.png" alt="plus" />
+                                                Add New</button>
+                                        </a>
+
                     </div>
 
-                   <!-- coupon  -->
-                    
+                    <!-- coupon  -->
+
                     <div class="col-md-4 mt-2">
                         <div class="card mb-3 border shadow mt-5">
                             <div class="card-body">
-                              <fieldset>
-                                <div id="couponFormContainer">
-                                    <div class="form-group">
-                                        <label class="form-label">Have coupon?</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control border" name="couponCode"
-                                                id="couponCode" placeholder="Coupon code" />
-                                            <button type="button" class="btn btn-primary border" onclick="applyCoupon()">Apply</button>
+                                <fieldset>
+                                    <div id="couponFormContainer">
+                                        <div class="form-group">
+                                            <label class="form-label">Have coupon?</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control border" name="couponCode"
+                                                    id="couponCode" placeholder="Coupon code" />
+                                                <button type="button" class="btn btn-primary border"
+                                                    onclick="applyCoupon()">Apply</button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </fieldset>
+                                </fieldset>
                             </div>
                         </div>
 
                         <!-- total price  -->
                         <div class="card shadow border">
                             <div class="card-body">
-                              <div class="d-flex justify-content-between">
-                                <p class="mb-2">Total price:</p>
-                                <p class="mb-2 fw-bold">₹<%= TotalPrice %></p>
-                              </div>
-                              <% if(coupon){%>
-                              <div class="d-flex justify-content-between">
-                                <p class="mb-2">Discount:₹<%=coupon %></p>
-                               <% }else{%>
                                 <div class="d-flex justify-content-between">
-                                  <p class="mb-2">Discount:</p>
-                                  <p id="discount" class="mb-2 fw-bold">No Coupon</p>
-                                  <% }%>
-                              </div>
-                              <hr />
-                              <div class="d-flex justify-content-between">
-                                <p class="mb-2">Total price:</p>
-                                <% if(grandTotal===undefined){%>
-                                <p id="grandTotal" class="mb-2 fw-bold">₹<%= TotalPrice %></p>
-                                <% } else { %>
-                                  <p id="grandTotal" class="mb-2 fw-bold">₹<%= grandTotal %></p>
-                                  <% } %>
-                              </div>
-                              </div>
+                                    <p class="mb-2">Total price including GST (12%):</p>
+                                    <p class="mb-2 fw-bold">₹<%= TotalPrice %>
+                                    </p>
+                                </div>
+                                <% if(coupon){%>
+                                    <div class="d-flex justify-content-between">
+                                        <p class="mb-2">Discount:₹<%=coupon %>
+                                        </p>
+                                        <% }else{%>
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-2">Discount:</p>
+                                                <p id="discount" class="mb-2 fw-bold">No Coupon</p>
+                                                <% }%>
+                                            </div>
+                                            <hr />
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-2">Total price:</p>
+                                                <% if(grandTotal===undefined){%>
+                                                    <p id="grandTotal" class="mb-2 fw-bold">₹<%= TotalPrice %>
+                                                    </p>
+                                                    <% } else { %>
+                                                        <p id="grandTotal" class="mb-2 fw-bold">₹<%= grandTotal %>
+                                                        </p>
+                                                        <% } %>
+                                            </div>
+                                    </div>
                             </div>
 
-                        <!-- payment methode -->
-                        <div class="card mt-4">
-                            <div class="card-body">
-                                <h5 class="card-title">Payment Methods</h5>
-                                <div class="form-check">
-                                    <input class="form-check-input payment-radio" type="radio" name="selectedPayment"
-                                        id="cod" value="cod" checked />
-                                    <label class="form-check-label" for="payment_cod">Cash on Delivery</label>
-                                </div>
-                                <div class="form-check mt-3">
-                                    <input class="form-check-input payment-radio" type="radio" name="selectedPayment"
-                                        id="online" value="online" />
-                                    <label class="form-check-label" for="payment_online">Online Payment</label>
-                                </div>
-                                <div class="text-center mt-4">
-                                    <button class="btn btn-warning mt-4" id="confirmOrderButton" type="submit">Confirm
-                                        Order</button>
-                                    <a href="/user/cart"><button class="btn btn-success mt-4" type="button">Back to
-                                            Cart</button></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
+                            <!-- payment methode -->
+                            <div class="card mt-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Payment Methods</h5>
+                                    <div class="form-check">
+                                        <input class="form-check-input payment-radio" type="radio"
+                                            name="selectedPayment" id="cod" value="cod" checked />
+                                        <label class="form-check-label" for="payment_cod">Cash on Delivery</label>
+                                    </div>
+                                    <div class="form-check mt-3">
+                                        <input class="form-check-input payment-radio" type="radio"
+                                            name="selectedPayment" id="online" value="online" />
+                                        <label class="form-check-label" for="payment_online">Online Payment</label>
+                                    </div>
+                                    <% if(grandTotal===undefined){%>
+                                        <div class="form-check mt-3">
+                                            <input class="form-check-input payment-radio" type="radio"
+                                                name="selectedPayment" id="wallet" value="wallet" />
+                                            <label class="form-check-label" for="payment_wallet">
+                                                Pay Using Wallet (Available Balance:
+                                                <%=userAddressData.wallet.amount.toFixed(2)%>)
+                                            </label>
+                                        </div>
+                                        <% } else { %>
+                                            <div class="form-check mt-3">
+                                                <input class="form-check-input payment-radio" type="radio"
+                                                    name="selectedPayment" id="wallet" value="wallet" />
+                                                <label class="form-check-label" for="payment_wallet">
+                                                    Pay Using Wallet (Available Balance:
+                                                    <%=userAddressData.wallet.amount.toFixed(2)%>)
+                                                </label>
+                                            </div>
+                                            <% } %>
+                                                <div class="text-center mt-4">
+                                                    <button class="btn btn-warning mt-4" id="confirmOrderButton"
+                                                        type="submit">Confirm
+                                                        Order</button>
+                                                    <a href="/user/cart"><button class="btn btn-success mt-4"
+                                                            type="button">Back to
+                                                            Cart</button></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </form>
 
 
 
         <script>
             function showAlert(message, type) {
-        Swal.fire({
-            icon: type,
-            text: message,
-        });
-    }
+                Swal.fire({
+                    icon: type,
+                    text: message,
+                });
+            }
             function applyCoupon() {
-        const couponCode = document.getElementById('couponCode').value;
+                const couponCode = document.getElementById('couponCode').value;
                 console.log("^^^^^^^^^^^");
-        fetch('/applyCoupon', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    couponCode: couponCode,
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-              
-              if (data.success) {
-                 
-                  showAlert('Coupon applied successfully', 'success');
-                 console.log('Coupon applied successfully');
-                 $('#grandTotal').text(data.grandTotal);
-                 $('#discount').text(data.coupon);
-                } else {
-                  showAlert(` ${data.message}`, 'error');
-                   console.error('Coupon application failed:', data.message);
-                }
-            })
-            .catch(error => {
-              console.error('Fetch error:', error);
-              showAlert('An error occurred while applying the coupon', 'error');
-            });
-    }
+                fetch('/applyCoupon', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        couponCode: couponCode,
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+
+                        if (data.success) {
+
+                            showAlert('Coupon applied successfully', 'success');
+                            console.log('Coupon applied successfully');
+                            $('#grandTotal').text(data.grandTotal);
+                            $('#discount').text(data.coupon);
+                        } else {
+                            showAlert(` ${data.message}`, 'error');
+                            console.error('Coupon application failed:', data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fetch error:', error);
+                        showAlert('An error occurred while applying the coupon', 'error');
+                    });
+            }
 
 
             $(document).ready(function () {
                 console.log("Document ready");
 
                 $("#orderForm").submit(function (e) {
-                    e.preventDefault(); 
+                    e.preventDefault();
 
                     console.log("Form submitted");
 
@@ -170,7 +197,10 @@
                     console.log("Selected address:", selectedAddress);
 
                     if (!selectedAddress) {
-                        alert("Please add an address before confirming the order.")
+                        Swal.fire({
+                            title: 'Please add an address',
+                            text: 'Before confirming your order.',
+                        });
                         return;
                     }
 
@@ -181,7 +211,14 @@
                         success: function (response) {
                             console.log("AJAX Success:", response);
 
-                            if (response.codSuccess) {
+                            if (response.Walsuccess) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Insufficient Wallet Balance',
+                                    text: 'Your wallet balance is not sufficient. Please add funds to your wallet.',
+                                });
+
+                            } else if (response.codSuccess) {
                                 window.location = '/ordersuccess';
                                 console.log('Order success');
                             } else {
@@ -189,6 +226,8 @@
                                 console.log(response.order);
                                 handlePayNowClick(response);
                             }
+
+
                         },
                         error: function (error) {
                             console.error("AJAX Error:", error);
@@ -228,28 +267,44 @@
                     rzp1.open();
                 }
 
-                function verifyPayment(payment, order) {
-                    console.log('now in verifyPayment', payment)
-                    console.log('now in order', order)
-                    $.ajax({
-                        url: '/VerifyOnlinePayment',
-                        data: {
-                            payment,
-                            order
-                        },
-                        method: 'post',
-                        success: (response) => {
-                            console.log("response.success", response.success);
-                            if (response.success) {
-                                console.log('response got')
-                                location.href = '/ordersuccess'
-                            } else {
-                                console.log('response not get');
-                                location.href = '*'
-                            }
-                        }
-                    })
-                }
+function verifyPayment(payment, order) {
+    console.log('now in verifyPayment', payment)
+    console.log('now in order', order)
+    $.ajax({
+        url: '/VerifyOnlinePayment',
+        data: {
+            payment,
+            order
+        },
+        method: 'post',
+        success: (response) => {
+            console.log("response.success", response.success);
+            if (response.success) {
+                console.log('response got')
+                location.href = '/ordersuccess'
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Payment Failed',
+                    text: 'Your payment was unsuccessful. Please try again or choose a different payment method.',
+                }).then(() => {
+                    location.href = '/user/cart';
+                });
+            }
+        },
+        error: (error) => {
+            console.error("Verify Payment Error:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An error occurred while verifying the payment. Please try again.',
+            }).then(() => {
+                location.href = '/user/cart';
+            });
+        }
+    });
+}
+
 
             });
         </script>

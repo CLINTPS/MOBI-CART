@@ -2,39 +2,51 @@
 <%-include('../adminView/include/_sidebar')-%>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <div class="text-center center-div d-flex align-items-center justify-content-center py-4" >
-        <div class="container w-25 rounded border py-4 bg-muted">
-            <div class="title pb-1">
-                <h2 class="font-weight-bold text-daek">Add Brand</h2>
-            </div>
-            <% if(err){ %>
-                <script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: '<%= err %>',
-                    });
-                </script>
-              <% }else if(success){ %>
-                <script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: '<%= success %>',
-                    });
-                </script>
-                <%}%>
-            <form action="/admin/add-brand" method="POST" >  
-                <div class="form-group">
-                    <small class="form-text text-white text-left">Brand Name</small>
-                    <input class="form-control" name="brandName" required placeholder="Brand Name">
-                </div>
-                
-                <button onclick="return confirm('Do you want new Brand')" type="submit" class="btn-btn-success rounded pi" style="background-color: rgb(59, 196, 59);">Add</button>
-            </form>
+<script>
+    function validateForm() {
+        var brandNameInput = document.forms["brandForm"]["brandName"].value;
+        var errorContainer = document.getElementById("errorContainer");
+
+        if (brandNameInput.trim() === "") {
+            errorContainer.innerText = 'Brand Name cannot be empty or contain only spaces.';
+            errorContainer.style.color = 'red';
+            return false;
+        }
+
+        return confirm('Do you want to add a new Brand?');
+    }
+</script>
+
+<div class="text-center center-div d-flex align-items-center justify-content-center py-4">
+    <div class="container w-25 rounded border py-4 bg-muted">
+        <div class="title pb-1">
+            <h2 class="font-weight-bold text-daek">Add Brand</h2>
         </div>
+        <% if(err){ %>
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: '<%= err %>',
+                });
+            </script>
+        <% } else if(success){ %>
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: '<%= success %>',
+                });
+            </script>
+        <% } %>
+        <form name="brandForm" action="/admin/add-brand" method="POST" onsubmit="return validateForm()">  
+            <div class="form-group">
+                <small class="form-text text-white text-left">Brand Name</small>
+                <input class="form-control" name="brandName" required placeholder="Brand Name">
+                <div id="errorContainer"></div>
+            </div>
+            
+            <button type="submit" class="btn-btn-success rounded pi" style="background-color: rgb(59, 196, 59);">Add</button>
+        </form>
     </div>
-
-
-
-    
+</div>

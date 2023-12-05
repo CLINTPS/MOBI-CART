@@ -24,12 +24,18 @@
         </div>
     </div>
 
-    <div class="col-12 col-lg-7" style="height: 700px;padding-left: 20px;">
+    <div class="col-12 col-lg-7" style="padding-left: 20px;">
         <p></p>
         <p class="paraCap">
             <h4>
                 <%=productData.ProductName%>
-            </h4>     
+
+                <botton class="btn btn- rounded-3 add-to-wishlist-button"
+                    data-product-id="<%= productData._id %>">
+                    <i class="fa fa-heart <% if (wishlist.includes(productData._id)) { %>text-danger<% } %>"></i>
+                </botton>
+                     
+            </h4>
         </p>
         <%if(productData.IsInCategoryOffer){%>
             <p class="para"><i class="fa-solid fa-circle fa-2xs">
@@ -38,8 +44,11 @@
                 <p class="para"><i class="fa-solid fa-circle fa-2xs">
                 </i> ₹<%=productData.DiscountAmount%>/- <s class="text-danger">₹<%=productData.Price%></s></p>
             <%}%>
+            <span class="bg-success text-light p-1" style="border-radius: 4px;" ><%= averageRating.toFixed(1)%></span>
+                <br>
             <% if(productData.IsInCategoryOffer){ %>
-                <span class="bg-info text-black" style="border-radius: 4px;" >Special Offer:₹<%= productData.categoryOffer.offerPercentage %>%</span>
+                <br>
+                <span class="bg- text-black" style="border-radius: 4px;" >Special Offer : <%= productData.categoryOffer.offerPercentage %>%</span>
                 <br>
             <% } %>
                 <br>
@@ -73,11 +82,6 @@
         <br>
         <div class="d-flex" style="width: 301px;">
 
-            <botton class="btn btn-primary rounded-3 add-to-wishlist-button"
-                data-product-id="<%= productData._id %>">
-                <i class="fa fa-heart <% if (wishlist.includes(productData._id)) { %>text-danger<% } %>"></i>
-            </botton>
-
             <div class="col-6 d-flex justify-content-center">
                 <% if (productData.AvailableQuantity > 0) { %>                    
                     <button class="btn btn-warning add-to-cart-button" data-product-id="<%= productData._id %>" onclick="addEventListener">Add to Cart</button>
@@ -85,14 +89,75 @@
                     <button class="btn btn-danger shadow-0 add-to-cart-button">Add to Cart</button>
                   <% } %>
             </div>
-            <!-- <div class="col-6 d-flex justify-content-center">
-                <a href="#" class="btn btn-primary">Buy now</a>
-            </div> -->
+        </div>
+        <div class="d-flex flex-column mt-4 border p-3 ">
+            <h5>User Reviews</h5>
+    
+            <div class="user-reviews-box">
+                <% if (userAllReview && userAllReview.length > 0) { %>
+                    <% userAllReview.slice(0, 2 ).forEach(review => { %>
+                        <div class="user-review border p-2 m-2">
+                            <p><strong><%= review.userName %></strong></p>
+                            <p>
+                                <% for (let i = 1; i <= 5; i++) { %>
+                                    <i class="fa <%= i <= review.rating ? 'fa-star text-warning' : 'fa-star-o' %>"></i>
+                                <% } %>
+                                <%= review.rating %> stars
+                            </p>
+                            <p><%= review.reviewText %></p>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p>No reviews available.</p>
+                <% } %>
+                
+                
+            </div>
+                <button type="button" class="btn btn-secondary mt-2" data-toggle="modal" data-target="#exampleModalLong">
+                    View All Reviews
+                </button>
         </div>
     </div>
 </div>
 
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">All User Reviews </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
 
+        <div class="modal-body">
+            <div class="user-reviews-box">
+                <% if (userAllReview && userAllReview.length > 0) { %>
+                    <% userAllReview.forEach(review => { %>
+                        <div class="user-review border p-2 m-2">
+                            <p><strong><%= review.userName %></strong></p>
+                            <p>
+                                <% for (let i = 1; i <= 5; i++) { %>
+                                    <i class="fa <%= i <= review.rating ? 'fa-star text-warning' : 'fa-star-o' %>"></i>
+                                <% } %>
+                                <%= review.rating %> stars
+                            </p>
+                            <p><%= review.reviewText %></p>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p>No reviews available.</p>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://cdn.jsdelivr.net/npm/toastr@2"></script>

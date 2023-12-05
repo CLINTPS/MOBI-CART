@@ -6,12 +6,38 @@
         <div class="title pb-1">
             <h2 class="font-weight-bold text-daek">Edit Category</h2>
         </div>
-        <form action="/admin/upadte-catogory/<%=categoryName._id%>" method="POST" >  
+        <form name="editCategoryForm" action="/admin/upadte-catogory/<%=categoryName._id%>" method="POST" onsubmit="return validateForm()">
             <div class="form-group">
                 <input class="form-control" name="categoryName" value="<%- categoryName.name %>">
+                <div id="errorContainer"></div>
             </div>
             
-            <button type="submit" onclick="return confirm('Do you want edit the Categories')" class="btn-btn-success rounded pi">Save</button>
+            <button type="submit" class="btn-btn-success rounded pi" onclick="showSuccessAlert()">Save</button>
         </form>
     </div>
 </div>
+
+<script>
+    function validateForm() {
+        var categoryNameInput = document.forms["editCategoryForm"]["categoryName"].value;
+        var errorContainer = document.getElementById("errorContainer");
+
+        if (categoryNameInput.trim() === "") {
+            errorContainer.innerText = 'Category Name cannot be empty or contain only spaces.';
+            errorContainer.style.color = 'red';
+            return false;
+        }
+
+        return confirm('Do you want to edit the Category?');
+    }
+
+    function showSuccessAlert() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Category has been successfully edited.',
+            timer: 3000,
+            showConfirmButton: false,
+        });
+    }
+</script>

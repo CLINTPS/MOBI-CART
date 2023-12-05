@@ -71,35 +71,36 @@
   <br>
 
   <div class="row p-3">
-    <% if(couponData && couponData.length >0){%>
-    <% couponData.forEach((couponData)=>{ %>
-      <div class="col-md-4">
-        <div class="card mb-4 shadow">
-          <div class="card-body text-center bg-light">
-            <h5 class="card-title">
-              <%=couponData.CoupenName%>
-            </h5>
-            <h6 class="card-subtitle mb-2 text-muted"><b>
-                <%=couponData.CoupenCode%>
-              </b></h6>
-            <p class="card-text">Min Amount : <%=couponData.MinAmount%>
-            </p>
-            <p class="card-text">Discount Amount: <%=couponData.DiscountAmount%>
-            </p>
-            <p class="card-text">Coupon Type : <%=couponData.couponType%>
-            </p>
-            <p class="card-text">End Date :   <%let date=new Date(couponData.EndDate)%>
-                <%=date.getDate()%>-<%=date.getMonth()%>-<%=date.getFullYear()%>      
-            </p>
-            <a href="/admin/deleteCoupon/<%-couponData._id%>"  onclick="return window.confirm('Do you want to delete the Coupon?')">
-              <i class="fa-solid fa-trash fa-xl" style="color: #000000;"></i>
+    <% if(couponData && couponData.length > 0){%>
+      <% couponData.forEach((couponData) => { %>
+        <div class="col-md-4">
+          <div class="card mb-4 shadow">
+            <!-- Move the delete button to the top right corner -->
+            <a href="/admin/deleteCoupon/<%-couponData._id%>" onclick="return window.confirm('Do you want to delete the Coupon?')" class="position-absolute top-0 end-0 m-2 text-danger">
+              <i class="fa-solid fa-times fa-lg" style="margin-left: 340px;"></i>
             </a>
-                <!-- <a href="#" onclick="openEditCoupon('<%= couponData._id %>')">
-                    <i class="fa-solid fa-pen-to-square fa-lg" style="color: #000000;"></i>
-                  </a> -->
+            <div class="card-body text-center bg-light">
+              <h5 class="card-title">
+                <%=couponData.CoupenName%>
+              </h5>
+              <h6 class="card-subtitle mb-2 text-muted"><b>
+                  <%=couponData.CoupenCode%>
+                </b></h6>
+              <p class="card-text">Min Amount : <%=couponData.MinAmount%>
+              </p>
+              <p class="card-text">Discount Amount: <%=couponData.DiscountAmount%>
+              </p>
+              <p class="card-text">Coupon Type : <%=couponData.couponType%>
+              </p>
+              <p class="card-text">Start Date :   <%let dates=new Date(couponData.StartDate)%>
+                <%=dates.getDate()%>-<%=dates.getMonth()%>-<%=dates.getFullYear()%>      
+              </p>
+              <p class="card-text">End Date :   <%let date=new Date(couponData.EndDate)%>
+                <%=date.getDate()%>-<%=date.getMonth()%>-<%=date.getFullYear()%>      
+              </p>
+            </div>
           </div>
         </div>
-      </div>
       <% }) %>
       <%}else{%>
         <h1>No coupon available</h1>

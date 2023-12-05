@@ -14,8 +14,8 @@ async function getWhislist(req,res){
         // console.log("userId<<<<<<<",userId);
         const wishlist= await wishlistCollection.findOne({user:userId}).populate('products');
         // console.log("Wishlist>>>>>",wishlist);
-        console.log("Wishlist Length:", wishlist.length);
-        console.log("Wishlist Products:", wishlist.products);
+        // console.log("Wishlist Length:", wishlist.length);
+        // console.log("Wishlist Products:", wishlist.products);
         res.render('userView/userWishlist',{title:"Whislist",user,wishlist})
     }catch(error){
         // res.status(500).send('Internal server error')
@@ -68,7 +68,7 @@ async function postWishlist(req,res){
 async function postDeleteWishlist(req, res) {
     try {
         const { productId } = req.body;
-        console.log("Received request to remove product with ID:", productId);
+        // console.log("Received request to remove product with ID:", productId);
 
         const userEmail = req.session.email;
         const user = await userCollection.findOne({ email: userEmail });

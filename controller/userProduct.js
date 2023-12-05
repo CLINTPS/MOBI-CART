@@ -3,8 +3,7 @@ const categoriesCollection = require('../model/categories')
 const brandCollection = require('../model/brand')
 const wishlistCollection = require('../model/wishlist')
 const userCollection = require('../model/user')
-
-
+const reviewCollection = require('../model/rating&review')
 
 
 //get product details page
@@ -21,7 +20,19 @@ async function getProducDetails(req,res){
             const userId = userData._id
             const userWishlist = await wishlistCollection.findOne({user:userId})
             const wishlist = userWishlist ? userWishlist.products : [];
-            res.render('userView/product-Details',{title:"product details",user,wishlist,productData})
+
+            const userReview = await reviewCollection.find({productId:ProductID})
+            // console.log("userReview....",userReview);
+            var averageRating=0
+            if (userReview.length > 0) {
+                const totalRating = userReview.reduce((sum, userReview) => sum + userReview.rating, 0);
+                var averageRating = totalRating / userReview.length;
+                // console.log("averageRating....", averageRating);
+              }
+            //   console.log("///////////",averageRating);
+            const userAllReview = await reviewCollection.find({productId:ProductID}).sort({reviewDate:-1})
+            // console.log("userAllReview....",userAllReview);
+            res.render('userView/product-Details',{title:"product details",user,wishlist,productData,userAllReview,averageRating})
         }catch(error){
             res.render("errorView/404");
         }
@@ -61,7 +72,7 @@ async function getAllProducts(req,res){
     }
 }
 
-//Filter products
+//Filter post methode of products
 async function postFilterProduct(req, res) {
     try {
         const { selectedBrands, selectedCategory, selectedPrice } = req.body;

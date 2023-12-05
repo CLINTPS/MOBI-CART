@@ -200,7 +200,7 @@ async function OtpConfirmation(req, res) {
         console.log(req.body);
         try {
             const email = req.session.email
-            console.log("forgot confirmation :", email);
+            // console.log("forgot confirmation :", email);
             const Otp = await OTP.findOne({ email: email }, {})
 
             if (Date.now() > Otp.expireAt) {
@@ -463,6 +463,22 @@ async function getUserCoupons(req,res){
         res.render("errorView/404");
     }
 }
+
+//User wallet history
+async function getWalletHistory(req,res){
+    try{
+        console.log("Wallet reached");
+        let user=req.session.user
+        let email=req.session.email
+        let userData=await userCollection.findOne({email:email})
+        console.log("userData>>>>>",userData);
+        userData.wallet.transactions.sort((a,b)=>b.timestamp - a.timestamp)
+        res.render('userView/userWalletHistory',{title:"Wallet History",user,userData})
+    }catch(error){
+        console.log("coupon cahnge:"+error);
+        res.render("errorView/404");
+    }
+}
 //User change password
 async function getChangepass(req,res){
     try{
@@ -546,6 +562,7 @@ module.exports = {
     // getEditAddress,
     getDeleteAddress,
     getUserCoupons,
+    getWalletHistory,
     getChangepass,
     postChangepass,
     logout

@@ -16,10 +16,7 @@ async function getReturnOrder(req,res){
     const ordersData = await orderCollection.find().sort({OrderDate:-1});
 
     // console.log("aaaaaaaaa",ordersData); 
-    res.render('adminView/returnOrder',{title: "Return Orders",
-            ordersData,
-
-        })
+    res.render('adminView/returnOrder',{title: "Return Orders",ordersData})
   }catch(err){
     console.log(err);
     res.render('errorView/404admin')
@@ -30,13 +27,13 @@ async function getReturnOrder(req,res){
 const putAcceptReturn=async(req,res)=>{
     try {
       const orderId = req.params.orderId; 
-      console.log("orderId>>>>>>>>>>>>>",orderId);
+      // console.log("orderId>>>>>>>>>>>>>",orderId);
       const updatedOrder = await orderCollection.findByIdAndUpdate(
         orderId,
         { $set: { Status: 'Return Accepted' } },
         { new: true }
       );
-      console.log("updatedOrder>>>>>>>>>>>>>>>>>>>",updatedOrder);
+      // console.log("updatedOrder>>>>>>>>>>>>>>>>>>>",updatedOrder);
       const userId = updatedOrder.UserId;
       const refundAmount = updatedOrder.TotalPrice;
   
@@ -64,13 +61,13 @@ const putAcceptReturn=async(req,res)=>{
   const putCancelReturn=async(req,res)=>{
     try {
       const orderId = req.params.orderId;
-      console.log("orderId;;;");
+      // console.log("orderId;;;");
       const updatedOrder = await orderCollection.findByIdAndUpdate(
         orderId,
         { $set: { Status: 'Return Canceled' } },
         { new: true }
       );
-      console.log("updatedOrder;;;;;",updatedOrder);
+      // console.log("updatedOrder;;;;;",updatedOrder);
       res.json({ success: true, order: updatedOrder });
   
     } catch (error) {

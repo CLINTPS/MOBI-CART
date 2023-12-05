@@ -1,0 +1,187 @@
+
+<%-include('../userView/include/user_header')-%>
+
+
+
+  <section class="h-100 gradient-custom">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-10 col-xl-8">
+          <div class="card" style="border-radius: 10px;">
+            <div class="card-header px-4 py-5">
+              <h5 class="text-muted mb-0"><span style="color: rgb(0, 0, 0);">
+                Rate & Review Product
+                </span></h5>
+            </div>
+            <div class="card-body">
+              <br>
+              <div class="card shadow-0 border mb-4">
+                <div class="card-body">
+                  <% if (orders){%>
+                
+                      <div class="row">
+                        <div class="col-md-2">
+                          <img src="/product-img/<%= orders.images[0]%>" class="img-fluid" alt="Phone">
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0">
+                            <%=orders.ProductName%>
+                          </p>
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0 small">
+                            <%=orders.Specification1%>
+                          </p>
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0 small">Category: <%=orders.Category%>
+                          </p>
+                        </div>
+                       
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0 small">$<%=orders.DiscountAmount%>
+                          </p>
+                          <s class="text-danger" style="font-size: 10px;">₹<%=orders.Price%></s>
+                        </div>
+                      </div>
+                      <br>
+
+                         <!-- review and rating -->
+                         <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                             <div class="modal-header">
+                               <h5 class="modal-title" id="exampleModalLabel"></h5>
+                              </div>
+                              <div class="modal-body">
+                                <form id="reviewForm">
+                                           <%if(reviewData && reviewData.length >0){%>
+                                            <div class="form-group">
+                                              <label for="rating">Rating:</label>
+                                              <select class="form-control" id="rating" name="rating">
+                                                  <option value="1" <%= (reviewData[0].rating === 1) ? 'selected' : '' %>>1</option>
+                                                  <option value="2" <%= (reviewData[0].rating === 2) ? 'selected' : '' %>>2</option>
+                                                  <option value="3" <%= (reviewData[0].rating === 3) ? 'selected' : '' %>>3</option>
+                                                  <option value="4" <%= (reviewData[0].rating === 4) ? 'selected' : '' %>>4</option>
+                                                  <option value="5" <%= (reviewData[0].rating === 5) ? 'selected' : '' %>>5</option>
+                                              </select>
+                                          </div>
+                                            <div class="form-group">
+                                                <label for="review">Review:</label>
+                                                <textarea id="review<%= orders._id %>" class="form-control" rows="2"><%= reviewData[0].reviewText %></textarea>
+                                            </div>
+                                             <%}else{%>
+                                              <div class="form-group">
+                                                <label for="rating">Rating:</label>
+                                                <select class="form-control" id="rating" name="rating">
+                                                  <option >0</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="review">Review:</label>
+                                                <textarea id="review<%= orders._id %>" class="form-control"></textarea>
+                                            </div>
+                                             <%}%>
+                                         </form>
+                                     </div>
+                                     <div class="modal-footer">
+                                         <button type="button" class="btn btn-success" onclick="submitReview('<%= orders._id %>')">Submit</button>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                          <hr>      
+                       <% }else{%>
+                     <h3>No data available</h3>
+                    <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </section>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+  <script>
+    function submitReview(productID) {
+    console.log("submitReview function reached");
+    const rating = document.getElementById('rating').value;
+    console.log("Rating:", rating);
+
+    const review = document.getElementById(`review${productID}`).value;
+    console.log("Review:", review);
+    const producId = productID;
+    console.log("producId..", producId);
+
+    if (!rating || !review) {
+        alert('Please provide both rating and review.');
+        return;
+    }
+
+    const data = {
+        rating: rating,
+        review: review,
+        producId: producId
+    };
+    console.log("data.....", data);
+
+    fetch('/userReviewAndRatingAddAndEdit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => response.json())
+        .then(responseData => {
+            console.log(responseData);
+
+            if (responseData.success) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: responseData.message,
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+                $('#exampleModal').modal('hide');
+
+                setTimeout(() => {
+            location.href('/orderProductView');
+        }, 2000);
+            } else {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'An error occurred while adding the review.',
+                    icon: 'error',
+                    timer: 3000,
+                    showConfirmButton: false,
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+
+            // If there was a fetch error, display an error alert
+            Swal.fire({
+                title: 'Error!',
+                text: 'An error occurred while adding the review.',
+                icon: 'error',
+                timer: 3000,
+                showConfirmButton: false,
+            });
+        });
+}
+
+  </script>
+        <%-include('../userView/include/user_footer')-%>

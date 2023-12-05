@@ -1,5 +1,10 @@
 <%-include('../adminView/include/ad_header')-%>
 <%-include('../adminView/include/_sidebar')-%>
+<style>
+    .error {
+    color: red;
+}
+</style>
 <div class="details">
     <div class="recentOrders">
         <h2>Edit Category Offer</h2>
@@ -21,12 +26,15 @@
             <div class="col-md-12">
                 <label for="startDate" class="form-label">Start Date</label>
                 <input class="form-control" id="startDate" type="date" value="<%= offerData.startDate %>" required>
+                <!-- <input class="form-control" id="startDate" type="datetime-local" value="<%= offerData.startDate.toISOString().split('.')[0] %>" required> -->
+
                 <div id="startDateError" class="error"></div>
                 <span class="error" id="startDateSpanError" style="color: red;"></span>
             </div>
             <div class="col-md-12">
                 <label for="expiryDate" class="form-label">Expiry Date</label>
                 <input class="form-control" id="endDate" type="date" value="<%= offerData.expiryDate %>" required>
+                <!-- <input class="form-control" id="endDate" type="datetime-local" value="<%= offerData.expiryDate.toISOString().split('.')[0] %>" required> -->
                 <div id="endDateError" class="error"></div>
                 <span class="error" id="endDateSpanError" style="color: red;"></span>
             </div>

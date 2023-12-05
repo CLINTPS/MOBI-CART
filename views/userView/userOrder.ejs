@@ -29,38 +29,45 @@
 
                             <% if(order.Status == "Delivered"){%>
                                 <p class="text-success">Delivered</p>
+                                
                                 <%}else if(order.Status == "Rejected"){%>
                                   <p class="text-danger">Rejected</p>
                                   <%}else if(order.Status == "Cancelled"){%>
                                   <p class="text-danger">Cancelled</p>
                                     <%}else if(order.Status == "Return Pending"){%>
                                       <p class="text-danger">Product returned verification pending</p>
-                                        <%}else{%>
+                                     <%}else if(order.Status== "Return Accepted"){%>
+                                        <p class="text-success">Product returned verification Accepted</p>
+                                        <%}else if(order.Status== "Return Canceled"){%>
+                                          <p class="text-danger">Product returned verification Canceled</p>
+                                            <%}else{%>
                                     <!-- <span class="text-muted small">Expected by :<%= order.ExpectedDeliveryDate %></span> -->
                                     <%}%>
                                     <hr>
                                     <h6>Order ID : <%= order._id%></h6>
+                                    <p>Payment Method : <%= order.PaymentMethod%></p>
+                                    <p>Payment Staus : <%= order.PaymentStatus%></p>
                           </div>
                           <div>
                             <a href="/orderProductView/<%= order._id%>">
-                                <button class="btn btn-success" type="button">Product details</button>
+                                <button class="btn btn-success btn-sm" type="button">Product details</button>
                             </a>
                             <% if(order.Status == "Delivered"){%>
-                              <button type="button" class="btn btn-danger m-2" 
+                              <button type="button" class="btn btn-danger m-2 btn-sm" 
                               data-bs-toggle="modal" data-bs-target="#returnOrderModal<%= order._id %>">
                                 Return Order
                               </button>
 
                               
 
-                            <button type="button" class="btn btn-warning m-2" onclick="generateAndDownloadInvoice('<%= order._id %>')">
+                            <button type="button" class="btn btn-warning m-2 btn-sm" onclick="generateAndDownloadInvoice('<%= order._id %>')">
                               Download Invoice
                           </button>
-                              <%}else if(order.Status == "Cancelled" || order.Status == "Rejected" || order.Status == "Return Pending" || order.Status== "Return Accepted"){%>
-
+                              <%}else if(order.Status == "Cancelled" || order.Status == "Rejected" || order.Status == "Return Pending" || order.Status== "Return Accepted" || order.Status== "Return Canceled" ){%>
+                                
                                 <%}else{%>
                                   <a href="/cancelOrderData/<%= order._id%>" onclick="return confirm('Do you want to Cancel this product')">
-                                    <button class="btn btn-danger" type="button">Cancel Order</button>
+                                    <button class="btn btn-danger btn-sm" type="button">Cancel Order</button>
                                 </a>
                                   <%}%>
                           </div>
@@ -220,6 +227,10 @@ console.log(returnReason);
             console.error('Error in downloading the invoice:', error);
         }
     }
+
+
     </script>
+
+
 
 <%-include('../userView/include/user_footer')-%>

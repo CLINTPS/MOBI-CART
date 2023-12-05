@@ -1,19 +1,44 @@
 <%-include('../adminView/include/ad_header')-%>
 <%-include('../adminView/include/_sidebar')-%>
 
-    <div class="text-center center-div d-flex align-items-center justify-content-center py-5">
-        <div class="container w-25 rounded border py-4 bg-muted">
-            <div class="title pb-1">
-                <h2 class="font-weight-bold text-daek">Edit Brand</h2>
-            </div>
-            <form action="/admin/update-brand/<%=brandName._id%>" method="POST" >  
-                <div class="form-group">
-                    <input class="form-control" name="brandName" value="<%- brandName.name %>">
-                </div>
-                
-                <button type="submit" onclick="return confirm('Do you want edit the Brand')" class="btn-btn-success rounded pi">Save</button>
-            </form>
+<div class="text-center center-div d-flex align-items-center justify-content-center py-5">
+    <div class="container w-25 rounded border py-4 bg-muted">
+        <div class="title pb-1">
+            <h2 class="font-weight-bold text-daek">Edit Brand</h2>
         </div>
+        <form name="editBrandForm" action="/admin/update-brand/<%=brandName._id%>" method="POST" onsubmit="return validateForm()">
+            <div class="form-group">
+                <input class="form-control" name="brandName" value="<%- brandName.name %>">
+                <div id="errorContainer"></div>
+            </div>
+            
+            <button type="submit" class="btn-btn-success rounded pi" onclick=" showSuccessAlert()">Save</button>
+        </form>
     </div>
+</div>
 
+<script>
+    function validateForm() {
+        var brandNameInput = document.forms["editBrandForm"]["brandName"].value;
+        var errorContainer = document.getElementById("errorContainer");
 
+        if (brandNameInput.trim() === "") {
+            errorContainer.innerText = 'Brand Name cannot be empty or contain only spaces.';
+            errorContainer.style.color = 'red';
+            return false;
+        }
+
+        return confirm('Do you want to edit the Brand?');
+    }
+
+    function showSuccessAlert() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Brand has been successfully edited.',
+            timer: 3000,
+            showConfirmButton: false,
+        });
+    }
+
+</script>

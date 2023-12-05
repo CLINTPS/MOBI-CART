@@ -55,7 +55,7 @@ const postCreateCoupon= async (req,res)=>{
 async function getDeleteCoupon(req,res,next){
     try{
         let couponID= req.params.id 
-        console.log("couponID:",couponID);
+        // console.log("couponID:",couponID);
         await couponCollection.deleteOne({_id:couponID})
         res.redirect('/admin/Coupons')
     }catch (error) {

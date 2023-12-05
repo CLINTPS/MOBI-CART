@@ -20,18 +20,18 @@ async function getOfferPage(req,res,next){
 
 const postaddCategoryOffer = async (req, res,next) => {
         try {
-            console.log("............",req.body);
+            // console.log("............",req.body);
             const { categoryName, offerPercentage,startDate, expiryDate } = req.body;
 
             const fetchCategoryId = await categoriesCollection.findOne({ name: categoryName });
-            console.log("fetchCategoryId....",fetchCategoryId);
+            // console.log("fetchCategoryId....",fetchCategoryId);
             if (!fetchCategoryId) {
                 console.log('Category not found');
                 return res.status(404).json({ error: 'Category not found' });
             }
 
             const categoryData= await offerCollection.findOne({categoryName:categoryName})
-            console.log("categoryData....",categoryData);
+            // console.log("categoryData....",categoryData);
             
             if(categoryData){
                 console.log('An offer already exists for this category');
@@ -50,13 +50,13 @@ const postaddCategoryOffer = async (req, res,next) => {
             
             
             const categoryId = fetchCategoryId._id;
-           console.log("categoryId....",categoryId);
+        //    console.log("categoryId....",categoryId);
     
             const productsBeforeOffer = await productsCollections.find({ Category :categoryName });
-            console.log("productsBeforeOffer........",productsBeforeOffer);
+            // console.log("productsBeforeOffer........",productsBeforeOffer);
             for (const product of productsBeforeOffer) {
                 const discountPrice = product.DiscountAmount;
-                console.log("discountPrice.......",discountPrice);
+                // console.log("discountPrice.......",discountPrice);
                 await productsCollections.updateOne(
                     { _id: product._id },
                     { $set: { 
@@ -68,7 +68,7 @@ const postaddCategoryOffer = async (req, res,next) => {
             }
     
             const offerMultiplier = 1 - offerPercentage / 100;
-            console.log("offerMultiplier..........",offerMultiplier);
+            // console.log("offerMultiplier..........",offerMultiplier);
           
             const productData = await productsCollections.updateMany(
                 { Category :categoryName  },
@@ -76,7 +76,7 @@ const postaddCategoryOffer = async (req, res,next) => {
                     $mul: { DiscountAmount: offerMultiplier },
                 }
             );
-            console.log("productData........",productData);
+            // console.log("productData........",productData);
     
             res.status(201).json({ success: true, message: 'Category offer added successfully' });
     
@@ -90,7 +90,7 @@ const postaddCategoryOffer = async (req, res,next) => {
 async function deleteOffer(req,res,next){
     try{
         const offerId = req.params.offerId;
-        console.log("offerId.......",offerId);
+        // console.log("offerId.......",offerId);
         const deletedOffer = await offerCollection.findById(offerId);
         if (!deletedOffer) {
             return res.status(404).json({ error: 'Offer not found' });
@@ -131,9 +131,9 @@ async function deleteOffer(req,res,next){
 async function editOffer(req,res,next){
     try{
         const offerId = req.params.id;
-        console.log("offerIddddddd.......",offerId);
+        // console.log("offerIddddddd.......",offerId);
         const offerData = await offerCollection.findOne({_id:offerId})
-        console.log("offerData........",offerData);
+        // console.log("offerData........",offerData);
         const categoryData=await categoriesCollection.find({})
         res.render('adminView/editOffer',{title:"Edit offer",offerData,categoryData})
     }catch (error) {
@@ -146,7 +146,7 @@ async function editOffer(req,res,next){
 //Post edit data
 async function postEditOffer(req, res, next) {
     try {
-        console.log("1111111111111111", req.body);
+        // console.log("1111111111111111", req.body);
         const { categoryName, offerPercentage, startDate, expiryDate } = req.body
 
         const existingOffer = await offerCollection.findOne({ categoryName: categoryName });

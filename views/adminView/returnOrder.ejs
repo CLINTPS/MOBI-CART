@@ -9,7 +9,7 @@
         <table class="table table-striped table-bordered">
           <thead>
             <tr>
-              <th scope="col">Sr No.</th>
+              <!-- <th scope="col">Sr No.</th> -->
               <th scope="col">Order ID</th>
               <th scope="col">Customer ID</th>
               <th scope="col">Ordered Date</th>
@@ -25,7 +25,7 @@
               <% const status = ordersData[i].Status; %>
               <% if (status === 'Return Pending' || status === 'Return Canceled' || status === 'Return Accepted') { %>
                 <tr>
-                    <td><%= i + 1 %></td>
+                    <!-- <td><%= 1+i  %></td> -->
                     <td><%= ordersData[i]._id %></td>
                     <td><%= ordersData[i].UserId %></td>
                     <td>
@@ -37,7 +37,7 @@
                     </td>
                     <td>
                       <% if (ordersData[i].Status === "Return Pending") { %>
-                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#returnModal<%= i %>">Return </button>
+                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#returnModal<%= i %>">Return Pending</button>
                         <% } else if (ordersData[i].Status === 'Return Canceled') { %>
                           <p class="text-danger">Return Canceled</p>
                           <% } else if (ordersData[i].Status === 'Return Accepted') { %>
