@@ -23,7 +23,9 @@
                 <input type="password" name="password"  id="password" onchange="validatePassword();" required>
                 <label>Password</label>
             </div>
-          
+            <% if(reffer){%>
+                <input type="hidden" name="referralId" id="Referral" value="<%=reffer%>" aria-hidden="true">
+                <%}%>
             <p class="msg" id="message3"></p>
           
             <div class="field">

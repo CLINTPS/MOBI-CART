@@ -168,13 +168,24 @@
                                             <%}%>
                                 </div>
                             </div>
-                        </div>
-                        
+                        </div>                        
                     </div>
+
+                    <div class="card p-">
+                        <div class="card-body text-center referral-code d-flex align-items-center">
+                            <h6 class="d-inline mr-2">Referral Link:</h6>
+                            <input type="text" class="form-control form-control-sm" value="http://localhost:5000/user/signup?ref=<%=UserData._id%>" readonly>
+                            <button class="btn btn-outline-success ml-3 btn-sm" onclick="copyReferralCode()">Copy </button>
+                        </div>
+                        </div>
+
+                    
                 </div>
             </div>
         </div>
     </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
     <script>
@@ -204,6 +215,27 @@
                     console.error('Error:', error);
                 });
         }
+
+        function copyReferralCode() {
+        const referralCode = document.querySelector('.referral-code input').value;
+
+        const tempInput = document.createElement('input');
+        tempInput.value = referralCode;
+        document.body.appendChild(tempInput);
+
+        tempInput.select();
+        document.execCommand('copy');
+
+        document.body.removeChild(tempInput);
+
+        Swal.fire({
+        // icon: 'success',
+        text: 'Referral code copied!',
+        showConfirmButton: false,
+        timer:1000
+    });
+    }
+
     </script>
 
     <%-include('../userView/include/user_footer')-%>

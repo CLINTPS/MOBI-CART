@@ -89,6 +89,8 @@ router.post('/bannerUpdation',adminAuth.verifyAdmin,bannerUplode.single('image')
 router.get('/Coupons',adminAuth.verifyAdmin,couponsControl.getCouponView)
 router.post('/CreateCoupon',adminAuth.verifyAdmin,couponsControl.postCreateCoupon)
 router.get('/deleteCoupon/:id',adminAuth.verifyAdmin,couponsControl.getDeleteCoupon)
+router.get('/editCoupon/:id',adminAuth.verifyAdmin,couponsControl.getEditCoupon)
+router.post('/EditCoupon',adminAuth.verifyAdmin,couponsControl.postEditCoupon)
 
 //Offers
 router.get('/categoryOffer',adminAuth.verifyAdmin,offerControl.getOfferPage)

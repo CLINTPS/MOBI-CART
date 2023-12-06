@@ -10,8 +10,8 @@
                 <% if (bannerImg&& bannerImg[0].image) { %>
                     <img src="/banner-img/croppedImage/<%= bannerImg[0].image %>" class="d-block w-100" alt="">
                     <% } else { %>
-                        <img src="/images/first.webp" class="d-block w-100" alt="">
-                    <!-- <p>No banner image available</p> -->
+                        <!-- <img src="/images/first.webp" class="d-block w-100" alt=""> -->
+                    <p>No banner image available</p>
                 <% } %>
                 <h1 class="text-black pt-4 ">Discover New Arrivals</h1>
                 <P>Recently added Mobiles!</P>
@@ -118,12 +118,12 @@
                     url: '/addtocart/' + productId,
                     method: 'POST',
                     success: function (response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Product added to cart',
-                            showConfirmButton: false,
-                            timer: 1500 // Close the alert after 1.5 seconds
-                        });
+                        toastr.success('Product add to cart', '', {
+                        toastClass: 'custom-toast-success', 
+                        positionClass: 'toast-bottom-center',
+                        progressBar: true,
+                        timeOut: 1500,
+                    });
                         updateCartQuantity();
                     },
                     error: function (error) {

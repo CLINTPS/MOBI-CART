@@ -27,7 +27,9 @@ const getLoginPage = (req, res) => {
 
 // login to sign up
 const getSignupPage = (req, res) => {
-    res.render("userView/userSignup", { title: "Signup page", err: false })
+    const reffer = req.query.ref;
+    console.log("reffer code:",reffer);
+    res.render("userView/userSignup", { title: "Signup page",reffer ,err: false })
 }
 
 //Signup to login
@@ -60,8 +62,7 @@ async function getHomePage(req, res) {
 
 //User signup
 async function usersignup(req, res) {
-    console.log("user sign up");
-    console.log(req.body);
+    console.log("user sign up.......",req.body);
     try {
         const check = await userCollection.find({ email: req.body.email })
         console.log(typeof (check));
@@ -71,6 +72,7 @@ async function usersignup(req, res) {
                 userName: req.body.userName,
                 email: req.body.email,
                 password: pass,
+                reffer:req.body.referralId
             }
             req.session.user = check.userName;
             req.session.data = data;
@@ -96,11 +98,11 @@ async function usersignup(req, res) {
 async function otpSender(req, res) {
     if (req.session.signotp || req.session.forgot) {
         try {
-            console.log(req.session.email);
             console.log("otp route");
             const email = req.session.email;
-            console.log(email);
+            console.log("Email..",email);
             const createdOTP = await sendOTP(email)
+            // console.log("OTP:",createdOTP);
             req.session.email = email;
             console.log("session before verifiying otp :", req.session.email);
             res.status(200).redirect("/user/otp")
@@ -228,7 +230,7 @@ async function OtpConfirmation(req, res) {
         }
     }
     else if (req.session.signotp) {
-        console.log(req.body)
+        console.log("Sign up data..",req.body)
         try {
             const data = req.session.data;
             const dataplus = {
@@ -254,6 +256,19 @@ async function OtpConfirmation(req, res) {
                     req.session.signotp = false
                     req.session.user = data.userName;
                     req.session.email = data.email
+                    const refferUserWallet= await userCollection.findByIdAndUpdate(
+                        data.reffer,{
+                            $inc:{'wallet.amount':250},
+                            $push:{
+                                'wallet.transactions': {
+                                    amount:250,
+                                    transactionType:'credit',
+                                    timestamp: new Date(),
+                                    description:"Refferal by user"
+                                }
+                            }
+                        }
+                    )
                     res.redirect("/user/home")
 
                 }

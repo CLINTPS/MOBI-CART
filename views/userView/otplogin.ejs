@@ -36,9 +36,10 @@
       <br>
       <div id="timer">Time remaining: 2:59</div>
       <button type="submit" id="verifyEmailOTP" class="btn btn-info">VERIFY</button>
-      <div style="text-align: right;">
-        <a href="/user/resend-otp">Resend OTP</a>
-      </div>
+    
+      <div id="resendButtonContainer" style="text-align: right; display: none;">
+        <a href="/user/resend-otp" id="resendButton">Resend OTP</a>
+    </div>
     </form>
   
 </div>
@@ -60,15 +61,20 @@
       if (timerDuration < 0) {
         clearInterval(timer);
         disableOTPFields();
+        showResendButton();
       }
     }
   
     function disableOTPFields() {
-      // Disable OTP fields
-      var otpFields = document.querySelectorAll('.email-otp-input');
-      otpFields.forEach(function (field) {
+    var otpFields = document.querySelectorAll('.email-otp-input');
+    otpFields.forEach(function (field) {
         field.disabled = true;
-      });
-    }
+    });
+}
+
+function showResendButton() {
+    var resendButtonContainer = document.getElementById("resendButtonContainer");
+    resendButtonContainer.style.display = "block";
+}
   </script>
 <%-include('../userView/include/_footer')-%>

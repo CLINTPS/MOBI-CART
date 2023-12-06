@@ -76,9 +76,9 @@
         <div class="col-md-4">
           <div class="card mb-4 shadow">
             <!-- Move the delete button to the top right corner -->
-            <a href="/admin/deleteCoupon/<%-couponData._id%>" onclick="return window.confirm('Do you want to delete the Coupon?')" class="position-absolute top-0 end-0 m-2 text-danger">
+            <!-- <a href="/admin/deleteCoupon/<%-couponData._id%>" onclick="return window.confirm('Do you want to delete the Coupon?')" class="position-absolute top-0 end-0 m-2 text-danger">
               <i class="fa-solid fa-times fa-lg" style="margin-left: 340px;"></i>
-            </a>
+            </a> -->
             <div class="card-body text-center bg-light">
               <h5 class="card-title">
                 <%=couponData.CoupenName%>
@@ -98,6 +98,12 @@
               <p class="card-text">End Date :   <%let date=new Date(couponData.EndDate)%>
                 <%=date.getDate()%>-<%=date.getMonth()%>-<%=date.getFullYear()%>      
               </p>
+              <a href="/admin/editCoupon/<%-couponData._id%>">
+                <button class="btn btn-primary btn-sm">Edit</button>
+              </a>
+              <a href="/admin/deleteCoupon/<%-couponData._id%>" onclick="return window.confirm('Do you want to delete the Coupon?')">
+                <button class="btn btn-danger btn-sm">Delete</button>
+              </a>
             </div>
           </div>
         </div>

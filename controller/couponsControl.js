@@ -64,8 +64,52 @@ async function getDeleteCoupon(req,res,next){
   }
 }
 
+//Edit coupon
+async function getEditCoupon(req,res,next){
+  try{
+    let couponId=req.params.id
+    console.log("couponId..",couponId);
+    const couponData = await couponCollection.findOne({_id:couponId})
+    console.log("couponData..",couponData);
+    res.render('adminView/editCoupon',{title:"Edit coupon",couponData})
+  }catch (error) {
+    console.error(error);
+    next(error);
+  }
+}
+
+//Post Edit Coupon
+async function postEditCoupon(req,res,next){
+  try{
+    console.log("postData..",req.body);
+    const couponId = req.body.couponId;
+    const { name, couponCode, description, maxAmount, discountAmount, couponType, startDate, endDate} = req.body;
+    const couponData=await couponCollection.updateOne(
+      { _id: couponId },
+      { $set: {
+        CoupenName:name,
+        CoupenCode:couponCode,
+        description,
+        MinAmount:maxAmount,
+        DiscountAmount:discountAmount,
+        couponType:couponType,
+        StartDate:startDate,
+        EndDate:endDate,
+       }
+      }
+    );
+    console.log("couponData...",couponData);
+    res.json({ success: true, message: 'Coupon updated successfully' });
+  }catch (error) {
+    console.error(error);
+    next(error);
+  }
+}
+
 module.exports={
     getCouponView,
     postCreateCoupon,
-    getDeleteCoupon
+    getDeleteCoupon,
+    getEditCoupon,
+    postEditCoupon
 }

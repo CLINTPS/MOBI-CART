@@ -58,6 +58,7 @@ async function getOrderpage(req,res){
   
           } catch (error) {
               console.error('Error processing order:', error);
+              res.render("errorView/404");
           }
         }
 

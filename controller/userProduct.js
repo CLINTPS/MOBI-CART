@@ -64,7 +64,10 @@ async function getAllProducts(req,res){
                 productData,
                 wishlist,
                 productDataCount : totalProducts,
-                page: page
+                page: page,
+                selectedBrands:null,
+                selectedCategory:null,
+                selectedPrice:null,
             })
     }catch(error){
         // res.status(500).send('Internal server error')
@@ -96,17 +99,15 @@ async function postFilterProduct(req, res) {
             const priceValue = parseInt(selectedPrice);
             
             let priceRange;
-            if (priceValue <= 20000) {
-                priceRange = { $gte: 0, $lt: 20000 };
-            } else if (priceValue <= 30000) {
-                priceRange = { $gte: 20001, $lt: 30000 };
+            if (priceValue <= 25000) {
+                priceRange = { $gte: 0, $lt: 25000 };
             } else if (priceValue <= 50000) {
-                priceRange = { $gte: 30001, $lt: 50000 };
+                priceRange = { $gte: 25001, $lt: 50000 };
             } else if (priceValue <= 100000) {
                 priceRange = { $gte: 50001, $lt: 100000 };
-            } else if (priceValue <= 200000) {
-                priceRange = { $gte: 100001, $lt: 200000 };
-            }
+            } else if (priceValue >= 100001) {
+                priceRange = { $gte: 100001,};
+            } 
 
             filter.DiscountAmount = priceRange;
         }
@@ -129,7 +130,10 @@ async function postFilterProduct(req, res) {
             productData,
             wishlist,
             productDataCount: totalProducts,
-            page: page
+            page: page,
+            selectedBrands,
+            selectedCategory,
+            selectedPrice,
         });
     } catch (error) {
         console.error(error);
@@ -174,7 +178,10 @@ async function postSerchAllProduct(req,res){
                 productData,
                 wishlist,
                 productDataCount : totalProducts,
-                page: page
+                page: page,
+                selectedBrands:null,
+                selectedCategory:null,
+                selectedPrice:null,
             })
     }catch(error){
         // res.status(500).send('Internal server error')

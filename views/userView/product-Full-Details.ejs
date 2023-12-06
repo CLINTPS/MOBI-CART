@@ -1,5 +1,5 @@
 <%-include('../userView/include/user_header')-%>
-<section class="p-3" style="background:linear-gradient(135deg, #ffffff, #ffffff);">
+  <section class="p-3" style="background:linear-gradient(135deg, #ffffff, #ffffff);">
     <div class="container-fluid">
       <div class="row">
         <!-- sidebar -->
@@ -7,323 +7,344 @@
           <form action="/filterProduct" method="post">
             <!-- Your existing code for the filter options -->
             <div class="collapse card d-lg-block mb-5" id="filterOptions">
-                <div class="accordion" id="accordionPanelsStayOpenExample">
-                    <!-- Brand filter -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="brandFilter">
-                            <button
-                                class="accordion-button text-dark bg-light"
-                                type="button"
-                                data-mdb-toggle="collapse"
-                                data-mdb-target="#brandFilterCollapse"
-                                aria-expanded="true"
-                                aria-controls="brandFilterCollapse"
-                            >
-                                Brands
-                            </button>
-                        </h2>
-                        <div id="brandFilterCollapse" class="accordion-collapse collapse show" aria-labelledby="brandFilter">
-                            <div class="accordion-body">
-                                <div id="brandOptions">
-                                    <!-- Brand checkboxes with names -->
-                                    <% if (brandData) { %>
-                                        <% brandData.forEach((data) => { %>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="<%= data.name %>" id="brand<%= data.name %>" name="selectedBrands">
-                                                <label class="form-check-label" for="brand<%= data.name %>"><%= data.name %></label>
-                                            </div>
-                                        <% }) %>
-                                    <% } %>
-                                </div>
+              <div class="accordion" id="accordionPanelsStayOpenExample">
+                <!-- Brand filter -->
+                <!-- Brand filter -->
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="brandFilter">
+                    <button class="accordion-button text-dark bg-light" type="button" data-mdb-toggle="collapse"
+                      data-mdb-target="#brandFilterCollapse" aria-expanded="true" aria-controls="brandFilterCollapse">
+                      Brands
+                    </button>
+                  </h2>
+                  <div id="brandFilterCollapse" class="accordion-collapse collapse show" aria-labelledby="brandFilter">
+                    <div class="accordion-body">
+                      <div id="brandOptions">
+                        <!-- Brand checkboxes with names -->
+                        <% if (brandData) { %>
+                          <% brandData.forEach((data)=> { %>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="<%= data.name %>"
+                                id="brand<%= data.name %>" name="selectedBrands" <% if (selectedBrands &&
+                                selectedBrands.includes(data.name)) { %>checked<% } %>
+                                >
+                                <label class="form-check-label" for="brand<%= data.name %>">
+                                  <%= data.name %>
+                                </label>
                             </div>
-                        </div>
-                      </div>
-                
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingTwo">
-                    <button
-                            class="accordion-button text-dark bg-light"
-                            type="button"
-                            data-mdb-toggle="collapse"
-                            data-mdb-target="#panelsStayOpen-collapseTwo"
-                            aria-expanded="true"
-                            aria-controls="panelsStayOpen-collapseTwo"
-                            >
-                            Categories
-                    </button>
-                  </h2>
-                  <div id="categoryFilterCollapse" class="accordion-collapse collapse show" aria-labelledby="categoryFilter">
-                    <div class="accordion-body">
-                        <div id="categoryOptions">
-                            <!-- Brand checkboxes with names -->
-                            <% if (categoryData) { %>
-                                <% categoryData.forEach((data) => { %>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="<%= data.name %>" id="category<%= data.name %>" name="selectedCategory">
-                                        <label class="form-check-label" for="category<%= data.name %>"><%= data.name %></label>
-                                    </div>
-                                <% }) %>
-                            <% } %>
-                        </div>
-                    </div>
-                </div>    
-              </div>
-  
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="headingTwo">
-                    <button
-                            class="accordion-button text-dark bg-light"
-                            type="button"
-                            data-mdb-toggle="collapse"
-                            data-mdb-target="#panelsStayOpen-collapseTwo"
-                            aria-expanded="true"
-                            aria-controls="panelsStayOpen-collapseTwo"
-                            >
-                      Price
-                    </button>
-                  </h2>
-                  <div id="priceFilterCollapse" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
-                    <div class="accordion-body">
-                      <div>
-                        <!-- Checked checkbox -->
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="20000 Under" id="price1" name="selectedPrice">
-                          <label class="form-check-label" for="price1">0 to 20000</label>
-                      </div>
-                      <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="30000 Under" id="price2" name="selectedPrice">
-                          <label class="form-check-label" for="price2">20001 to 30000</label>
-                      </div>
-                      <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="50000 Under" id="price3" name="selectedPrice">
-                          <label class="form-check-label" for="price3">30001 to 50000</label>
-                      </div>
-                      <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="100000 Under" id="price4" name="selectedPrice">
-                          <label class="form-check-label" for="price4">50001 to 100000</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="200000 Under" id="price5" name="selectedPrice">
-                        <label class="form-check-label" for="price5">100001 to 200000</label>
-                    </div>                       
+                            <% }) %>
+                              <% } %>
                       </div>
                     </div>
                   </div>
                 </div>
+
+                <!-- Categories filter -->
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="categoryFilter">
+                    <button class="accordion-button text-dark bg-light" type="button" data-mdb-toggle="collapse"
+                      data-mdb-target="#categoryFilterCollapse" aria-expanded="true"
+                      aria-controls="categoryFilterCollapse">
+                      Categories
+                    </button>
+                  </h2>
+                  <div id="categoryFilterCollapse" class="accordion-collapse collapse show"
+                    aria-labelledby="categoryFilter">
+                    <div class="accordion-body">
+                      <div id="categoryOptions">
+                        <!-- Category checkboxes with names -->
+                        <% if (categoryData) { %>
+                          <% categoryData.forEach((data)=> { %>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" value="<%= data.name %>"
+                                id="category<%= data.name %>" name="selectedCategory" <% if (selectedCategory &&
+                                selectedCategory.includes(data.name)) { %>checked<% } %>
+                                >
+                                <label class="form-check-label" for="category<%= data.name %>">
+                                  <%= data.name %>
+                                </label>
+                            </div>
+                            <% }) %>
+                              <% } %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Price filter -->
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="priceFilter">
+                    <button class="accordion-button text-dark bg-light" type="button" data-mdb-toggle="collapse"
+                      data-mdb-target="#priceFilterCollapse" aria-expanded="true" aria-controls="priceFilterCollapse">
+                      Price
+                    </button>
+                  </h2>
+                  <div id="priceFilterCollapse" class="accordion-collapse collapse show" aria-labelledby="priceFilter">
+                    <div class="accordion-body">
+                      <div>
+                        <!-- Price checkboxes with values -->
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="25000 Under" id="price1"
+                            name="selectedPrice" <% if (selectedPrice && selectedPrice.includes("25000 Under")) {
+                            %>checked<% } %>
+                            >
+                            <label class="form-check-label" for="price1">0 to 25000</label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="50000 Under" id="price2"
+                            name="selectedPrice" <% if (selectedPrice && selectedPrice.includes("50000 Under")) {
+                            %>checked<% } %>
+                            >
+                            <label class="form-check-label" for="price1">25001 to 50000</label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="100000 Under" id="price3"
+                            name="selectedPrice" <% if (selectedPrice && selectedPrice.includes("100000 Under")) {
+                            %>checked<% } %>
+                            >
+                            <label class="form-check-label" for="price1">50001 to 100000</label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="100001 Above" id="price4"
+                            name="selectedPrice" <% if (selectedPrice && selectedPrice.includes("100001 Above")) {
+                            %>checked<% } %>
+                            >
+                            <label class="form-check-label" for="price1">100001 Above</label>
+                        </div>
+                        <!-- Add similar logic for other price options -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-outline-primary w-100 border border-secondary">Apply</button>
+
               </div>
-              <button type="submit" class="btn btn-outline-primary w-100 border border-secondary">Apply</button>
+              <!-- <button type="submit" class="btn btn-outline-primary w-100 border border-secondary">Apply</button> -->
             </div>
           </form>
         </div>
 
-        
-<!-- content -->
-<div class="col-lg-9">
-    <header class="d-sm-flex align-items-center border-bottom mb-4 "></header>
-          <% if (productData.length > 0 ) { %>
-            <% productData.forEach((data) => { %>
-              <div class="row justify-content-center mb-3" >
+
+        <!-- content -->
+        <div class="col-lg-9">
+          <header class="d-sm-flex align-items-center border-bottom mb-4 "></header>
+          <% if (productData.length> 0 ) { %>
+            <% productData.forEach((data)=> { %>
+              <div class="row justify-content-center mb-3">
                 <div class="col-md-12">
                   <div class="card shadow-0 border rounded-3">
                     <div class="card-body" style="background:linear-gradient(135deg, #ffffff, #ffffff);">
                       <div class="row g-0">
-                        <div class="col-xl-3 col-md-4 d-flex justify-content-center" >
+                        <div class="col-xl-3 col-md-4 d-flex justify-content-center">
                           <div class="bg-image hover-zoom ripple rounded ripple-surface me-md-3 mb-3 mb-md-0">
-                            
+
                             <a href="/productDetails/<%=data._id%>">
-                                <img src="/product-img/<%= data.images[0]%>" alt="Products img.." class="w-75" />
+                              <img src="/product-img/<%= data.images[0]%>" alt="Products img.." class="w-75" />
                             </a>
                           </div>
                         </div>
                         <div class="col-xl-6 col-md-5 col-sm-7">
-                          <a href="/productDetails/<%=data._id%>" style="text-decoration: none;"> <h5><%=data.ProductName%></h5></a>
-                          
-                          <botton class="btn btn1 rounded-3 add-to-wishlist-button"
-                                                        data-product-id="<%= data._id %>">
-                                                        <i
-                                                        class="fa fa-heart <% if (wishlist.includes(data._id)) { %>text-danger<% } %>"></i>
-                                                    </botton>
+                          <a href="/productDetails/<%=data._id%>" style="text-decoration: none;">
+                            <h5>
+                              <%=data.ProductName%>
+                            </h5>
+                          </a>
+
+                          <botton class="btn btn1 rounded-3 add-to-wishlist-button" data-product-id="<%= data._id %>">
+                            <i class="fa fa-heart <% if (wishlist.includes(data._id)) { %>text-danger<% } %>"></i>
+                          </botton>
                           <p class="para"><i class="fa-solid fa-circle fa-2xs"></i>
                             <%=data.Specification1%>
-                        </p>
-                        <p class="para"><i class="fa-solid fa-circle fa-2xs"></i>
+                          </p>
+                          <p class="para"><i class="fa-solid fa-circle fa-2xs"></i>
                             <%=data.Specification2%>
-                        </p>
-                        <p class="para"><i class="fa-solid fa-circle fa-2xs"></i>
+                          </p>
+                          <p class="para"><i class="fa-solid fa-circle fa-2xs"></i>
                             <%=data.Specification3%>
-                        </p>
-                        <p class="para"><i class="fa-solid fa-circle fa-2xs"></i>
+                          </p>
+                          <p class="para"><i class="fa-solid fa-circle fa-2xs"></i>
                             <%=data.Specification4%>
-                        </p>
+                          </p>
                           <p class="text mb-4 mb-md-0">
                             <%=data.Description%>
                           </p>
                         </div>
                         <div class="col-xl-3 col-md-3 col-sm-5">
                           <div class="d-flex flex-row align-items-center mb-1">
-                            <h4 class="mb-1 me-1">₹<%=data.DiscountAmount%></h4>
+                            <h4 class="mb-1 me-1">₹<%=data.DiscountAmount%>
+                            </h4>
                             <s class="text-danger">₹<%=data.Price%></s>
                           </div>
-                          <% if (data.AvailableQuantity > 5) { %>
+                          <% if (data.AvailableQuantity> 5) { %>
                             <h6 class="text-success">In stock</h6>
-                          <% } else if( data.AvailableQuantity > 0 && data.AvailableQuantity<=5 ){ %>
-                            <h6 class="text-danger">left stock <%=data.AvailableQuantity%></h6>
-                            <% }else{ %>
-                              <h6 class="text-danger">out of stock</h6>
-                            <%}%>
-                          <div class="mt-4">
-                            <% if (data.AvailableQuantity > 0) { %>
-                              <button class="btn btn-dark shadow-0 add-to-cart-button" data-product-id="<%= data._id %>">Add to Cart</button>
-                            <% } else { %>
-                              <button class="btn btn-danger shadow-0 add-to-cart-button">Add to Cart</button>
-                            <% } %>
-                            <!-- <a href="#!" class="btn btn-dark border px-2 pt-2 icon-hover"><i class="fa-solid fa-heart fa-lg" style="color: #17e14a;"></i></a> -->
-                          </div>
+                            <% } else if( data.AvailableQuantity> 0 && data.AvailableQuantity<=5 ){ %>
+                                <h6 class="text-danger">left stock <%=data.AvailableQuantity%>
+                                </h6>
+                                <% }else{ %>
+                                  <h6 class="text-danger">out of stock</h6>
+                                  <%}%>
+                                    <div class="mt-4">
+                                      <% if (data.AvailableQuantity> 0) { %>
+                                        <button class="btn btn-dark shadow-0 add-to-cart-button"
+                                          data-product-id="<%= data._id %>">Add to Cart</button>
+                                        <% } else { %>
+                                          <button class="btn btn-danger shadow-0 add-to-cart-button">Out of
+                                            stock</button>
+                                          <% } %>
+                                            <!-- <a href="#!" class="btn btn-dark border px-2 pt-2 icon-hover"><i class="fa-solid fa-heart fa-lg" style="color: #17e14a;"></i></a> -->
+                                    </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            <% }); %>
-            <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3" id="pagination-navbar">
-              <ul class="pagination">
-                  <li class="page-item <%= page <= 1 ? 'disabled' : '' %>">
-                      <a class="page-link" href="<%= page <= 1 ? '#' : '/allProducts?page=' + (page - 1) %>" style="color: black;" aria-label="Previous">
-                          <span aria-hidden="true">&laquo;</span>
+              <% }); %>
+                <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3"
+                  id="pagination-navbar">
+                  <ul class="pagination">
+                    <li class="page-item <%= page <= 1 ? 'disabled' : '' %>">
+                      <a class="page-link" href="<%= page <= 1 ? '#' : '/allProducts?page=' + (page - 1) %>"
+                        style="color: black;" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
                       </a>
-                  </li>
-          
-                  <% const displayPages = 4; %>
-                  <% const startPage = Math.max(1, page - Math.floor(displayPages / 2)); %>
-                  <% const endPage = Math.min(productDataCount, startPage + displayPages - 1); %>
-          
-                  <% for (let i = startPage; i <= endPage; i++) { %>
-                      <li class="page-item <%= i === page ? 'active' : '' %>">
-                          <a class="page-link" href="/allProducts?page=<%= i %>" style="color: black"><%= i %></a>
-                      </li>
-                  <% } %>
-          
-                  <li class="page-item <%= page >= productDataCount ? 'disabled' : '' %>">
-                      <a class="page-link" href="<%= page >= productDataCount ? '#' : '/allProducts?page=' + (page + 1) %>" style="color: black;" aria-label="Next">
-                          <span aria-hidden="true">&raquo;</span>
-                      </a>
-                  </li>
-              </ul>
-          </nav>
-          
-                
-          
-          <% } else { %>
-            <div class="d-flex justify-content-center mt-5">
+                    </li>
 
-              <h5>Data not found</h5>
-            </div>
-          <% } %>
-          <!-- Pagination code here -->
-          <!-- Pagination -->
+                    <% const displayPages=4; %>
+                      <% const startPage=Math.max(1, page - Math.floor(displayPages / 2)); %>
+                        <% const endPage=Math.min(productDataCount, startPage + displayPages - 1); %>
+
+                          <% for (let i=startPage; i <=endPage; i++) { %>
+                            <li class="page-item <%= i === page ? 'active' : '' %>">
+                              <a class="page-link" href="/allProducts?page=<%= i %>" style="color: black">
+                                <%= i %>
+                              </a>
+                            </li>
+                            <% } %>
+
+                              <li class="page-item <%= page >= productDataCount ? 'disabled' : '' %>">
+                                <a class="page-link"
+                                  href="<%= page >= productDataCount ? '#' : '/allProducts?page=' + (page + 1) %>"
+                                  style="color: black;" aria-label="Next">
+                                  <span aria-hidden="true">&raquo;</span>
+                                </a>
+                              </li>
+                  </ul>
+                </nav>
+
+
+
+                <% } else { %>
+                  <div class="d-flex justify-content-center mt-5">
+
+                    <h5>Data not found</h5>
+                  </div>
+                  <% } %>
+                    <!-- Pagination code here -->
+                    <!-- Pagination -->
         </div>
       </div>
     </div>
   </section>
 
-  
-  
-<%-include('../userView/include/user_footer')-%>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/toastr@2"></script>
 
-<script src="your-script.js"></script>
+  <%-include('../userView/include/user_footer')-%>
 
-<script>
-     document.querySelectorAll('.add-to-cart-button').forEach(button => {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastr@2"></script>
+
+    <script src="your-script.js"></script>
+
+    <script>
+      document.querySelectorAll('.add-to-cart-button').forEach(button => {
         button.addEventListener('click', function (event) {
-            event.preventDefault();
+          event.preventDefault();
 
-            const productId = this.getAttribute('data-product-id');
-            console.log(productId);
+          const productId = this.getAttribute('data-product-id');
+          console.log(productId);
 
-            $.ajax({
-                url: '/addtocart/' + productId,
-                method: 'POST',
-                success: function (response) {
-                toastr.options = {
-                        "closeButton": true,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-bottom-center",
-                        "preventDuplicates": true,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "3000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut",
-                        "toastClass": "black-toast"
-                    };
-                toastr.success('Product added to cart');
-                    updateCartQuantity();
-                    location.reload();
+          $.ajax({
+            url: '/addtocart/' + productId,
+            method: 'POST',
+            success: function (response) {
+              toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-center",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "3000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "toastClass": "black-toast"
+              };
+              toastr.success('Product added to cart');
+              updateCartQuantity();
+              location.reload();
             },
-                error: function (error) {
-                    console.error('Error adding product to cart:', error);
-                }
-            });
+            error: function (error) {
+              console.error('Error adding product to cart:', error);
+            }
+          });
         });
-    });
+      });
 
 
-    document.querySelectorAll('.add-to-wishlist-button').forEach(button => {
-    button.addEventListener('click', function (event) {
-        event.preventDefault();
+      document.querySelectorAll('.add-to-wishlist-button').forEach(button => {
+        button.addEventListener('click', function (event) {
+          event.preventDefault();
 
-        const productId = this.getAttribute('data-product-id');
-        console.log(">>>>>>>>>>>", productId);
-        const icon = this.querySelector('.fa-heart');
-        console.log("Wishlist reached");
+          const productId = this.getAttribute('data-product-id');
+          console.log(">>>>>>>>>>>", productId);
+          const icon = this.querySelector('.fa-heart');
+          console.log("Wishlist reached");
 
-        $.ajax({
+          $.ajax({
             url: '/wishlist/',
             method: 'POST',
             data: {
-                productId: productId,
+              productId: productId,
             },
             success: function (response) {
-                console.log(icon.style.color);
-                if (response.added) {
-                    toastr.success('Added to Wishlist', '', {
-                        toastClass: 'custom-toast-success', 
-                        positionClass: 'toast-bottom-center',
-                        progressBar: true,
-                        timeOut: 1500,
-                    });
+              console.log(icon.style.color);
+              if (response.added) {
+                toastr.success('Added to Wishlist', '', {
+                  toastClass: 'custom-toast-success',
+                  positionClass: 'toast-bottom-center',
+                  progressBar: true,
+                  timeOut: 1500,
+                });
 
-                    icon.classList.add('text-danger');
+                icon.classList.add('text-danger');
 
-                    console.log(">>> reached");
+                console.log(">>> reached");
 
-                } else {
-                    toastr.info('Removed from Wishlist', '', {
-                        toastClass: 'custom-toast-info',
-                        positionClass: 'toast-bottom-center', 
-                        progressBar: true,
-                        timeOut: 1500,
-                    });
+              } else {
+                toastr.info('Removed from Wishlist', '', {
+                  toastClass: 'custom-toast-info',
+                  positionClass: 'toast-bottom-center',
+                  progressBar: true,
+                  timeOut: 1500,
+                });
 
-                    icon.classList.remove('text-danger');
-                }
+                icon.classList.remove('text-danger');
+              }
             },
             error: function (error) {
-                console.error('Error updating wishlist:', error);
+              console.error('Error updating wishlist:', error);
             }
+          });
         });
-    });
-});
+      });
 
-</script>
+    </script>
