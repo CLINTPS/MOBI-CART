@@ -31,57 +31,74 @@
         <div class="top_bar">
             <p style="margin: 0;">FREE SHIPPING & RETURNS ON ALL US ORDERS</p>
         </div>
-        <div class="nav_bar">
-            <div class="all_items">
-                <div class="logo_section">
-                    <a href="/user/home">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="/user/home">
+                    <img src="/images/Mobi Cart Logo.png" alt="" style="width: 105px;">
+                </a>
+        
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+        
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="" data-toggle="modal" data-target="#exampleModalCenter">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">About</a>
+                        </li>
+                        <li class="nav-item ml-3">
+                            <form class="form-inline" action="/serchAllPorductsShop" method="post">
+                                <div class="input-group">
+                                    <input type="search" name="searchAllProduct" class="form-control" placeholder="Search product">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary btn-sm" type="submit">
+                                            <img src="/images/search.svg" alt="">
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                        <li class="nav-item ml-2">
+                            <a class="nav-link" href="/allProducts">
+                                <img width="30" height="28" src="https://img.icons8.com/ios/50/shopping-mall.png" alt="shopping-mall"/>
+                            </a>
+                        </li>
+                        <li class="nav-item ml-2">
+                            <a class="nav-link" href="/userWhislist">
+                                <img width="30" height="28" src="https://img.icons8.com/fluency-systems-regular/48/like--v1.png" alt="like--v1"/>
+                            </a>
+                        </li>
+                        <li class="nav-item ml-2">
+                            <a class="nav-link" href="/user/cart">
+                                <img width="29" height="33" src="https://img.icons8.com/parakeet-line/48/shopping-cart.png" alt="shopping-cart"/>
+                            </a>
+                        </li>
+                       
 
-                        <img src="/images/Mobi Cart Logo.png" alt="" style="width: 120px;">
-                    </a>
-                </div>
-                <div class="links">
-                    <a href="/user/home">Home</a>
-                    <a href="" data-toggle="modal" data-target="#exampleModalCenter">Contact</a>                 
-                    <a href="">About</a>
-                </div>
-                <div class="icons">
-                    <form action="/serchAllPorductsShop" method="post">
-                        <div class="search_box">
-                            <input type="search" name="searchAllProduct" placeholder="search product">
-                            <img src="/images/search.svg" alt="">
-                        </div>
-                    </form>
-                    <a href="/allProducts">
-                        <img width="30" height="28" src="https://img.icons8.com/ios/50/shopping-mall.png" alt="shopping-mall"/>
-                    </a>
-                    <a href="/userWhislist">
-                        <img width="30" height="28" src="https://img.icons8.com/fluency-systems-regular/48/like--v1.png" alt="like--v1"/>
-                    </a>
-                    <a href="/user/cart">
-                        <img width="29" height="33" src="https://img.icons8.com/parakeet-line/48/shopping-cart.png" alt="shopping-cart"/>
-                    </a>
-                    
-                    <!-- <a href="">
-                        <img class="profile" src="/images/user.png" alt="">
-                    </a> -->
-                    <div class="dropdown">
-                        <%if(user){%>
+                        <div class="dropdown ml-2">
+                            <% if(user) { %>
                             <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <%=user%>
+                                <%= user %>
                             </button>
-                            <%}else{%>
-                                <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Account
-                                  </button>
-                                <%}%>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item" href="/user/profile">Profile</a>
-                          <a class="dropdown-item" href="/user/logout">Logout</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="/user/profile">Profile</a>
+                                <a class="dropdown-item" href="/user/logout">Logout</a>
+                            </div>
+                            <% } else { %>
+                                <a class="nav-link" href="/user/login">Login</a>
+                            <% } %>
                         </div>
-                    </div>
+                    </ul>
                 </div>
             </div>
-        </div>
+        </nav>
+        
 
         <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -110,3 +127,22 @@
     </div>
   </div>
     </header>
+
+    
+
+    
+    <style>
+       @media (max-width: 768px) {
+            .navbar-nav {
+                text-align: center;
+                margin-top: 10px;
+            }
+            .navbar-toggler {
+                margin-right: 10px;
+            }
+            .dropdown-menu {
+                text-align: center;
+                width: 100%;
+            }
+        }
+    </style>

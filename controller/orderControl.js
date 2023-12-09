@@ -69,7 +69,7 @@ async function getOrderpage(req,res){
         res.render('userView/userCheckout',{title:"Checkout page",user,userAddressData,TotalPrice,grandTotal,coupon})
     }catch (error) {
         console.error("An error occurred:", error);
-        console.log("cart data note available");
+        // console.log("cart data note available");
         res.render("errorView/404");
     }
 }
@@ -92,7 +92,7 @@ async function postplaceOrder(req, res) {
 
     try {
       const userData = await userCollection.findOne({ email: email });
-      console.log("userData..",userData);
+      // console.log("userData..",userData);
         if (!userData) {
             console.log("cart data note available");
             res.render("errorView/404admin");
@@ -181,7 +181,7 @@ async function postplaceOrder(req, res) {
                       usedDate: new Date(),
                     });
                     await userData.save();
-                console.log("userData:::",userData);
+                // console.log("userData:::",userData);
         }
 
         if (paymentMethod === "cod") {
@@ -217,7 +217,7 @@ async function postplaceOrder(req, res) {
               newOrder.PaymentStatus="Paid"
               newOrder.save()
 
-              console.log("payment is wallet");
+              // console.log("payment is wallet");
               res.json({ codSuccess: true })
         }else {
           res.status(400).send("Invalid payment method");
@@ -433,11 +433,11 @@ async function getCancelOrder(req,res){
 //Single product cancelation
 const postSignleCancel=async(req,res)=>{
     try{
-        console.log("req.body::",req.body);
+        // console.log("req.body::",req.body);
         const { productId, orderId } = req.body;
 
     const order = await orderCollection.findById(orderId);
-    console.log("order::::::::",order);
+    // console.log("order::::::::",order);
     const item = order.Items.find((item) => item._id.toString() === productId);
 
     if (item) {
@@ -468,7 +468,7 @@ const postGenarateInvoice=async(req,res)=>{
         
         const ordersId = orderDetails[0]._id;
     
-        console.log(ordersId);
+        // console.log(ordersId);
     
         if (orderDetails) {
           // console.log("uSer MaIl....:",email);
@@ -504,6 +504,7 @@ async function postReturnProduct(req,res){
     try {
         const { orderId, returnReason } = req.body;
         const Email = req.session.email;
+        // console.log("11111111",returnReason);
         // console.log("email......",Email);
         const User = await userCollection.findOne({ email: Email });
         // console.log("User......",User);

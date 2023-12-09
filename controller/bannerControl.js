@@ -55,10 +55,10 @@ const postNewBanner = async (req, res) => {
             // console.log('CurrentBanner.image:', CurrentBanner.image);
     
             if (savedBanner) {
-                console.log('Banner added');
+                // console.log('Banner added');
                 res.redirect('/admin/Banner')
             } else {
-                console.log('Error saving the banner');
+                // console.log('Error saving the banner');
                 res.render('errorView/404admin')
             }
         } catch(err){

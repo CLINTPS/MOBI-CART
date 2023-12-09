@@ -5,7 +5,7 @@ const userControl = require("../controller/userControl");
 const userProduct = require("../controller/userProduct")
 const passport = require("passport")
 const bcrypt = require("bcrypt")
-require('../config/passport');
+// require('../config/passport');
 const USER = require('../model/user');
 const { sendOTP } = require("../controller/otpController");
 const OTP = require('../model/otp');

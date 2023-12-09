@@ -98,13 +98,13 @@ async function usersignup(req, res) {
 async function otpSender(req, res) {
     if (req.session.signotp || req.session.forgot) {
         try {
-            console.log("otp route");
+            // console.log("otp route");
             const email = req.session.email;
-            console.log("Email..",email);
+            // console.log("Email..",email);
             const createdOTP = await sendOTP(email)
             // console.log("OTP:",createdOTP);
             req.session.email = email;
-            console.log("session before verifiying otp :", req.session.email);
+            // console.log("session before verifiying otp :", req.session.email);
             res.status(200).redirect("/user/otp")
         } catch (err) {
             console.log(err);
@@ -130,10 +130,10 @@ const forgot_password_page = (req, res) => {
 //password forgote
 const forgotPass = async (req, res) => {
     try {
-        console.log(req.body);
+        // console.log(req.body);
         const check = await userCollection.findOne({ email: req.body.email })
         if (check) {
-            console.log("good to go:", check);
+            // console.log("good to go:", check);
             const userdata = {
                 email: check.email,
                 userName: check.userName,
@@ -298,7 +298,7 @@ const get_password_reset = (req, res) => {
 
 const password_reset = async (req, res) => {
     try {
-        console.log(req.body);
+        // console.log(req.body);
         const pass = await bcrypt.hash(req.body.password, 10);
         const email = req.session.email
         // console.log(email);
@@ -329,11 +329,11 @@ async function getUserprofile(req, res) {
 const postUserProfile = async (req, res) => {
     try {
       const userEmail = req.session.email;
-      console.log("1",userEmail);
+    //   console.log("1",userEmail);
       const username = await userCollection.findOne({ email: userEmail });
-      console.log("2",username);
+    //   console.log("2",username);
       const userId = username._id;
-      console.log("3",userId);
+    //   console.log("3",userId);
   
       if (!req.file) {
         console.error("No file uploaded");
@@ -393,7 +393,7 @@ async function getAddressBook(req, res) {
 const postAddress = async (req, res) => {
     try {
         let email = req.session.email
-        console.log(email);
+        // console.log(email);
         let data = {
             nameuser: req.body.nameuser,
             addressLine: req.body.addressLine,
@@ -402,7 +402,7 @@ const postAddress = async (req, res) => {
             state: req.body.state,
             mobile: req.body.mobile
         }
-        console.log(data);
+        // console.log(data);
         const userAddress = await userCollection.findOne({ email: email })
         console.log(userAddress);
         userAddress.address.push(data)
@@ -419,7 +419,7 @@ const postAddress = async (req, res) => {
 async function postEditAddress(req,res){
     try{
         let id = req.params.id;
-        console.log("id:"+id);
+        // console.log("id:"+id);
         // let email = req.session.email
         // console.log(email);
         let data = {
@@ -450,9 +450,9 @@ async function postEditAddress(req,res){
 async function getDeleteAddress(req, res) {
     try{
         let email = req.session.email
-        console.log(email);
+        // console.log(email);
         let id = req.params.id
-        console.log(id);
+        // console.log(id);
         const data = await userCollection.findOne({ email: email })
         await userCollection.updateOne({_id:new ObjectId(data._id)},{
             $pull:{
@@ -482,7 +482,7 @@ async function getUserCoupons(req,res){
 //User wallet history
 async function getWalletHistory(req,res){
     try{
-        console.log("Wallet reached");
+        // console.log("Wallet reached");
         let user=req.session.user
         let email=req.session.email
         let userData=await userCollection.findOne({email:email})

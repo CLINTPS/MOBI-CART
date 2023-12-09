@@ -162,6 +162,16 @@
   <script>
     function submitReturn(orderIdParam) {
     const returnReason = document.getElementById(`returnReason${orderIdParam}`).value;
+
+    if (!returnReason.trim()) {
+      Swal.fire({
+            icon: 'error',
+            title: 'Please add return reson',
+            showConfirmButton: false,
+            timer: 10000,
+        });
+    return;
+  }
     const orderId = orderIdParam; 
 console.log(returnReason);
     fetch('/submitreturn', {

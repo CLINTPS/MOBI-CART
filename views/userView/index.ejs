@@ -17,48 +17,70 @@
 </head>
 
 <body>
-    <header class="main_nav">
-        <div class="top_bar">
-            <p style="margin: 0;">FREE SHIPPING & RETURNS ON ALL US ORDERS</p>
-        </div>
-        <div class="nav_bar">
-            <div class="all_items">
-                <div class="logo_section">
-                    <a href="/">
-
-                        <img src="/images/Mobi Cart Logo.png" alt="" style="width: 120px;">
-                    </a>
-                </div>
-                <div class="links">
-                    <a href="/">Home</a>
-                    <a href="">Contact</a>
-                    <a href="">About</a>
-                </div>
-                <div class="icons">
-                    <div class="search_box">
-                        <input type="search" placeholder="search product">
-                        <img src="/images/search.svg" alt="">
-                    </div>
-                    <a href="#">
-                        <img width="30" height="28" src="https://img.icons8.com/ios/50/shopping-mall.png" alt="shopping-mall"/>
-                    </a>
-                    <a href="#">
-                        <img width="30" height="28" src="https://img.icons8.com/fluency-systems-regular/48/like--v1.png" alt="like--v1"/>
-                    </a>
-                    <a href="#">
-                        <img width="29" height="33" src="https://img.icons8.com/parakeet-line/48/shopping-cart.png" alt="shopping-cart"/>
-                    </a>
-                    <div class="dropdown">
-                        <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Account
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item" href="/user/Login-Signup">Login</a>
-                        </div>
-                    </div>
-                </div>
+        <header class="main_nav" style="border: .5px solid rgb(0, 0, 0)">
+            <div class="top_bar">
+                <p style="margin: 0;">FREE SHIPPING & RETURNS ON ALL US ORDERS</p>
             </div>
-        </div>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container">
+                    <a class="navbar-brand" href="/user/home">
+                        <img src="/images/Mobi Cart Logo.png" alt="" style="width: 105px;">
+                    </a>
+            
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+            
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModalCenter">Contact</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">About</a>
+                            </li>
+                            <li class="nav-item ml-3">
+                                <form class="form-inline" action="#" method="post">
+                                    <div class="input-group">
+                                        <input type="search" name="searchAllProduct" class="form-control" placeholder="Search product">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary " type="submit">
+                                                <img src="/images/search.svg" alt="">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </li>
+                            <li class="nav-item ml-3">
+                                <a class="nav-link" href="#">
+                                    <img width="30" height="28" src="https://img.icons8.com/ios/50/shopping-mall.png" alt="shopping-mall"/>
+                                </a>
+                            </li>
+                            <li class="nav-item ml-3">
+                                <a class="nav-link" href="#">
+                                    <img width="30" height="28" src="https://img.icons8.com/fluency-systems-regular/48/like--v1.png" alt="like--v1"/>
+                                </a>
+                            </li>
+                            <li class="nav-item ml-3">
+                                <a class="nav-link" href="#">
+                                    <img width="29" height="33" src="https://img.icons8.com/parakeet-line/48/shopping-cart.png" alt="shopping-cart"/>
+                                </a>
+                            </li>
+                            <div class="dropdown ml-3">
+                                <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  Account
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                  <a class="dropdown-item" href="/user/Login-Signup">Login</a>
+                                </div>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
     </header>
     
     <div class="bg-light">

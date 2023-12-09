@@ -81,7 +81,7 @@ async function getEditCoupon(req,res,next){
 //Post Edit Coupon
 async function postEditCoupon(req,res,next){
   try{
-    console.log("postData..",req.body);
+    // console.log("postData..",req.body);
     const couponId = req.body.couponId;
     const { name, couponCode, description, maxAmount, discountAmount, couponType, startDate, endDate} = req.body;
     const couponData=await couponCollection.updateOne(
@@ -98,7 +98,7 @@ async function postEditCoupon(req,res,next){
        }
       }
     );
-    console.log("couponData...",couponData);
+    // console.log("couponData...",couponData);
     res.json({ success: true, message: 'Coupon updated successfully' });
   }catch (error) {
     console.error(error);

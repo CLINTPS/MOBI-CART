@@ -95,10 +95,10 @@ const  getCartPage=async(req,res)=>{
         totalQuantity += item.quantity;
       });
 
-      const gstRate = 0.12; 
-    const gstAmount = subtotal * gstRate;
+      // const gstRate = 0.12; 
+    const gstAmount = 0 ;
     const coupon = '';
-    const total = subtotal + gstAmount;
+    const total = subtotal ;
 
     if (coupon) {
       const couponValue = 50;

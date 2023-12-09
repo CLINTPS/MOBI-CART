@@ -317,7 +317,7 @@ async function userSerch(req,res){
     try{
         var i = 0;
         const data = req.body.search; 
-        console.log(data);
+        // console.log(data);
         const page = parseInt(req.query.page) || 1;
 
         const userDataCount = await userCollection.find().count()
@@ -350,7 +350,7 @@ async function userSerch(req,res){
             errorMessage
          });
     }else{
-        console.log(`Search Data ${useData} `);
+        // console.log(`Search Data ${useData} `);
         const successMessage = req.query.successMessage || '';
         const errorMessage = req.query.errorMessage || '';
         res.render('adminView/customers', { title: "customer details",
@@ -388,7 +388,7 @@ const UserStatus = async (req, res) => {
 
     if (result.modifiedCount === 1) {
         req.session.logged = false;
-        console.log(`User ${user.userName} is ${newStatus ? "unblocked" : "blocked"}`);
+        // console.log(`User ${user.userName} is ${newStatus ? "unblocked" : "blocked"}`);
         const successMessage = `User ${user.userName} is ${newStatus ? "unblocked" : "blocked"} successfully`;
         return res.redirect("/admin/userDetails?successMessage=" + encodeURIComponent(successMessage));
     } else {

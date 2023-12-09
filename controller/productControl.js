@@ -17,7 +17,7 @@ async function getProductPage(req,res){
           
           const skip = (page - 1) * pageSize;
           const productData = await productsCollections.find().sort({ createdAt: -1 }).skip(skip).limit(pageSize);
-          console.log(productData);
+        //   console.log(productData);
           res.render('adminView/products',{title:"Product Details",
           i,
           productData,
@@ -82,7 +82,7 @@ async function postProductdata(req, res) {
 async function getProductedit(req,res){
         try{
             let id = req.params.id
-            console.log(id);
+            // console.log(id);
             const ProductData = await productsCollections.findById(id);
             if(!ProductData){
                 console.log("ProductData not found");
@@ -201,7 +201,7 @@ async function serchProduct(req,res){
     try{
         var i = 0;
         const data = req.body.search; 
-        console.log(data);
+        // console.log(data);
         const page = parseInt(req.query.page) || 1;
         const productDataCount = await productsCollections.find().count()
         const pageSize = 4;
@@ -221,7 +221,7 @@ async function serchProduct(req,res){
         
         const skip = (page - 1) * pageSize;
         const productData = await productsCollections.find().sort({ createdAt: -1 }).skip(skip).limit(pageSize);
-        console.log(productData);
+        // console.log(productData);
         res.render('adminView/products',{title:"Product Details",
         i,
         productData,
@@ -251,12 +251,12 @@ async function serchProduct(req,res){
 async function deleteImage(req, res) {
     try {
         const productId = req.params.id;
-        console.log("product id::",productId);
+        // console.log("product id::",productId);
         const imageIndex = req.params.index;
-        console.log("image index ::",imageIndex);
+        // console.log("image index ::",imageIndex);
         
         const product = await productsCollections.findById(productId);
-        console.log("Product",product);
+        // console.log("Product",product);
         if (!product) {
             res.status(404).send('Product not found');
             return;

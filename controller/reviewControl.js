@@ -55,8 +55,8 @@ async function getReviewpage(req,res){
     try{
         let orderID=req.query.orderId
         let productId = req.query.productId;
-        console.log("edit producId",productId);
-        console.log("edit orderID",orderID);
+        // console.log("edit producId",productId);
+        // console.log("edit orderID",orderID);
         if (!mongoose.Types.ObjectId.isValid(orderID)|| !mongoose.Types.ObjectId.isValid(productId)) {
             res.render("errorView/404");
             return;

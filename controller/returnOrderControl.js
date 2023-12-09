@@ -27,13 +27,13 @@ async function getReturnOrder(req,res){
 const putAcceptReturn=async(req,res)=>{
     try {
       const orderId = req.params.orderId; 
-      // console.log("orderId>>>>>>>>>>>>>",orderId);
+      console.log("orderId>>>>>>>>>>>>>",orderId);
       const updatedOrder = await orderCollection.findByIdAndUpdate(
         orderId,
         { $set: { Status: 'Return Accepted' } },
         { new: true }
       );
-      // console.log("updatedOrder>>>>>>>>>>>>>>>>>>>",updatedOrder);
+      console.log("updatedOrder>>>>>>>>>>>>>>>>>>>",updatedOrder);
       const userId = updatedOrder.UserId;
       const refundAmount = updatedOrder.TotalPrice;
   

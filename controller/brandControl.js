@@ -92,7 +92,7 @@ async function postBrandedit(req, res) {
 async function getBrandDelete(req,res){
   try{
     const id = req.params.id;
-    console.log(id);
+    // console.log(id);
     await brandCollection.deleteOne({ _id : id })
     res.redirect('/admin/brand')
   }catch(err){
