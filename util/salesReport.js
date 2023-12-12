@@ -1,35 +1,27 @@
   const ejs = require('ejs')
-  const pdf = require('html-pdf')
   const fs = require('fs')
   const exceljs = require('exceljs')
   const dateFormat = require('date-fns/format')
+  const salesPdf = require('./saleseportPdfKit')
 
   module.exports = {
       downloadReport: async (req, res, orders, startDate, endDate, totalSales, format) => {
         const formattedStartDate = dateFormat(new Date(startDate), 'yyyy-MM-dd');
         const formattedEndDate = dateFormat(new Date(endDate), 'yyyy-MM-dd');
         try {
-          
-          const totalAmount = parseInt(totalSales)
-          console.log('Total Sales:', totalAmount);
-          const template = fs.readFileSync('util/template.ejs', 'utf-8');
-          const html = ejs.render(template, { orders, startDate, endDate, totalAmount });
-          console.log(typeof(totalAmount));
+  
           if (format === 'pdf') {
-            const pdfOptions = {
-              format: 'Letter',
-              orientation: 'portrait',
-            };
-    
-            const filePath = `public/ReportPDF/sales-report-${formattedStartDate}-${formattedEndDate}.pdf`;
-            pdf.create(html, pdfOptions).toFile(filePath, (err, response) => {
-              if (err) {
-                console.error('Error generating PDF:', err);
-                res.status(500).send('Internal Server Error');
-              } else {
-                res.status(200).download(response.filename);
-              }
-            });
+
+            const pdfGenarate=await  salesPdf(orders,startDate,endDate)
+            console.log("pdf generated success fully");
+            res.setHeader("Content-Type", "application/pdf");
+            res.setHeader(
+            "Content-Disposition",
+            "attachment; filename=sales Report.pdf"
+        );
+          // console.log('pdf....');
+        res.status(200).end(pdfGenarate);
+
           } else if (format === 'excel') {
             const workbook = new exceljs.Workbook();
             const worksheet = workbook.addWorksheet('Sales Report');
@@ -46,9 +38,9 @@
             let totalSalesAmount = 0;
     
             orders.forEach(order => {
-            console.log("orders......",orders);
+            // console.log("orders......",orders);
               order.Items.forEach(item => {
-                console.log("item........",item);
+                // console.log("item........",item);
                 worksheet.addRow({
                   orderId: order._id,
                   productName: item.productId.ProductName,
@@ -60,7 +52,7 @@
 
               
                 totalSalesAmount += order.TotalPrice !== undefined ? order.TotalPrice : 0;
-                console.log("totalSalesAmount......",totalSalesAmount);
+                // console.log("totalSalesAmount......",totalSalesAmount);
               });
             });
     

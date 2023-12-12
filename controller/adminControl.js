@@ -3,6 +3,7 @@ const orderCollection = require('../model/order')
 const moment = require('moment')
 const {format}= require('date-fns')
 const pdf = require('../util/salesReport')
+// const pdf= require('../util/salesReportPDFkit')
 
 
 
@@ -252,22 +253,23 @@ const postSalesReport = async(req,res)=>{
     try{
         console.log(req.body);
         const startDate = moment(req.body.startDate, 'YYYY-MM-DD').format('MM/DD/YYYY, h:mm:ss A');
-        // console.log("startDate...", startDate);
+        console.log("startDate...", startDate);
         const format = req.body.downloadFormat;
         // console.log("format...", format);
         const endDate = moment(req.body.endDate, 'YYYY-MM-DD').endOf('day').format('MM/DD/YYYY, h:mm:ss A');
-        // console.log("endDate...", endDate);
+        console.log("endDate...", endDate);
+       
         const orders = await orderCollection.find({
           Status:{$nin:["returned","Cancelled","Rejected"]},
           PaymentStatus: { $in: ["Paid", "Pending"] },
-            OrderDate:{$gte:startDate,$lte:endDate}
+            // OrderDate:{$gte:startDate,$lte:endDate}
         }).populate("Items.productId");
-        // console.log("orders........",orders);
+        console.log("orders........",orders);
         let totalSales = 0;
         orders.forEach((order) => {
             totalSales += order.TotalPrice || 0;
           });
-          // console.log("Total sales.......",totalSales);
+          console.log("Total sales.......",totalSales);
           pdf.downloadReport(
             req,
             res,
