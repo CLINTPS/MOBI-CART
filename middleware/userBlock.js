@@ -1,7 +1,7 @@
 const user=require("../model/user")
 
 
-const checkBlock= async(req,res,next)=>{
+const checkBlock= async(req,res,next   )=>{
     // console.log(req.session.email);
     const check=await user.findOne({email:req.session.email})
     // console.log("user block checking"+check);

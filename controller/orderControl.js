@@ -10,6 +10,7 @@ const mongoose = require('mongoose')
 const { generateInvoice } = require('../util/InvoiceGenarator')
 const razorpay = require("../util/razorpay");
 const crypto = require('crypto');
+const  path  = require('path')
 
 //Get check out page
 async function getOrderpage(req,res){
@@ -490,7 +491,7 @@ const getdownloadInvoice=async(req,res)=>{
    try {
   const id=req.params.orderId
   console.log(id);
-  const filePath = `E:\\MOBI CART\\pdf\\${id}.pdf`;
+  const filePath = path.join(__dirname,'../pdf',`${id}.pdf`)
   console.log('filePath:',filePath);
   res.download(filePath,`invoice.pdf`)
 } catch (error) {
