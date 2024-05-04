@@ -1,7 +1,7 @@
 const OTP = require("../model/otp");
 const generateOTP = require("../util/genarateOtp");
 const sendEmail = require("../util/mail");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { AUTH_EMAIL } = process.env;
 
 const sendOTP = async (email) => {
