@@ -1,16 +1,7 @@
 const express = require("express");
-const session = require("express-session");
 const userRout = express.Router();
 const userControl = require("../controller/userControl");
 const userProduct = require("../controller/userProduct")
-const passport = require("passport")
-const bcrypt = require("bcrypt")
-// require('../config/passport');
-const USER = require('../model/user');
-const { sendOTP } = require("../controller/otpController");
-const OTP = require('../model/otp');
-const productsCollections = require('../model/product');
-const router = require("./adminRoutes");
 const userAuth = require('../middleware/userAuth')
 const userBlock = require('../middleware/userBlock')
 const cartControl = require('../controller/cartControl')

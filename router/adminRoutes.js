@@ -11,7 +11,6 @@ const bannerControl = require('../controller/bannerControl')
 const couponsControl = require('../controller/couponsControl')
 const returnOrder = require('../controller/returnOrderControl')
 const offerControl = require('../controller/offerControl')
-// const errorHandlerMiddleware = require('../middleware/errorMiddleware')
 
 
 //admin
