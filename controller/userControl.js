@@ -1,6 +1,6 @@
 const userCollection = require('../model/user')
 const bannerCollection = require('../model/banner')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const sendOTP = require("./otpController");
 const { use } = require("../router/adminRoutes");
 const productsCollections = require('../model/product')
