@@ -7,10 +7,6 @@ const {ADMIN_EMAIL,ADMIN_PASSWORD}=process.env
 
 
 //Admin password and user id
-// const credential = {
-//   email: "clint@gmail.com",
-//   password: "12345678"
-// }
 const credential = {
   email: ADMIN_EMAIL,
   password: ADMIN_PASSWORD
