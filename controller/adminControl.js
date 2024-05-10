@@ -3,14 +3,17 @@ const orderCollection = require('../model/order')
 const moment = require('moment')
 const { format } = require('date-fns')
 const pdf = require('../util/salesReport')
-// const pdf= require('../util/salesReportPDFkit')
-
+const {ADMIN_EMAIL,ADMIN_PASSWORD}=process.env
 
 
 //Admin password and user id
+// const credential = {
+//   email: "clint@gmail.com",
+//   password: "12345678"
+// }
 const credential = {
-  email: "clint@gmail.com",
-  password: "12345678"
+  email: ADMIN_EMAIL,
+  password: ADMIN_PASSWORD
 }
 
 //admin page

@@ -18,7 +18,7 @@ router.get("/",adminAuth.adminExist,adminControl.getAdminpage);
 router.post('/',adminAuth.adminExist,adminControl.postAdminpage);
 
 // admin Log-out
-router.get("/adLogout", adminControl.adminLogout);
+router.get('/adLogout', adminControl.adminLogout);
 
 //Admin user control
 router.get('/userDetails',adminAuth.verifyAdmin,adminControl.userdetails)
